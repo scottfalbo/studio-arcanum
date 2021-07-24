@@ -9,7 +9,7 @@ namespace Arcanum.Models
     {
         public int ArcanumId { get; set; }
         public int ImageId { get; set; }
-        public Arcanum Arcanum { get; set; }
+        public ArcanumMain ArcanumMain { get; set; }
         public Image Image { get; set; }
     }
 }

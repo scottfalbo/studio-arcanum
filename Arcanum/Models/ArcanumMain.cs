@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Arcanum.Models
 {
-    public class Arcanum
+    public class ArcanumMain
     {
         public int Id { get; set; }
         public string HomePageIntro { get; set; }
