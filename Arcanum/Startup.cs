@@ -1,4 +1,6 @@
 using Arcanum.Auth.Models;
+using Arcanum.Auth.Models.Interfaces;
+using Arcanum.Auth.Models.Interfaces.Services;
 using Arcanum.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +37,22 @@ namespace Arcanum
                 //options go here
             })
             .AddEntityFrameworkStores<ArcanumDbContext>();
+
+            services.AddAuthentication();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("create", policy => policy.RequireClaim("permissions", "create"));
+                options.AddPolicy("read", policy => policy.RequireClaim("permissions", "read"));
+                options.AddPolicy("update", policy => policy.RequireClaim("permissions", "update"));
+                options.AddPolicy("delete", policy => policy.RequireClaim("permissions", "delete"));
+            });
+
+            services.AddTransient<IUserService, IdentityUserService>();
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
         }
 
         
@@ -58,6 +76,7 @@ namespace Arcanum
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

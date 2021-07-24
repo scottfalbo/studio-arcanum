@@ -19,6 +19,8 @@ Development log for the studio arcanum website.
   + `Microsoft.AspNetCore.Identity.EntityFrameworkCore` *v 3.1.17*
   + `Microsoft.EntityFrameworkCore.Sqlite.Core` *v 3.1.17*
   + `Microsoft.EntityFrameworkCore.SqlServer` *v 3.1.17*
+  + `NewtonSoft.Json` *v 13.0.1*
+  + `Microsoft.AspNetCore.Mvc.NewtonSoftJson` *v 3.1.17*
 
 ---
 
