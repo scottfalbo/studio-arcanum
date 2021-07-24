@@ -38,6 +38,13 @@ namespace Arcanum.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ArcanumArtist>().HasKey(x => new { x.ArcanumId, x.ArtistId });
+            modelBuilder.Entity<RecentImage>().HasKey(x => new { x.ArcanumId, x.ImageId });
+            modelBuilder.Entity<ArcanumStudioInfo>().HasKey(x => new { x.ArcanumId, x.StudioInfoId });
+            modelBuilder.Entity<ArtistBooking>().HasKey(x => new { x.ArtistId, x.BookingId });
+            modelBuilder.Entity<ArtistPortfolio>().HasKey(x => new { x.ArtistId, x.PortfolioId });
+            modelBuilder.Entity<PortfolioImage>().HasKey(x => new { x.PortfolioId, x.ImageId });
         }
     }
 }

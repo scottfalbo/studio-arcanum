@@ -8,7 +8,7 @@ namespace Arcanum.Models
     public class ArtistPortfolio
     {
         public string ArtistId { get; set; }
-        public int BookingId { get; set; }
+        public int PortfolioId { get; set; }
         public Artist Artist { get; set; }
         public Portfolio Portfolio { get; set; }
     }
