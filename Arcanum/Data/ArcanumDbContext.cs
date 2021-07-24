@@ -45,6 +45,103 @@ namespace Arcanum.Data
             modelBuilder.Entity<ArtistBooking>().HasKey(x => new { x.ArtistId, x.BookingId });
             modelBuilder.Entity<ArtistPortfolio>().HasKey(x => new { x.ArtistId, x.PortfolioId });
             modelBuilder.Entity<PortfolioImage>().HasKey(x => new { x.PortfolioId, x.ImageId });
+
+            modelBuilder.Entity<ArcanumMain>().HasData(
+                new ArcanumMain
+                {
+                    Id = -1,
+                    Intro = "hello world",
+                });
+
+            modelBuilder.Entity<StudioInfo>().HasData(
+                new StudioInfo
+                {
+                    Id = -1,
+                    Address = "some where",
+                    Policies = "be nice",
+                    Aftercare = " be smart"
+                });
+
+            modelBuilder.Entity<ArcanumStudioInfo>().HasData(
+                new ArcanumStudioInfo
+                {
+                    ArcanumId = -1,
+                    StudioInfoId = -1
+                });
+
+            modelBuilder.Entity<Artist>().HasData(
+                new Artist 
+                {
+                    Id = "artist",
+                    Name = "tatter wizard",
+                    Email = "wizard@wizarding.net",
+                    Order = 1,
+                    Display = true
+                });
+
+            modelBuilder.Entity<ArcanumArtist>().HasData(
+                new ArcanumArtist
+                {
+                    ArcanumId = -1,
+                    ArtistId = "artist"
+                });
+
+            modelBuilder.Entity<Booking>().HasData(
+                new Models.Booking
+                {
+                    Id = -1,
+                    BookingInfo = "booking info",
+                    BookingEmail = "booking@booking.net"
+                });
+
+            modelBuilder.Entity<ArtistBooking>().HasData(
+                new ArtistBooking
+                {
+                    ArtistId = "artist",
+                    BookingId = -1
+                });
+
+            modelBuilder.Entity<Portfolio>().HasData(
+                new Portfolio {
+                    Id = -1,
+                    Title = "some one's portoflio",
+                    Intro = "hi, I make tattoos",
+                    Instagram = "@whatever"
+                });
+
+            modelBuilder.Entity<ArtistPortfolio>().HasData(
+                new ArtistPortfolio
+                {
+                    ArtistId = "artist",
+                    PortfolioId = -1
+                });
+
+            modelBuilder.Entity<Image>().HasData(
+                new Image
+                {
+                    Id = -1,
+                    Title = "untitled",
+                    Artist = "some one",
+                    SourceUrl = "https://via.placeholder.com/600",
+                    ThumbnailUrl = "https://via.placeholder.com/60",
+                    FileName = "palceholder.png",
+                    Order = 1
+                });
+
+            modelBuilder.Entity<PortfolioImage>().HasData(
+                new PortfolioImage
+                { 
+                    ImageId = -1,
+                    PortfolioId = -1
+                });
+
+            modelBuilder.Entity<RecentImage>().HasData(
+                new RecentImage
+                {
+                    ArcanumId = -1,
+                    ImageId = -1
+                });
+
         }
     }
 }

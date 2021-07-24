@@ -26,6 +26,7 @@ Development log for the studio arcanum website.
 + Make Models, Interfaces and Services for Identity and login.
 + Make Models for the database and set them in the context.
 + Scaffolded Interfaces and Services for the site and add transients for injection.
++ Setup join table keys in the DbContext.
 
 ---
 
