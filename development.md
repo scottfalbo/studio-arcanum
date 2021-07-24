@@ -13,6 +13,12 @@ Development log for the studio arcanum website.
 + Initial commit.
 + Created site entity relationship diagram.  [ERD](assets/ERD.jpg).
 + Started wire frames for mobile, tablet and desktop break points.
++ Installed 
+  + `Microsoft.EntityFrameworkCore` *v3.1.17*
+  + `Microsoft.AspNetCore.Identity` *v2.20*
+  + `Microsoft.AspNetCore.Identity.EntityFrameworkCore` *v 3.1.17*
+  + `Microsoft.EntityFrameworkCore.Sqlite.Core` *v 3.1.17*
+  + `Microsoft.EntityFrameworkCore.SqlServer` *v 3.1.17*
 
 ---
 
