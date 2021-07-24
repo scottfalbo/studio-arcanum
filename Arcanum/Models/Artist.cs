@@ -7,13 +7,13 @@ namespace Arcanum.Models
 {
     public class Artist
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public int Order { get; set; }
         public bool Display { get; set; }
-        public ArtistBooking Booking { get; set; }
-        public ArtistPortfolio Portfolio { get; set; }
-        public ArcanumArtist ArcanumArtist { get; set; }
+        public ArtistBooking ArtistBooking { get; set; }
+        public ArtistPortfolio ArtistPortfolio { get; set; }
+        public ArcanumMain ArcanumMain { get; set; }
     }
 }

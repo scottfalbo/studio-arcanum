@@ -9,7 +9,7 @@ namespace Arcanum.Models
     {
         public int Id { get; set; }
         public string HomePageIntro { get; set; }
-        public List<RecentImage> Recent { get; set; }
-        public List<ArcanumArtist> Artists { get; set; }
+        public List<RecentImage> RecentImage { get; set; }
+        public List<ArcanumArtist> ArcanumArtists { get; set; }
     }
 }
