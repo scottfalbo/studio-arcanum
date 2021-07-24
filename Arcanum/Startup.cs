@@ -2,6 +2,8 @@ using Arcanum.Auth.Models;
 using Arcanum.Auth.Models.Interfaces;
 using Arcanum.Auth.Models.Interfaces.Services;
 using Arcanum.Data;
+using Arcanum.Models.Interfaces;
+using Arcanum.Models.Interfaces.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -49,6 +51,9 @@ namespace Arcanum
             });
 
             services.AddTransient<IUserService, IdentityUserService>();
+            services.AddTransient<IArtistAdmin, ArtistAdminService>();
+            services.AddTransient<IWizardLord, WizardLordService>();
+            services.AddTransient<ISite, SiteService>();
 
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
