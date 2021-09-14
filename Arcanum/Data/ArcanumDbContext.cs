@@ -24,7 +24,7 @@ namespace Arcanum.Data
         public DbSet<StudioInfo> StudioInfo { get; set; }
         public DbSet<Booking> Booking { get; set; }
         public DbSet<Portfolio> Portfolio { get; set; }
-        public DbSet<ArcanumMain> PortfolioImage { get; set; }
+        public DbSet<PortfolioImage> PortfolioImage { get; set; }
 
         public IConfiguration Config { get; }
 
@@ -72,10 +72,18 @@ namespace Arcanum.Data
             modelBuilder.Entity<Artist>().HasData(
                 new Artist 
                 {
-                    Id = "artist",
+                    Id = "artist1",
                     Name = "tatter wizard",
                     Email = "wizard@wizarding.net",
                     Order = 1,
+                    Display = true
+                },
+                new Artist 
+                {
+                    Id = "artist2",
+                    Name = "tatter wizard 2",
+                    Email = "wizard@wizarding.net",
+                    Order = 2,
                     Display = true
                 });
 
@@ -83,8 +91,14 @@ namespace Arcanum.Data
                 new ArcanumArtist
                 {
                     ArcanumId = -1,
-                    ArtistId = "artist"
-                });
+                    ArtistId = "artist1"
+                },
+                new ArcanumArtist
+                {
+                    ArcanumId = -1,
+                    ArtistId = "artist2"
+                }
+                );
 
             modelBuilder.Entity<Booking>().HasData(
                 new Models.Booking
@@ -92,56 +106,89 @@ namespace Arcanum.Data
                     Id = -1,
                     BookingInfo = "booking info",
                     BookingEmail = "booking@booking.net"
-                });
+                },
+                new Models.Booking
+                {
+                    Id = -2,
+                    BookingInfo = "booking info",
+                    BookingEmail = "booking@booking.net"
+                }
+                );
 
             modelBuilder.Entity<ArtistBooking>().HasData(
                 new ArtistBooking
                 {
-                    ArtistId = "artist",
+                    ArtistId = "artist1",
                     BookingId = -1
-                });
+                },
+                new ArtistBooking
+                {
+                    ArtistId = "artist2",
+                    BookingId = -2
+                }
+                );
 
             modelBuilder.Entity<Portfolio>().HasData(
                 new Portfolio {
                     Id = -1,
-                    Title = "some one's portoflio",
+                    Title = "artist 1 portoflio",
                     Intro = "hi, I make tattoos",
                     Instagram = "@whatever"
-                });
+                },
+                new Portfolio
+                {
+                    Id = -2,
+                    Title = "artist 2 portoflio",
+                    Intro = "hi, I make tattoos",
+                    Instagram = "@whatever2"
+                }
+                );
 
             modelBuilder.Entity<ArtistPortfolio>().HasData(
                 new ArtistPortfolio
                 {
-                    ArtistId = "artist",
+                    ArtistId = "artist1",
                     PortfolioId = -1
-                });
-
-            modelBuilder.Entity<Image>().HasData(
-                new Image
+                },
+                new ArtistPortfolio
                 {
-                    Id = -1,
-                    Title = "untitled",
-                    Artist = "some one",
-                    SourceUrl = "https://via.placeholder.com/600",
-                    ThumbnailUrl = "https://via.placeholder.com/60",
-                    FileName = "palceholder.png",
-                    Order = 1
-                });
+                    ArtistId = "artist2",
+                    PortfolioId = -2
+                }
+                );
 
-            modelBuilder.Entity<PortfolioImage>().HasData(
-                new PortfolioImage
-                { 
-                    ImageId = -1,
-                    PortfolioId = -1
-                });
 
-            modelBuilder.Entity<RecentImage>().HasData(
-                new RecentImage
-                {
-                    ArcanumId = -1,
-                    ImageId = -1
-                });
+            for (int i = -1; i > -21; i--)
+            {
+                modelBuilder.Entity<Image>().HasData(
+                    new Image
+                    {
+                        Id = i,
+                        Title = $"untitled-{i}",
+                        Artist = "some one",
+                        SourceUrl = "https://via.placeholder.com/60",
+                        ThumbnailUrl = "https://via.placeholder.com/60",
+                        FileName = "placeholder.png",
+                        Order = Math.Abs(i)
+                    });
+            }
 
+
+            for (int i = -1; i > -11; i--)
+            {
+                modelBuilder.Entity<PortfolioImage>().HasData(
+                    new PortfolioImage
+                    {
+                        ImageId = i,
+                        PortfolioId = -1
+                    },
+                    new PortfolioImage
+                    {
+                        ImageId = i - 10,
+                        PortfolioId = -2
+                    }
+                    );
+            }
         }
     }
 }
