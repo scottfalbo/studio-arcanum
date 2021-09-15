@@ -14,6 +14,5 @@ namespace Arcanum.Models
         public bool Display { get; set; }
         public ArtistBooking ArtistBooking { get; set; }
         public List<ArtistPortfolio> ArtistPortfolios { get; set; }
-        public List<ArcanumArtist> ArcanumArtist { get; set; }
     }
 }

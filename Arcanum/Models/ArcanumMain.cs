@@ -11,6 +11,5 @@ namespace Arcanum.Models
         public string Intro { get; set; }
         public string HomePageIntro { get; set; }
         public List<RecentImage> RecentImage { get; set; }
-        public List<ArcanumArtist> ArcanumArtists { get; set; }
     }
 }

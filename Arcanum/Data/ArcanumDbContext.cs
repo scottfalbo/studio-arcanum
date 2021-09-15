@@ -14,10 +14,8 @@ namespace Arcanum.Data
     public class ArcanumDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<ArcanumMain> Arcanum { get; set; }
-        public DbSet<ArcanumArtist> ArcanumArtist { get; set; }
         public DbSet<Artist> Artist { get; set; }
         public DbSet<RecentImage> RecentImage { get; set; }
-        public DbSet<ArcanumStudioInfo> ArcanumStudioInfo { get; set; }
         public DbSet<ArtistBooking> ArtistBooking { get; set; }
         public DbSet<ArtistPortfolio> ArtistPortfolio { get; set; }
         public DbSet<Image> Image { get; set; }
@@ -39,9 +37,7 @@ namespace Arcanum.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ArcanumArtist>().HasKey(x => new { x.ArcanumId, x.ArtistId });
             modelBuilder.Entity<RecentImage>().HasKey(x => new { x.ArcanumId, x.ImageId });
-            modelBuilder.Entity<ArcanumStudioInfo>().HasKey(x => new { x.ArcanumId, x.StudioInfoId });
             modelBuilder.Entity<ArtistBooking>().HasKey(x => new { x.ArtistId, x.BookingId });
             modelBuilder.Entity<ArtistPortfolio>().HasKey(x => new { x.ArtistId, x.PortfolioId });
             modelBuilder.Entity<PortfolioImage>().HasKey(x => new { x.PortfolioId, x.ImageId });
@@ -62,13 +58,6 @@ namespace Arcanum.Data
                     Aftercare = " be smart"
                 });
 
-            modelBuilder.Entity<ArcanumStudioInfo>().HasData(
-                new ArcanumStudioInfo
-                {
-                    ArcanumId = -1,
-                    StudioInfoId = -1
-                });
-
             modelBuilder.Entity<Artist>().HasData(
                 new Artist 
                 {
@@ -86,19 +75,6 @@ namespace Arcanum.Data
                     Order = 2,
                     Display = true
                 });
-
-            modelBuilder.Entity<ArcanumArtist>().HasData(
-                new ArcanumArtist
-                {
-                    ArcanumId = -1,
-                    ArtistId = "artist1"
-                },
-                new ArcanumArtist
-                {
-                    ArcanumId = -1,
-                    ArtistId = "artist2"
-                }
-                );
 
             modelBuilder.Entity<Booking>().HasData(
                 new Models.Booking
