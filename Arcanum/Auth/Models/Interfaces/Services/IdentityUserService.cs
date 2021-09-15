@@ -38,7 +38,7 @@ namespace Arcanum.Auth.Models.Interfaces.Services
                     Roles = await _userManager.GetRolesAsync(user),
                 };
             }
-            throw new Exception("womp womp");
+            return null;
         }
 
         public async Task<ApplicationUserDto> Register(RegisterUser data, ModelStateDictionary modelState)
