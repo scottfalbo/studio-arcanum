@@ -14,17 +14,15 @@ namespace Arcanum.Data
     public class ArcanumDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<ArcanumMain> Arcanum { get; set; }
-        public DbSet<ArcanumArtist> ArcanumArtist { get; set; }
         public DbSet<Artist> Artist { get; set; }
         public DbSet<RecentImage> RecentImage { get; set; }
-        public DbSet<ArcanumStudioInfo> ArcanumStudioInfo { get; set; }
         public DbSet<ArtistBooking> ArtistBooking { get; set; }
         public DbSet<ArtistPortfolio> ArtistPortfolio { get; set; }
         public DbSet<Image> Image { get; set; }
         public DbSet<StudioInfo> StudioInfo { get; set; }
         public DbSet<Booking> Booking { get; set; }
         public DbSet<Portfolio> Portfolio { get; set; }
-        public DbSet<ArcanumMain> PortfolioImage { get; set; }
+        public DbSet<PortfolioImage> PortfolioImage { get; set; }
 
         public IConfiguration Config { get; }
 
@@ -39,12 +37,162 @@ namespace Arcanum.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ArcanumArtist>().HasKey(x => new { x.ArcanumId, x.ArtistId });
             modelBuilder.Entity<RecentImage>().HasKey(x => new { x.ArcanumId, x.ImageId });
-            modelBuilder.Entity<ArcanumStudioInfo>().HasKey(x => new { x.ArcanumId, x.StudioInfoId });
             modelBuilder.Entity<ArtistBooking>().HasKey(x => new { x.ArtistId, x.BookingId });
             modelBuilder.Entity<ArtistPortfolio>().HasKey(x => new { x.ArtistId, x.PortfolioId });
             modelBuilder.Entity<PortfolioImage>().HasKey(x => new { x.PortfolioId, x.ImageId });
+
+            SeedRole(modelBuilder, "WizardLord", "read", "create", "update", "delete");
+            SeedRole(modelBuilder, "ArtistAdmin", "read", "create", "update", "delete");
+            SeedRole(modelBuilder, "Guest", "read");
+            SeedRole(modelBuilder, "GuestAdmin", "read", "create", "update", "delete");
+
+            modelBuilder.Entity<ArcanumMain>().HasData(
+                new ArcanumMain
+                {
+                    Id = -1,
+                    Intro = "hello world",
+                });
+
+            modelBuilder.Entity<StudioInfo>().HasData(
+                new StudioInfo
+                {
+                    Id = -1,
+                    Address = "some where",
+                    Policies = "be nice",
+                    Aftercare = " be smart"
+                });
+
+            modelBuilder.Entity<Artist>().HasData(
+                new Artist 
+                {
+                    Id = "artist1",
+                    Name = "tatter wizard",
+                    Email = "wizard@wizarding.net",
+                    Order = 1,
+                    Display = true
+                },
+                new Artist 
+                {
+                    Id = "artist2",
+                    Name = "tatter wizard 2",
+                    Email = "wizard@wizarding.net",
+                    Order = 2,
+                    Display = true
+                });
+
+            modelBuilder.Entity<Booking>().HasData(
+                new Models.Booking
+                {
+                    Id = -1,
+                    BookingInfo = "booking info",
+                    BookingEmail = "booking@booking.net"
+                },
+                new Models.Booking
+                {
+                    Id = -2,
+                    BookingInfo = "booking info",
+                    BookingEmail = "booking@booking.net"
+                }
+                );
+
+            modelBuilder.Entity<ArtistBooking>().HasData(
+                new ArtistBooking
+                {
+                    ArtistId = "artist1",
+                    BookingId = -1
+                },
+                new ArtistBooking
+                {
+                    ArtistId = "artist2",
+                    BookingId = -2
+                }
+                );
+
+            modelBuilder.Entity<Portfolio>().HasData(
+                new Portfolio {
+                    Id = -1,
+                    Title = "artist 1 portoflio",
+                    Intro = "hi, I make tattoos",
+                    Instagram = "@whatever"
+                },
+                new Portfolio
+                {
+                    Id = -2,
+                    Title = "artist 2 portoflio",
+                    Intro = "hi, I make tattoos",
+                    Instagram = "@whatever2"
+                }
+                );
+
+            modelBuilder.Entity<ArtistPortfolio>().HasData(
+                new ArtistPortfolio
+                {
+                    ArtistId = "artist1",
+                    PortfolioId = -1
+                },
+                new ArtistPortfolio
+                {
+                    ArtistId = "artist2",
+                    PortfolioId = -2
+                }
+                );
+
+
+            for (int i = -1; i > -21; i--)
+            {
+                modelBuilder.Entity<Image>().HasData(
+                    new Image
+                    {
+                        Id = i,
+                        Title = $"untitled-{i}",
+                        Artist = "some one",
+                        SourceUrl = "https://via.placeholder.com/60",
+                        ThumbnailUrl = "https://via.placeholder.com/60",
+                        FileName = "placeholder.png",
+                        Order = Math.Abs(i)
+                    });
+            }
+
+
+            for (int i = -1; i > -11; i--)
+            {
+                modelBuilder.Entity<PortfolioImage>().HasData(
+                    new PortfolioImage
+                    {
+                        ImageId = i,
+                        PortfolioId = -1
+                    },
+                    new PortfolioImage
+                    {
+                        ImageId = i - 10,
+                        PortfolioId = -2
+                    }
+                    );
+            }
+        }
+
+        private int id = 1;
+        private void SeedRole(ModelBuilder modelBuilder, string roleName, params string[] permissions)
+        {
+            var role = new IdentityRole
+            {
+                Id = roleName.ToLower(),
+                Name = roleName,
+                NormalizedName = roleName.ToUpper(),
+                ConcurrencyStamp = Guid.Empty.ToString()
+            };
+            modelBuilder.Entity<IdentityRole>().HasData(role);
+
+            var roleClaims = permissions.Select(permission =>
+               new IdentityRoleClaim<string>
+               {
+                   Id = id++,
+                   RoleId = role.Id,
+                   ClaimType = "permissions",
+                   ClaimValue = permission
+               });
+            modelBuilder.Entity<IdentityRoleClaim<string>>().HasData(roleClaims);
         }
     }
 }

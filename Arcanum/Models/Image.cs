@@ -11,10 +11,11 @@ namespace Arcanum.Models
         public string Title { get; set; }
         public string Artist { get; set; }
         public string SourceUrl { get; set; }
+        public string ThumbnailUrl { get; set; }
         public string FileName { get; set; }
         public int Order { get; set; }
-        public RecentImage RecentImage { get; set; }
-        public Portfolio Portfolio { get; set; }
+        public List<RecentImage> RecentImage { get; set; }
+        public List<PortfolioImage> PortfolioImage { get; set; }
 
     }
 }

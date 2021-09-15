@@ -13,7 +13,6 @@ namespace Arcanum.Models
         public int Order { get; set; }
         public bool Display { get; set; }
         public ArtistBooking ArtistBooking { get; set; }
-        public ArtistPortfolio ArtistPortfolio { get; set; }
-        public ArcanumMain ArcanumMain { get; set; }
+        public List<ArtistPortfolio> ArtistPortfolios { get; set; }
     }
 }

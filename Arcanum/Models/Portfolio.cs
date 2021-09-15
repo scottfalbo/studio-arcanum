@@ -12,6 +12,6 @@ namespace Arcanum.Models
         public string Intro { get; set; }
         public string Instagram { get; set; }
         public List<PortfolioImage> PortfolioImage { get; set; }
-        public ArtistPortfolio ArtistPortfolio { get; set; }
+        public List<ArtistPortfolio> ArtistPortfolio { get; set; }
     }
 }
