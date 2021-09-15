@@ -3,6 +3,6 @@
 @foreach(var artist in Model.Artists)
 {
     <li>
-        @artist.Name
+        <a class="nav-link text-dark" asp-area="" asp-page="/Artist" asp-route-name="@artist.Name">@artist.Name</a>
     </li>
 }
