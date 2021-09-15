@@ -1,4 +1,5 @@
 ﻿using Arcanum.Models;
+using Arcanum.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,20 +10,16 @@ namespace Arcanum.Components
 {
     [ViewComponent]
     public class ArtistNavViewComponent : ViewComponent
-    { 
-
-        public ArtistNavViewComponent()
+    {
+        public ISite _siteAdmin;
+        public ArtistNavViewComponent(ISite site)
         {
-
+            _siteAdmin = site;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            List<Artist> artists = new List<Artist>();
-            artists.Add(dummyData("spaceghost"));
-            artists.Add(dummyData("harry"));
-            artists.Add(dummyData("luci"));
-            artists.Add(dummyData("ethel"));
+            List<Artist> artists = await _siteAdmin.GetArtists();
 
             ViewModel viewModel = new ViewModel()
             {
@@ -31,9 +28,6 @@ namespace Arcanum.Components
 
             return View(viewModel);
         }
-
-        private Artist dummyData(string name) =>
-            new Artist() { Name = name };
 
         public class ViewModel
         {
