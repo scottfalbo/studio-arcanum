@@ -24,13 +24,13 @@ namespace Arcanum.Data
         public DbSet<Portfolio> Portfolio { get; set; }
         public DbSet<PortfolioImage> PortfolioImage { get; set; }
 
-        public IConfiguration Config { get; }
+        public IConfiguration _config { get; }
 
         public ArcanumDbContext(DbContextOptions options) : base(options) { }
 
         public ArcanumDbContext(DbContextOptions options, IConfiguration config) : base(options)
         {
-            Config = config;
+            _config = config;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -46,6 +46,31 @@ namespace Arcanum.Data
             SeedRole(modelBuilder, "ArtistAdmin", "read", "create", "update", "delete");
             SeedRole(modelBuilder, "Guest", "read");
             SeedRole(modelBuilder, "GuestAdmin", "read", "create", "update", "delete");
+
+            string id = _config["SuperAdmin:UserId"];
+            string adminName = _config["SuperAdmin:UserName"];
+            string adminPass = _config["SuperAdmin:Password"];
+            PasswordHasher<ApplicationUser> hasher = new PasswordHasher<ApplicationUser>();
+
+            modelBuilder.Entity<ApplicationUser>().HasData(
+                new ApplicationUser
+                {
+                    Id = id,
+                    UserName = adminName,
+                    NormalizedUserName = adminName.ToUpper(),
+                    Email = "scottfalboart@gmail.com",
+                    NormalizedEmail = "scottfalboart@gmail.com",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, adminPass),
+                    SecurityStamp =  string.Empty
+                });
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>
+                { 
+                    RoleId = "wizardlord",
+                    UserId = id
+                });
 
             modelBuilder.Entity<ArcanumMain>().HasData(
                 new ArcanumMain
