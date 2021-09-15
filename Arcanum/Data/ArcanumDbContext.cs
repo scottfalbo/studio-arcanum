@@ -42,6 +42,11 @@ namespace Arcanum.Data
             modelBuilder.Entity<ArtistPortfolio>().HasKey(x => new { x.ArtistId, x.PortfolioId });
             modelBuilder.Entity<PortfolioImage>().HasKey(x => new { x.PortfolioId, x.ImageId });
 
+            SeedRole(modelBuilder, "WizardLord", "read", "create", "update", "delete");
+            SeedRole(modelBuilder, "ArtistAdmin", "read", "create", "update", "delete");
+            SeedRole(modelBuilder, "Guest", "read");
+            SeedRole(modelBuilder, "GuestAdmin", "read", "create", "update", "delete");
+
             modelBuilder.Entity<ArcanumMain>().HasData(
                 new ArcanumMain
                 {
@@ -165,6 +170,29 @@ namespace Arcanum.Data
                     }
                     );
             }
+        }
+
+        private int id = 1;
+        private void SeedRole(ModelBuilder modelBuilder, string roleName, params string[] permissions)
+        {
+            var role = new IdentityRole
+            {
+                Id = roleName.ToLower(),
+                Name = roleName,
+                NormalizedName = roleName.ToUpper(),
+                ConcurrencyStamp = Guid.Empty.ToString()
+            };
+            modelBuilder.Entity<IdentityRole>().HasData(role);
+
+            var roleClaims = permissions.Select(permission =>
+               new IdentityRoleClaim<string>
+               {
+                   Id = id++,
+                   RoleId = role.Id,
+                   ClaimType = "permissions",
+                   ClaimValue = permission
+               });
+            modelBuilder.Entity<IdentityRoleClaim<string>>().HasData(roleClaims);
         }
     }
 }

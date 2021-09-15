@@ -16,6 +16,20 @@ namespace Arcanum.Models.Interfaces.Services
             _db = context;
         }
 
+        public async Task CreateArtist(Artist artist)
+        {
+            Artist newArtist = new Artist()
+            {
+                Id = artist.Id,
+                Name = artist.Name,
+                Email = artist.Email,
+                Display = true,
+                Order = 0
+            };
+            _db.Entry(newArtist).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+        }
+
         public async Task<List<Artist>> GetArtists()
         {
             return await _db.Artist

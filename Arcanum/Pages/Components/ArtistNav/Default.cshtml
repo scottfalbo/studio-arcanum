@@ -2,7 +2,10 @@
 
 @foreach(var artist in Model.Artists)
 {
-    <li>
-        <a class="nav-link text-dark" asp-area="" asp-page="/Artist" asp-route-name="@artist.Name">@artist.Name</a>
-    </li>
+    if (artist.Display)
+    {
+        <li>
+            <a class="nav-link text-dark" asp-area="" asp-page="/Artist" asp-route-name="@artist.Name">@artist.Name</a>
+        </li>
+    }
 }
