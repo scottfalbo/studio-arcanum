@@ -1,0 +1,18 @@
+﻿@model Arcanum.Pages.Admin.SecretLairModel
+
+<section>
+    <h2>Artist Display</h2>
+    @foreach (var artist in Model.Artists)
+    {
+        <div>
+            <form asp-page-handler="ToggleArtistDisplay" method="post">
+                <label>
+                    <span>@artist.Name</span>
+                    <input type="checkbox" name="display" value="true" checked ="@artist.Display" />
+                    <input type="hidden" name="artistId" value="@artist.Id" />
+                    <input type="submit" value="update" />
+                </label>
+            </form>
+        </div>
+    }
+</section>

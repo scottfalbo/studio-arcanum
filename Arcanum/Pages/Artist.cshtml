@@ -3,4 +3,18 @@
 @{
 }
 
-@Model.Name
+<div><img src="@Model.Artist.ProfileImageUri" /></div>
+
+<div>@Model.Artist.Name</div>
+<div>@Model.Artist.Intro</div>
+<div>@Model.Artist.Instagram</div>
+
+@foreach(var portfolio in Model.Artist.ArtistPortfolios)
+{
+    <h2>@portfolio.Portfolio.Title</h2>
+    <p>@portfolio.Portfolio.Intro</p>
+    @foreach(var image in portfolio.Portfolio.PortfolioImage)
+    {
+        <img src="@image.Image.SourceUrl" />
+    }
+}

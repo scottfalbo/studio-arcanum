@@ -36,7 +36,7 @@ namespace Arcanum
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
-                //options go here
+                options.User.RequireUniqueEmail = true;
             })
             .AddEntityFrameworkStores<ArcanumDbContext>();
 

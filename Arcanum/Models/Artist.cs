@@ -10,6 +10,10 @@ namespace Arcanum.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+        public string Intro { get; set; }
+        public string Instagram { get; set; }
+        public string ProfileImageUri { get; set; }
+        public string ProfileImageFileName { get; set; }
         public int Order { get; set; }
         public bool Display { get; set; }
         public ArtistBooking ArtistBooking { get; set; }

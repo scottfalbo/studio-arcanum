@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Arcanum.Auth.Models;
 using Arcanum.Auth.Models.Interfaces;
@@ -27,6 +28,7 @@ namespace Arcanum.Pages
 
         public async Task<IActionResult> OnPostAsync(string username, string password, string email)
         {
+            username = Regex.Replace(username, " ", "");
             RegisterUser newUser = new RegisterUser()
             {
                 UserName = username,
