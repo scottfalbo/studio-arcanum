@@ -60,7 +60,7 @@ namespace Arcanum.Auth.Models.Interfaces.Services
                     Id = user.Id,
                     UserName = user.UserName,
                     Email = user.Email,
-                    Roles = new List<string>() { "Guest" },
+                    Roles = new List<string>() { "Guest" }
                 };
             }
             return null;

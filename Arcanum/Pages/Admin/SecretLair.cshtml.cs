@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Arcanum.Auth.Models;
 using Arcanum.Data;
 using Arcanum.Models.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -22,10 +24,13 @@ namespace Arcanum.Pages.Admin
             _wizard = magicPower;
         }
 
+        public List<ApplicationUserDto> Users { get; set; }
+        public IQueryable<IdentityRole> Roles { get; set; }
 
-
-        public void OnGet()
+        public async Task OnGet()
         {
+            Users = await _wizard.GetRegisteredUsers();
+            Roles = _wizard.GetRoles();
         }
     }
 }
