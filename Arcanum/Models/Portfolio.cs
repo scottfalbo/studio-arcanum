@@ -10,6 +10,7 @@ namespace Arcanum.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public string Intro { get; set; }
+        public bool Display { get; set; }
         public List<PortfolioImage> PortfolioImage { get; set; }
         public List<ArtistPortfolio> ArtistPortfolio { get; set; }
     }

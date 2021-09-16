@@ -196,18 +196,22 @@ namespace Arcanum.Data
                 {
                     Id = -1,
                     Title = $"{adminName}'s portoflio",
-                    Intro = "hi, I make tattoos"
+                    Intro = "hi, I make tattoos",
+                    Display = true
                 },
-                new Portfolio {
+                new Portfolio
+                {
                     Id = -2,
                     Title = "artist 1 portoflio",
-                    Intro = "hi, I make tattoos"
+                    Intro = "hi, I make tattoos",
+                    Display = true
                 },
                 new Portfolio
                 {
                     Id = -3,
                     Title = "artist 2 portoflio",
-                    Intro = "hi, I make tattoos"
+                    Intro = "hi, I make tattoos",
+                    Display = true
                 }
                 );
 

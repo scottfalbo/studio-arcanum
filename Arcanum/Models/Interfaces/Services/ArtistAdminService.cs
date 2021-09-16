@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Arcanum.Data;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +9,83 @@ namespace Arcanum.Models.Interfaces.Services
 {
     public class ArtistAdminService : IArtistAdmin
     {
+        private readonly ArcanumDbContext _db;
 
+        public ArtistAdminService(ArcanumDbContext db)
+        {
+            _db = db;
+        }
+
+        /// <summary>
+        /// Create a new portfolio object and enter a record into the database.
+        /// </summary>
+        /// <param name="title"> string title </param>
+        /// <returns> new Portfolio object </returns>
+        public async Task<Portfolio> CreatePortfolio(string title)
+        {
+            Portfolio newPortfolio = new Portfolio()
+            {
+                Title = title,
+                Intro = "new portfolio",
+                Display = false
+            };
+            _db.Entry(newPortfolio).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+            return newPortfolio;
+        }
+
+        /// <summary>
+        /// Add a portfolio object to an artist with a PortfolioArtist join table.
+        /// </summary>
+        /// <param name="artistId"> string artistId </param>
+        /// <param name="portfolioId"> int portfolioId </param>
+        public async Task AddPortfolioToArtist(string artistId, int portfolioId)
+        {
+            ArtistPortfolio artistPortfolio = new ArtistPortfolio()
+            {
+                ArtistId = artistId,
+                PortfolioId = portfolioId
+            };
+            _db.Entry(artistPortfolio).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Create a new image object and record in the database.
+        /// </summary>
+        /// <param name="image"> Image image </param>
+        /// <returns> new Image object </returns>
+        public async Task<Image> CreateImage(Image image)
+        {
+            Image newImage = new Image()
+            {
+                Title = image.Title,
+                Artist = image.Artist,
+                SourceUrl = image.SourceUrl,
+                ThumbnailUrl = image.ThumbnailUrl,
+                FileName = image.FileName,
+                ThumbFileName = image.ThumbFileName
+            };
+            _db.Entry(newImage).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+            return newImage;
+        }
+
+        /// <summary>
+        /// Add an image to a portfolio with a PortfolioImage join table record.
+        /// </summary>
+        /// <param name="portfolioId"> int portfolio id </param>
+        /// <param name="imageId"> int image id </param>
+        /// <returns></returns>
+        public async Task AddImageToPortfolio(int portfolioId, int imageId)
+        {
+            PortfolioImage portfolioImage = new PortfolioImage()
+            {
+                PortfolioId = portfolioId,
+                ImageId = imageId
+            };
+            _db.Entry(portfolioImage).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+        }
     }
 }
