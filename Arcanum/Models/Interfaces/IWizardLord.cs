@@ -13,5 +13,6 @@ namespace Arcanum.Models.Interfaces
         public Task<IdentityRole> GetRole(string id);
         public Task UpdateUserRoles(string userId, string[] roles);
         public Task<List<ApplicationUserDto>> GetRegisteredUsers();
+        public Task DeleteUser(string userId);
     }
 }

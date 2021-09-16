@@ -34,7 +34,13 @@ namespace Arcanum.Pages.Admin
         public async Task<IActionResult> OnPostUpdateUserRoles(string userId, string[] isChecked)
         {
             await _wizard.UpdateUserRoles(userId, isChecked);
+            return Redirect("/Admin/SecretLair");
+        }
 
+        public async Task<IActionResult> DeleteUser(string userId)
+        {
+            await _wizard.DeleteUser(userId);
+            await _siteAdmin.DeleteArtist(userId);
             return Redirect("/Admin/SecretLair");
         }
     }

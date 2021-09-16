@@ -93,6 +93,19 @@ namespace Arcanum.Models.Interfaces.Services
             _roleManager.Roles;
 
         /// <summary>
+        /// Helper method to get just the role names from the IQuerable Roles object
+        /// </summary>
+        /// <param name="roles"> IQueryable<IdentityRole> roles </param>
+        /// <returns> List<string> roleNames </returns>
+        private List<string> IdentityRoleToString(IQueryable<IdentityRole> roles)
+        {
+            List<string> roleNames = new List<string>();
+            foreach (IdentityRole role in roles)
+                roleNames.Add(role.Name);
+            return roleNames;
+        }
+
+        /// <summary>
         /// Add and remove roles from a user based on check box form input.
         /// </summary>
         /// <param name="userId"> string userId </param>
@@ -104,6 +117,19 @@ namespace Arcanum.Models.Interfaces.Services
 
             await _userManager.RemoveFromRolesAsync(user, currentRoles);
             await _userManager.AddToRolesAsync(user, roles);
+        }
+
+        /// <summary>
+        /// Delete a registered user and remove the respective role join tables.
+        /// </summary>
+        /// <param name="userId"> string userId </param>
+        public async Task DeleteUser(string userId)
+        {
+            var roles = GetRoles();
+            var roleNames = IdentityRoleToString(roles);
+            var user = await _userManager.FindByIdAsync(userId);
+            await _userManager.RemoveFromRolesAsync(user, roleNames);
+            await _userManager.DeleteAsync(user);
         }
     }
 }
