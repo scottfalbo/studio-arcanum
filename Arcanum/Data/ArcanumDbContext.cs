@@ -63,14 +63,48 @@ namespace Arcanum.Data
                     EmailConfirmed = true,
                     PasswordHash = hasher.HashPassword(null, adminPass),
                     SecurityStamp =  string.Empty
-                });
+                },
+                new ApplicationUser
+                {
+                    Id = "artist1",
+                    UserName = "spaceghost",
+                    NormalizedUserName = adminName.ToUpper(),
+                    Email = "scottfalboart@gmail.com",
+                    NormalizedEmail = "scottfalboart@gmail.com",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "Pass!23"),
+                    SecurityStamp = string.Empty
+                },
+                new ApplicationUser
+                {
+                    Id = "artist2",
+                    UserName = "harry",
+                    NormalizedUserName = adminName.ToUpper(),
+                    Email = "scottfalboart@gmail.com",
+                    NormalizedEmail = "scottfalboart@gmail.com",
+                    EmailConfirmed = true,
+                    PasswordHash = hasher.HashPassword(null, "Pass!23"),
+                    SecurityStamp = string.Empty
+                }
+                );
 
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(
                 new IdentityUserRole<string>
                 { 
-                    RoleId = "wizardlord",
+                    RoleId = "WizardLord",
                     UserId = id
-                });
+                },
+                new IdentityUserRole<string>
+                {
+                    RoleId = "Artist",
+                    UserId = "artist1"
+                },
+                new IdentityUserRole<string>
+                {
+                    RoleId = "Artist",
+                    UserId = "artist2"
+                }
+                );
 
             modelBuilder.Entity<ArcanumMain>().HasData(
                 new ArcanumMain
@@ -89,33 +123,52 @@ namespace Arcanum.Data
                 });
 
             modelBuilder.Entity<Artist>().HasData(
-                new Artist 
+                //                Id = id,
+                //UserName = adminName,
+                //NormalizedUserName = adminName.ToUpper(),
+                //Email = "scottfalboart@gmail.com",
+
+                new Artist
                 {
-                    Id = "artist1",
-                    Name = "tatter wizard",
-                    Email = "wizard@wizarding.net",
+                    Id = id,
+                    Name = adminName,
+                    Email = "scottfalboart@gmail.com",
                     Order = 1,
                     Display = true
                 },
                 new Artist 
                 {
-                    Id = "artist2",
-                    Name = "tatter wizard 2",
+                    Id = "artist1",
+                    Name = "spaceghost",
                     Email = "wizard@wizarding.net",
                     Order = 2,
+                    Display = true
+                },
+                new Artist 
+                {
+                    Id = "artist2",
+                    Name = "harry",
+                    Email = "wizard@wizarding.net",
+                    Order = 3,
                     Display = true
                 });
 
             modelBuilder.Entity<Booking>().HasData(
-                new Models.Booking
+                new Booking
                 {
                     Id = -1,
                     BookingInfo = "booking info",
-                    BookingEmail = "booking@booking.net"
+                    BookingEmail = "scottfalboart@gmail.com"
                 },
-                new Models.Booking
+                new Booking
                 {
                     Id = -2,
+                    BookingInfo = "booking info",
+                    BookingEmail = "booking@booking.net"
+                },
+                new Booking
+                {
+                    Id = -3,
                     BookingInfo = "booking info",
                     BookingEmail = "booking@booking.net"
                 }
@@ -124,26 +177,38 @@ namespace Arcanum.Data
             modelBuilder.Entity<ArtistBooking>().HasData(
                 new ArtistBooking
                 {
-                    ArtistId = "artist1",
+                    ArtistId = id,
                     BookingId = -1
                 },
                 new ArtistBooking
                 {
-                    ArtistId = "artist2",
+                    ArtistId = "artist1",
                     BookingId = -2
+                },
+                new ArtistBooking
+                {
+                    ArtistId = "artist2",
+                    BookingId = -3
                 }
                 );
 
             modelBuilder.Entity<Portfolio>().HasData(
-                new Portfolio {
+                new Portfolio
+                {
                     Id = -1,
+                    Title = $"{adminName}'s portoflio",
+                    Intro = "hi, I make tattoos",
+                    Instagram = "@scottfalboart"
+                },
+                new Portfolio {
+                    Id = -2,
                     Title = "artist 1 portoflio",
                     Intro = "hi, I make tattoos",
                     Instagram = "@whatever"
                 },
                 new Portfolio
                 {
-                    Id = -2,
+                    Id = -3,
                     Title = "artist 2 portoflio",
                     Intro = "hi, I make tattoos",
                     Instagram = "@whatever2"
@@ -153,18 +218,23 @@ namespace Arcanum.Data
             modelBuilder.Entity<ArtistPortfolio>().HasData(
                 new ArtistPortfolio
                 {
-                    ArtistId = "artist1",
+                    ArtistId = id,
                     PortfolioId = -1
                 },
                 new ArtistPortfolio
                 {
-                    ArtistId = "artist2",
+                    ArtistId = "artist1",
                     PortfolioId = -2
+                },
+                new ArtistPortfolio
+                {
+                    ArtistId = "artist2",
+                    PortfolioId = -3
                 }
                 );
 
 
-            for (int i = -1; i > -21; i--)
+            for (int i = -1; i > -31; i--)
             {
                 modelBuilder.Entity<Image>().HasData(
                     new Image
@@ -192,6 +262,11 @@ namespace Arcanum.Data
                     {
                         ImageId = i - 10,
                         PortfolioId = -2
+                    },
+                    new PortfolioImage
+                    {
+                        ImageId = i - 20,
+                        PortfolioId = -3
                     }
                     );
             }
