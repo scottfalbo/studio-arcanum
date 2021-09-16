@@ -20,3 +20,8 @@
 }
 
 
+
+@if(User.IsInRole("WizardLord") ||(User.IsInRole("ArtistAdmin") && Model.Artist.Id == Model.UserId))
+{
+    <div>secret admin</div>
+}

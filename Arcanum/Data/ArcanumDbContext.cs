@@ -45,7 +45,6 @@ namespace Arcanum.Data
             SeedRole(modelBuilder, "WizardLord", "read", "create", "update", "delete");
             SeedRole(modelBuilder, "ArtistAdmin", "read", "create", "update", "delete");
             SeedRole(modelBuilder, "Guest", "read");
-            SeedRole(modelBuilder, "GuestAdmin", "read", "create", "update", "delete");
 
             string id = _config["SuperAdmin:UserId"];
             string adminName = _config["SuperAdmin:UserName"];

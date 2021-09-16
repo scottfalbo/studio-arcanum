@@ -20,7 +20,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// Create a new artist record in the database with the user registration data.
         /// </summary>
         /// <param name="artist"> Artist object </param>
-        public async Task CreateArtist(Artist artist)
+        public async Task<Artist> CreateArtist(Artist artist)
         {
             Artist newArtist = new Artist()
             {
@@ -33,6 +33,7 @@ namespace Arcanum.Models.Interfaces.Services
             };
             _db.Entry(newArtist).State = EntityState.Added;
             await _db.SaveChangesAsync();
+            return newArtist;
         }
 
         /// <summary>

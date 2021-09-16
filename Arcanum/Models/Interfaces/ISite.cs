@@ -7,7 +7,7 @@ namespace Arcanum.Models.Interfaces
 {
     public interface ISite
     {
-        public Task CreateArtist(Artist artist);
+        public Task<Artist> CreateArtist(Artist artist);
         public Task<Artist> GetArtist(string id);
         public Task<List<Artist>> GetArtists();
         public Task UpdateArtist(Artist artist);
