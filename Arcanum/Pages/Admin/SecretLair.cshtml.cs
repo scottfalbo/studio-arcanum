@@ -32,5 +32,12 @@ namespace Arcanum.Pages.Admin
             Users = await _wizard.GetRegisteredUsers();
             Roles = _wizard.GetRoles();
         }
+
+        public async Task<IActionResult> OnPostUpdateUserRoles(string userId, string[] isChecked)
+        {
+            await _wizard.UpdateUserRoles(userId, isChecked);
+
+            return Redirect("/Admin/SecretLair");
+        }
     }
 }

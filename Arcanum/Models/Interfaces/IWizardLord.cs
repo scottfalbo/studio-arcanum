@@ -11,6 +11,7 @@ namespace Arcanum.Models.Interfaces
     {
         public IQueryable<IdentityRole> GetRoles();
         public Task<IdentityRole> GetRole(string id);
+        public Task UpdateUserRoles(string userId, string[] roles);
         public Task<List<ApplicationUserDto>> GetRegisteredUsers();
     }
 }

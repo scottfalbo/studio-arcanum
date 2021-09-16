@@ -14,11 +14,13 @@ namespace Arcanum.Models.Interfaces.Services
     {
         private readonly ArcanumDbContext _db;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public WizardLordService(ArcanumDbContext db, RoleManager<IdentityRole> roleManager)
+        public WizardLordService(ArcanumDbContext db, RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             _db = db;
             _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -89,5 +91,19 @@ namespace Arcanum.Models.Interfaces.Services
         /// <returns> IQuerable<IdentityRole> roles </returns>
         public IQueryable<IdentityRole> GetRoles() =>
             _roleManager.Roles;
+
+        /// <summary>
+        /// Add and remove roles from a user based on check box form input.
+        /// </summary>
+        /// <param name="userId"> string userId </param>
+        /// <param name="roles"> string[] selected roles </param>
+        public async Task UpdateUserRoles(string userId, string[] roles)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var currentRoles = GetUserRoles(userId).Result;
+
+            await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            await _userManager.AddToRolesAsync(user, roles);
+        }
     }
 }

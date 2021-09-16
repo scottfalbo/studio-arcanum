@@ -1,0 +1,28 @@
+﻿@model Arcanum.Pages.Admin.SecretLairModel
+
+<section>
+    <h2>User Roles</h2>
+    @foreach (var user in Model.Users)
+    {
+        <div>
+            <h3>@user.UserName</h3>
+            <form asp-page-handler="UpdateUserRoles" method="post">
+                <ul>
+                @{ 
+                    foreach(var role in Model.Roles)
+                    {
+                        <li>
+                            <label>
+                                <span>@role.Name</span>
+                                <input type="hidden" name="userId" value="@user.Id" />
+                                <input type="checkbox" name="isChecked" value="@role.Name" checked="@(user.Roles.Contains(role.Name) ? true : false)" />
+                            </label>
+                        </li>
+                    }   
+                }
+                </ul>
+                <input type="submit" value="update" />
+            </form>
+        </div>
+    }
+</section>
