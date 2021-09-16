@@ -128,6 +128,10 @@ namespace Arcanum.Data
                     Id = id,
                     Name = adminName,
                     Email = "scottfalboart@gmail.com",
+                    Intro = "I do tattoos",
+                    Instagram = "@scottfalboart",
+                    ProfileImageUri = "https://via.placeholder.com/200x300",
+                    
                     Order = 1,
                     Display = true
                 },
@@ -192,21 +196,18 @@ namespace Arcanum.Data
                 {
                     Id = -1,
                     Title = $"{adminName}'s portoflio",
-                    Intro = "hi, I make tattoos",
-                    Instagram = "@scottfalboart"
+                    Intro = "hi, I make tattoos"
                 },
                 new Portfolio {
                     Id = -2,
                     Title = "artist 1 portoflio",
-                    Intro = "hi, I make tattoos",
-                    Instagram = "@whatever"
+                    Intro = "hi, I make tattoos"
                 },
                 new Portfolio
                 {
                     Id = -3,
                     Title = "artist 2 portoflio",
-                    Intro = "hi, I make tattoos",
-                    Instagram = "@whatever2"
+                    Intro = "hi, I make tattoos"
                 }
                 );
 
