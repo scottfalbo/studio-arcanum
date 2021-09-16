@@ -13,13 +13,11 @@ namespace Arcanum.Pages.Admin
 {
     public class SecretLairModel : PageModel
     {
-        private readonly ArcanumDbContext _db;
         public ISite _siteAdmin;
         public IWizardLord _wizard;
 
-        public SecretLairModel(ArcanumDbContext db, ISite siteAdmin, IWizardLord magicPower)
+        public SecretLairModel(ISite siteAdmin, IWizardLord magicPower)
         {
-            _db = db;
             _siteAdmin = siteAdmin;
             _wizard = magicPower;
         }

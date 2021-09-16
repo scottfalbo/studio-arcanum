@@ -27,7 +27,8 @@ namespace Arcanum.Models.Interfaces.Services
                 Id = artist.Id,
                 Name = artist.Name,
                 Email = artist.Email,
-                Display = true,
+                ProfileImageUri = "https://via.placeholder.com/200x300",
+                Display = false,
                 Order = 0
             };
             _db.Entry(newArtist).State = EntityState.Added;
@@ -53,9 +54,11 @@ namespace Arcanum.Models.Interfaces.Services
                 {
                     Id = g.Id,
                     Name = g.Name,
-                    Order = g.Order,
                     Email = g.Email,
+                    ProfileImageUri = g.ProfileImageUri,
+                    ProfileImageFileName = g.ProfileImageFileName,
                     Display = g.Display,
+                    Order = g.Order,
                     ArtistPortfolios = g.ArtistPortfolios,
                     ArtistBooking = g.ArtistBooking
                 }).FirstOrDefaultAsync();
@@ -78,9 +81,11 @@ namespace Arcanum.Models.Interfaces.Services
                 {
                     Id = g.Id,
                     Name = g.Name,
-                    Order = g.Order,
                     Email = g.Email,
                     Display = g.Display,
+                    Order = g.Order,
+                    ProfileImageUri = g.ProfileImageUri,
+                    ProfileImageFileName = g.ProfileImageFileName,
                     ArtistPortfolios = g.ArtistPortfolios,
                     ArtistBooking = g.ArtistBooking
                 }).ToListAsync();

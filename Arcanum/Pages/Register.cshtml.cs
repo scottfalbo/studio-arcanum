@@ -35,7 +35,7 @@ namespace Arcanum.Pages
             };
 
             ApplicationUserDto user = await _userService.Register(newUser, this.ModelState);
-            //await _siteAdmin.CreateArtist(NewArtist(user));
+            await _siteAdmin.CreateArtist(NewArtist(user));
 
             return Redirect("/Login");
         }
