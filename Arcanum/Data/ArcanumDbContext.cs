@@ -67,11 +67,11 @@ namespace Arcanum.Data
                 new ApplicationUser
                 {
                     Id = "artist1",
-                    UserName = "spaceghost",
-                    NormalizedUserName = adminName.ToUpper(),
+                    UserName = "luci",
+                    NormalizedUserName = "LUCI",
                     Email = "scottfalboart@gmail.com",
                     NormalizedEmail = "scottfalboart@gmail.com",
-                    EmailConfirmed = true,
+                    EmailConfirmed = false,
                     PasswordHash = hasher.HashPassword(null, "Pass!23"),
                     SecurityStamp = string.Empty
                 },
@@ -79,10 +79,10 @@ namespace Arcanum.Data
                 {
                     Id = "artist2",
                     UserName = "harry",
-                    NormalizedUserName = adminName.ToUpper(),
+                    NormalizedUserName = "HARRY",
                     Email = "scottfalboart@gmail.com",
                     NormalizedEmail = "scottfalboart@gmail.com",
-                    EmailConfirmed = true,
+                    EmailConfirmed = false,
                     PasswordHash = hasher.HashPassword(null, "Pass!23"),
                     SecurityStamp = string.Empty
                 }
@@ -91,17 +91,17 @@ namespace Arcanum.Data
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(
                 new IdentityUserRole<string>
                 { 
-                    RoleId = "WizardLord",
+                    RoleId = "wizardlord",
                     UserId = id
                 },
                 new IdentityUserRole<string>
                 {
-                    RoleId = "Artist",
+                    RoleId = "artistadmin",
                     UserId = "artist1"
                 },
                 new IdentityUserRole<string>
                 {
-                    RoleId = "Artist",
+                    RoleId = "artistadmin",
                     UserId = "artist2"
                 }
                 );
@@ -123,11 +123,6 @@ namespace Arcanum.Data
                 });
 
             modelBuilder.Entity<Artist>().HasData(
-                //                Id = id,
-                //UserName = adminName,
-                //NormalizedUserName = adminName.ToUpper(),
-                //Email = "scottfalboart@gmail.com",
-
                 new Artist
                 {
                     Id = id,
@@ -139,7 +134,7 @@ namespace Arcanum.Data
                 new Artist 
                 {
                     Id = "artist1",
-                    Name = "spaceghost",
+                    Name = "luci",
                     Email = "wizard@wizarding.net",
                     Order = 2,
                     Display = true

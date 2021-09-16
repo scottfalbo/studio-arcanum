@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Arcanum.Auth.Models;
 using Arcanum.Data;
+using Arcanum.Models;
 using Arcanum.Models.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,11 +25,13 @@ namespace Arcanum.Pages.Admin
 
         public List<ApplicationUserDto> Users { get; set; }
         public IQueryable<IdentityRole> Roles { get; set; }
+        public List<Artist> Artists { get; set; }
 
         public async Task OnGet()
         {
             Users = await _wizard.GetRegisteredUsers();
             Roles = _wizard.GetRoles();
+            Artists = await _siteAdmin.GetArtists();
         }
 
         public async Task<IActionResult> OnPostUpdateUserRoles(string userId, string[] isChecked)
@@ -37,10 +40,18 @@ namespace Arcanum.Pages.Admin
             return Redirect("/Admin/SecretLair");
         }
 
-        public async Task<IActionResult> DeleteUser(string userId)
+        public async Task<IActionResult> OnPostDeleteUser(string userId)
         {
             await _wizard.DeleteUser(userId);
             await _siteAdmin.DeleteArtist(userId);
+            return Redirect("/Admin/SecretLair");
+        }
+
+        public async Task<IActionResult> OnPostToggleArtistDisplay(bool display, string artistId)
+        {
+            Artist artist = await _siteAdmin.GetArtist(artistId);
+            artist.Display = display;
+            await _siteAdmin.UpdateArtist(artist);
             return Redirect("/Admin/SecretLair");
         }
     }
