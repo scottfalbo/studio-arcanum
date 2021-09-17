@@ -4,4 +4,22 @@
     ViewData["Title"] = "Studio Arcanum";
 }
 
-Studio Arcanum
+<h1>Studio Arcanum</h1>
+<div>@Model.MainPage.IntroA</div>
+<div>@Model.MainPage.IntroB</div>
+
+@foreach(var image in Model.MainPage.RecentImage)
+{
+    <img src="@image.Image.ThumbnailUrl." />
+}
+
+
+@if(User.IsInRole("WizardLord"))
+{
+    <div class="fullscreen admin-outer">
+        <div class="admin-inner">
+            <partial name="Admin/_MainPage" />
+        </div>
+    </div>
+}
+

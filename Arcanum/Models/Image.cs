@@ -13,6 +13,7 @@ namespace Arcanum.Models
         public string SourceUrl { get; set; }
         public string ThumbnailUrl { get; set; }
         public string FileName { get; set; }
+        public string ThumbFileName { get; set; }
         public int Order { get; set; }
         public List<RecentImage> RecentImage { get; set; }
         public List<PortfolioImage> PortfolioImage { get; set; }

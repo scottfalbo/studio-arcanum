@@ -20,7 +20,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// Create a new artist record in the database with the user registration data.
         /// </summary>
         /// <param name="artist"> Artist object </param>
-        public async Task CreateArtist(Artist artist)
+        public async Task<Artist> CreateArtist(Artist artist)
         {
             Artist newArtist = new Artist()
             {
@@ -33,6 +33,7 @@ namespace Arcanum.Models.Interfaces.Services
             };
             _db.Entry(newArtist).State = EntityState.Added;
             await _db.SaveChangesAsync();
+            return newArtist;
         }
 
         /// <summary>
@@ -118,5 +119,34 @@ namespace Arcanum.Models.Interfaces.Services
             //TODO: Need to add logic to delete portfoios, images and booking page once they are built.
         }
 
+        /// <summary>
+        /// Query the main page data from the database
+        /// </summary>
+        /// <returns> ArcanumMain object </returns>
+        public async Task<ArcanumMain> GetMainPage()
+        {
+            return await _db.ArcanumMain
+                .Include(a => a.RecentImage)
+                .ThenInclude(b => b.Image)
+                .Where(x => x.Id == -1)
+                .Select(y => new ArcanumMain
+                {
+                    Id = y.Id,
+                    SiteTitle = y.SiteTitle,
+                    IntroA = y.IntroA,
+                    IntroB = y.IntroB,
+                    RecentImage = y.RecentImage
+                }).FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Update main page record in the database.
+        /// </summary>
+        /// <param name="mainPage"> ArcanumMain object </param>
+        public async Task UpdateMainPage(ArcanumMain mainPage)
+        {
+            _db.Entry(mainPage).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
     }
 }

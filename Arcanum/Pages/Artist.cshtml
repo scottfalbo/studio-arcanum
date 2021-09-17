@@ -9,12 +9,23 @@
 <div>@Model.Artist.Intro</div>
 <div>@Model.Artist.Instagram</div>
 
-@foreach(var portfolio in Model.Artist.ArtistPortfolios)
+@foreach (var portfolio in Model.Artist.ArtistPortfolios)
 {
     <h2>@portfolio.Portfolio.Title</h2>
     <p>@portfolio.Portfolio.Intro</p>
-    @foreach(var image in portfolio.Portfolio.PortfolioImage)
+    @foreach (var image in portfolio.Portfolio.PortfolioImage)
     {
-        <img src="@image.Image.SourceUrl" />
+        <img src="@image.Image.ThumbnailUrl" />
     }
+}
+
+
+
+@if (User.IsInRole("WizardLord") || (User.IsInRole("ArtistAdmin") && Model.Artist.Id == Model.UserId))
+{
+    <div class="fullscreen admin-outer">
+        <div class="admin-inner">
+            <partial name="Admin/_ArtistPage" />
+        </div>
+    </div>
 }
