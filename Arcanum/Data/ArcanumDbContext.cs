@@ -13,7 +13,7 @@ namespace Arcanum.Data
 {
     public class ArcanumDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Models.ArcanumMain> ArcanumMain { get; set; }
+        public DbSet<ArcanumMain> ArcanumMain { get; set; }
         public DbSet<Artist> Artist { get; set; }
         public DbSet<RecentImage> RecentImage { get; set; }
         public DbSet<ArtistBooking> ArtistBooking { get; set; }
@@ -117,6 +117,7 @@ namespace Arcanum.Data
                 new StudioInfo
                 {
                     Id = -1,
+                    Instagram = "@studioarcanum",
                     Address = "some where",
                     Policies = "be nice",
                     Aftercare = " be smart"
