@@ -13,6 +13,7 @@ namespace Arcanum.Models.Interfaces
         public Task UpdateArtist(Artist artist);
         public Task DeleteArtist(string id);
 
-
+        public Task<ArcanumMain> GetMainPage();
+        public Task UpdateMainPage(ArcanumMain mainPage);
     }
 }

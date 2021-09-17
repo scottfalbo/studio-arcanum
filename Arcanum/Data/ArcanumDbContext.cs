@@ -84,8 +84,7 @@ namespace Arcanum.Data
                     EmailConfirmed = false,
                     PasswordHash = hasher.HashPassword(null, "Pass!23"),
                     SecurityStamp = string.Empty
-                }
-                );
+                });
 
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(
                 new IdentityUserRole<string>
@@ -102,15 +101,16 @@ namespace Arcanum.Data
                 {
                     RoleId = "artistadmin",
                     UserId = "artist2"
-                }
-                );
+                });
 
             modelBuilder.Entity<ArcanumMain>().HasData(
                 new ArcanumMain
                 {
                     Id = -1,
-                    Intro = "hello world",
+                    IntroA = "hello world",
+                    IntroB = "here is some more info"
                 });
+
 
             modelBuilder.Entity<StudioInfo>().HasData(
                 new StudioInfo
@@ -169,8 +169,7 @@ namespace Arcanum.Data
                     Id = -3,
                     BookingInfo = "booking info",
                     BookingEmail = "booking@booking.net"
-                }
-                );
+                });
 
             modelBuilder.Entity<ArtistBooking>().HasData(
                 new ArtistBooking
@@ -187,8 +186,7 @@ namespace Arcanum.Data
                 {
                     ArtistId = "artist2",
                     BookingId = -3
-                }
-                );
+                });
 
             modelBuilder.Entity<Portfolio>().HasData(
                 new Portfolio
@@ -211,8 +209,7 @@ namespace Arcanum.Data
                     Title = "artist 2 portoflio",
                     Intro = "hi, I make tattoos",
                     Display = true
-                }
-                );
+                });
 
             modelBuilder.Entity<ArtistPortfolio>().HasData(
                 new ArtistPortfolio
@@ -229,9 +226,7 @@ namespace Arcanum.Data
                 {
                     ArtistId = "artist2",
                     PortfolioId = -3
-                }
-                );
-
+                });
 
             for (int i = -1; i > -31; i--)
             {
@@ -241,13 +236,12 @@ namespace Arcanum.Data
                         Id = i,
                         Title = $"untitled-{i}",
                         Artist = "some one",
-                        SourceUrl = "https://via.placeholder.com/60",
+                        SourceUrl = "https://via.placeholder.com/800x1200",
                         ThumbnailUrl = "https://via.placeholder.com/60",
                         FileName = "placeholder.png",
                         Order = Math.Abs(i)
                     });
             }
-
 
             for (int i = -1; i > -11; i--)
             {
@@ -266,8 +260,14 @@ namespace Arcanum.Data
                     {
                         ImageId = i - 20,
                         PortfolioId = -3
-                    }
-                    );
+                    });
+
+                modelBuilder.Entity<RecentImage>().HasData(
+                    new RecentImage
+                    {
+                        ArcanumId = -1,
+                        ImageId = i
+                    });
             }
         }
 

@@ -8,8 +8,8 @@ namespace Arcanum.Models
     public class ArcanumMain
     {
         public int Id { get; set; }
-        public string Intro { get; set; }
-        public string HomePageIntro { get; set; }
+        public string IntroA { get; set; }
+        public string IntroB { get; set; }
         public List<RecentImage> RecentImage { get; set; }
     }
 }

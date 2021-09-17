@@ -15,7 +15,7 @@
     <p>@portfolio.Portfolio.Intro</p>
     @foreach(var image in portfolio.Portfolio.PortfolioImage)
     {
-        <img src="@image.Image.SourceUrl" />
+        <img src="@image.Image.ThumbnailUrl" />
     }
 }
 

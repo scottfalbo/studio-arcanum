@@ -119,5 +119,33 @@ namespace Arcanum.Models.Interfaces.Services
             //TODO: Need to add logic to delete portfoios, images and booking page once they are built.
         }
 
+        /// <summary>
+        /// Query the main page data from the database
+        /// </summary>
+        /// <returns> ArcanumMain object </returns>
+        public async Task<ArcanumMain> GetMainPage()
+        {
+            return await _db.Arcanum
+                .Include(a => a.RecentImage)
+                .ThenInclude(b => b.Image)
+                .Where(x => x.Id == -1)
+                .Select(y => new ArcanumMain
+                {
+                    Id = y.Id,
+                    IntroA = y.IntroA,
+                    IntroB = y.IntroB,
+                    RecentImage = y.RecentImage
+                }).FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Update main page record in the database.
+        /// </summary>
+        /// <param name="mainPage"> ArcanumMain object </param>
+        public async Task UpdateMainPage(ArcanumMain mainPage)
+        {
+            _db.Entry(mainPage).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
     }
 }
