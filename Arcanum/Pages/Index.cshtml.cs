@@ -22,7 +22,7 @@ namespace Arcanum.Pages
         }
 
         [BindProperty]
-        public ArcanumMain MainPage { get; set; }
+        public Models.ArcanumMain MainPage { get; set; }
 
         public async Task OnGet()
         {

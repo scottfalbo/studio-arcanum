@@ -19,7 +19,7 @@ namespace Arcanum.Components
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            ArcanumMain site = await _siteAdmin.GetMainPage();
+            Models.ArcanumMain site = await _siteAdmin.GetMainPage();
 
             ViewModel viewModel = new ViewModel()
             {

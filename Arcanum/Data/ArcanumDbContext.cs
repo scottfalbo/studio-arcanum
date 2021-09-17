@@ -13,7 +13,7 @@ namespace Arcanum.Data
 {
     public class ArcanumDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<ArcanumMain> Arcanum { get; set; }
+        public DbSet<Models.ArcanumMain> ArcanumMain { get; set; }
         public DbSet<Artist> Artist { get; set; }
         public DbSet<RecentImage> RecentImage { get; set; }
         public DbSet<ArtistBooking> ArtistBooking { get; set; }
@@ -37,7 +37,7 @@ namespace Arcanum.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<RecentImage>().HasKey(x => new { x.ArcanumId, x.ImageId });
+            modelBuilder.Entity<RecentImage>().HasKey(x => new { x.ArcanumMainId, x.ImageId });
             modelBuilder.Entity<ArtistBooking>().HasKey(x => new { x.ArtistId, x.BookingId });
             modelBuilder.Entity<ArtistPortfolio>().HasKey(x => new { x.ArtistId, x.PortfolioId });
             modelBuilder.Entity<PortfolioImage>().HasKey(x => new { x.PortfolioId, x.ImageId });
@@ -266,7 +266,7 @@ namespace Arcanum.Data
                 modelBuilder.Entity<RecentImage>().HasData(
                     new RecentImage
                     {
-                        ArcanumId = -1,
+                        ArcanumMainId = -1,
                         ImageId = i
                     });
             }

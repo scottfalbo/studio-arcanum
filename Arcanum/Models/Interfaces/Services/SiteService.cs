@@ -125,7 +125,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// <returns> ArcanumMain object </returns>
         public async Task<ArcanumMain> GetMainPage()
         {
-            return await _db.Arcanum
+            return await _db.ArcanumMain
                 .Include(a => a.RecentImage)
                 .ThenInclude(b => b.Image)
                 .Where(x => x.Id == -1)
