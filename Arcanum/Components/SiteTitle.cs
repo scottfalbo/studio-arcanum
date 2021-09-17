@@ -9,21 +9,21 @@ using System.Threading.Tasks;
 namespace Arcanum.Components
 {
     [ViewComponent]
-    public class ArtistNavViewComponent : ViewComponent
+    public class SiteTitleViewComponent : ViewComponent
     {
         public ISite _siteAdmin;
-        public ArtistNavViewComponent(ISite site)
+        public SiteTitleViewComponent(ISite site)
         {
             _siteAdmin = site;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            List<Artist> artists = await _siteAdmin.GetArtists();
+            ArcanumMain site = await _siteAdmin.GetMainPage();
 
             ViewModel viewModel = new ViewModel()
             {
-                Artists = artists,
+                SiteTitle = site.SiteTitle
             };
 
             return View(viewModel);
@@ -31,10 +31,7 @@ namespace Arcanum.Components
 
         public class ViewModel
         {
-            public List<Artist> Artists { get; set; }
+            public string SiteTitle { get; set; }
         }
     }
-
-
-
 }

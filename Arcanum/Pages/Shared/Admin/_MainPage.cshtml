@@ -3,10 +3,13 @@
 <div id="mainpage-admin" class="page-admin">
     <section>
         <form asp-page-handler="Update" method="post">
-            <label> Intro A
+            <label>Site Title
+                <input type="text" asp-for="@Model.MainPage.SiteTitle" value="@Model.MainPage.SiteTitle" placeholder="@Model.MainPage.SiteTitle"/>
+            </label>
+            <label>Intro A
                 <textarea type="text" cols="45" rows="5" asp-for="@Model.MainPage.IntroA" class="form-control" placeholder="@Model.MainPage.IntroA"></textarea>
             </label>
-            <label> Intro B
+            <label>Intro B
                 <textarea type="text" cols="45" rows="5" asp-for="@Model.MainPage.IntroB" class="form-control" placeholder="@Model.MainPage.IntroB"></textarea>
             </label>
             <input type="hidden" asp-for="@Model.MainPage.Id" value="@Model.MainPage.Id"/>

@@ -132,6 +132,7 @@ namespace Arcanum.Models.Interfaces.Services
                 .Select(y => new ArcanumMain
                 {
                     Id = y.Id,
+                    SiteTitle = y.SiteTitle,
                     IntroA = y.IntroA,
                     IntroB = y.IntroB,
                     RecentImage = y.RecentImage

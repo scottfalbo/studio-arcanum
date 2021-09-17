@@ -29,6 +29,9 @@ namespace Arcanum.Pages
             MainPage = await _siteAdmin.GetMainPage();
         }
 
+        /// <summary>
+        /// Update the main page text area
+        /// </summary>
         public async Task OnPostUpdate()
         {
             if (MainPage.IntroA == null) MainPage.IntroA = " ";

@@ -107,6 +107,7 @@ namespace Arcanum.Data
                 new ArcanumMain
                 {
                     Id = -1,
+                    SiteTitle = "Arcanum",
                     IntroA = "hello world",
                     IntroB = "here is some more info"
                 });
