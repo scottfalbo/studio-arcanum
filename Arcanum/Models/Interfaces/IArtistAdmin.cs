@@ -14,5 +14,8 @@ namespace Arcanum.Models.Interfaces
         public Task<Image> CreateImage(Image image);
         public Task AddImageToPortfolio(int portfolioId, int imageId);
 
+        public Task<Booking> GetArtistBooking(string artistId);
+        public Task UpdateArtistBooking(Booking booking);
+
     }
 }

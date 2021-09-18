@@ -87,5 +87,33 @@ namespace Arcanum.Models.Interfaces.Services
             _db.Entry(portfolioImage).State = EntityState.Added;
             await _db.SaveChangesAsync();
         }
+
+        /// <summary>
+        /// Query the database for an artists associated booking record.
+        /// </summary>
+        /// <param name="artistId"> string artistId </param>
+        /// <returns> Booking object </returns>
+        public async Task<Booking> GetArtistBooking(string artistId)
+        {
+            return await _db.ArtistBooking
+                .Where(x => x.ArtistId == artistId)
+                .Include(y => y.Booking)
+                .Select(z => new Booking
+                {
+                    Id = z.Booking.Id,
+                    BookingEmail = z.Booking.BookingEmail,
+                    BookingInfo = z.Booking.BookingInfo
+                }).FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Update the booking record in the database.
+        /// </summary>
+        /// <param name="booking"> Booking object </param>
+        public async Task UpdateArtistBooking(Booking booking)
+        {
+            _db.Entry(booking).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
     }
 }

@@ -132,7 +132,6 @@ namespace Arcanum.Data
                     Intro = "I do tattoos",
                     Instagram = "@scottfalboart",
                     ProfileImageUri = "https://via.placeholder.com/200x300",
-                    
                     Order = 1,
                     Display = true
                 },

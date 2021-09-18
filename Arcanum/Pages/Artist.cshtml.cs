@@ -27,7 +27,8 @@ namespace Arcanum.Pages
 
         public async Task OnGet(string artistId)
         {
-            Artist = await _siteAdmin.GetArtist(artistId);
+            if (artistId != null)
+                Artist = await _siteAdmin.GetArtist(artistId);
 
             if (User.IsInRole("ArtistAdmin"))
             {

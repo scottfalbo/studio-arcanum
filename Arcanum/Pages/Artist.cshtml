@@ -3,29 +3,41 @@
 @{
 }
 
-<div><img src="@Model.Artist.ProfileImageUri" /></div>
-
-<div>@Model.Artist.Name</div>
-<div>@Model.Artist.Intro</div>
-<div>@Model.Artist.Instagram</div>
-
-@foreach (var portfolio in Model.Artist.ArtistPortfolios)
+@if (Model.Artist != null)
 {
-    <h2>@portfolio.Portfolio.Title</h2>
-    <p>@portfolio.Portfolio.Intro</p>
-    @foreach (var image in portfolio.Portfolio.PortfolioImage)
+    <div><img src="@Model.Artist.ProfileImageUri" /></div>
+
+    <div>@Model.Artist.Name</div>
+    <div>@Model.Artist.Intro</div>
+    <div>@Model.Artist.Instagram</div>
+
+    @foreach (var portfolio in Model.Artist.ArtistPortfolios)
     {
-        <img src="@image.Image.ThumbnailUrl" />
+        <h2>@portfolio.Portfolio.Title</h2>
+        <p>@portfolio.Portfolio.Intro</p>
+        @foreach (var image in portfolio.Portfolio.PortfolioImage)
+        {
+            <img src="@image.Image.ThumbnailUrl" />
+        }
+    }
+
+    <div>
+        <a asp-area="" asp-page="Booking" asp-route-artistId="@Model.Artist.Id">Booking</a>
+    </div>
+
+
+
+    @if (User.IsInRole("WizardLord") || (User.IsInRole("ArtistAdmin") && Model.Artist.Id == Model.UserId))
+    {
+        <div class="fullscreen admin-outer">
+            <div class="admin-inner">
+                <partial name="Admin/_ArtistPage" />
+            </div>
+        </div>
     }
 }
-
-
-
-@if (User.IsInRole("WizardLord") || (User.IsInRole("ArtistAdmin") && Model.Artist.Id == Model.UserId))
+else
 {
-    <div class="fullscreen admin-outer">
-        <div class="admin-inner">
-            <partial name="Admin/_ArtistPage" />
-        </div>
-    </div>
+    <div>select an artist</div>
 }
+
