@@ -2,3 +2,19 @@
 @model Arcanum.Pages.TheStudioModel
 @{
 }
+
+<div>@Model.StudioInfo.Instagram</div>
+<div>@Model.StudioInfo.Address</div>
+<div>@Model.StudioInfo.Policies</div>
+<div>@Model.StudioInfo.Aftercare</div>
+
+
+
+@if (User.IsInRole("WizardLord"))
+{
+    <div class="fullscreen admin-outer">
+        <div class="admin-inner">
+            <partial name="Admin/_StudioPage" />
+        </div>
+    </div>
+}
