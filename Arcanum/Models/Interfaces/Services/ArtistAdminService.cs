@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Arcanum.Models.Interfaces.Services
@@ -27,11 +28,30 @@ namespace Arcanum.Models.Interfaces.Services
             {
                 Title = title,
                 Intro = "new portfolio",
+                Order = 0,
                 Display = false
             };
+            newPortfolio = AssignAccordianIds(newPortfolio);
             _db.Entry(newPortfolio).State = EntityState.Added;
             await _db.SaveChangesAsync();
             return newPortfolio;
+        }
+
+        /// <summary>
+        /// Helper method to assign some unique names for use with Bootstrap accordion menues.
+        /// </summary>
+        /// <param name="portfolio"> Portfolio object </param>
+        /// <returns> Portfolio object w/accordion ids </returns>
+        private Portfolio AssignAccordianIds(Portfolio portfolio)
+        {
+            string str = Regex.Replace(portfolio.Title, @"\s+", String.Empty).ToLower();
+
+            portfolio.AccordionId = str;
+            portfolio.CollapseId = $"{str}{portfolio.Id}";
+            portfolio.AdminAccordionId = $"{str}admin";
+            portfolio.AdminCollapseId = $"{str}{portfolio.Id}admin";
+
+            return portfolio;
         }
 
         /// <summary>
