@@ -12,5 +12,6 @@ namespace Arcanum.Models
         public string Address { get; set; }
         public string Policies { get; set; }
         public string Aftercare { get; set; }
+        public List<StudioImage> StudioImages { get; set; }
     }
 }

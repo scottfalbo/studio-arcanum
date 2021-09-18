@@ -102,7 +102,8 @@ namespace Arcanum.Models.Interfaces.Services
                 {
                     Id = z.Booking.Id,
                     BookingEmail = z.Booking.BookingEmail,
-                    BookingInfo = z.Booking.BookingInfo
+                    BookingInfo = z.Booking.BookingInfo,
+                    FormPlaceHolder = z.Booking.FormPlaceHolder
                 }).FirstOrDefaultAsync();
         }
 

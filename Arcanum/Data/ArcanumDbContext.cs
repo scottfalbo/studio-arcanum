@@ -41,6 +41,7 @@ namespace Arcanum.Data
             modelBuilder.Entity<ArtistBooking>().HasKey(x => new { x.ArtistId, x.BookingId });
             modelBuilder.Entity<ArtistPortfolio>().HasKey(x => new { x.ArtistId, x.PortfolioId });
             modelBuilder.Entity<PortfolioImage>().HasKey(x => new { x.PortfolioId, x.ImageId });
+            modelBuilder.Entity<StudioImage>().HasKey(x => new { x.StudioInfoId, x.ImageId });
 
             SeedRole(modelBuilder, "WizardLord", "read", "create", "update", "delete");
             SeedRole(modelBuilder, "ArtistAdmin", "read", "create", "update", "delete");
@@ -229,7 +230,7 @@ namespace Arcanum.Data
                     PortfolioId = -3
                 });
 
-            for (int i = -1; i > -31; i--)
+            for (int i = -1; i > -41; i--)
             {
                 modelBuilder.Entity<Image>().HasData(
                     new Image
@@ -268,6 +269,13 @@ namespace Arcanum.Data
                     {
                         ArcanumMainId = -1,
                         ImageId = i
+                    });
+
+                modelBuilder.Entity<StudioImage>().HasData(
+                    new StudioImage
+                    {
+                        StudioInfoId = -1,
+                        ImageId = i - 30
                     });
             }
         }

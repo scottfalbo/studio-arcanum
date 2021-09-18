@@ -10,6 +10,7 @@ namespace Arcanum.Models
         public int Id { get; set; }
         public string BookingInfo { get; set; }
         public string BookingEmail { get; set; }
+        public string FormPlaceHolder { get; set; }
         public Artist Artist { get; set; }
     }
 }

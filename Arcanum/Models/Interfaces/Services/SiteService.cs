@@ -157,13 +157,16 @@ namespace Arcanum.Models.Interfaces.Services
         {
             return await _db.StudioInfo
                 .Where(x => x.Id == -1)
+                .Include(a => a.StudioImages)
+                .ThenInclude(b => b.Image)
                 .Select(y => new StudioInfo
                 {
                     Id = y.Id,
                     Instagram = y.Instagram,
                     Address = y.Address,
                     Policies = y.Policies,
-                    Aftercare = y.Aftercare
+                    Aftercare = y.Aftercare,
+                    StudioImages = y.StudioImages
                 }).FirstOrDefaultAsync();
         }
 

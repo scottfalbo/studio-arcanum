@@ -8,6 +8,10 @@
 <div>@Model.StudioInfo.Policies</div>
 <div>@Model.StudioInfo.Aftercare</div>
 
+@foreach(var image in Model.StudioInfo.StudioImages)
+{
+    <img src="@image.Image.ThumbnailUrl" />
+}
 
 
 @if (User.IsInRole("WizardLord"))
