@@ -18,11 +18,22 @@ namespace Arcanum.Pages
             _siteAdmin = siteAdmin;
         }
 
+        [BindProperty]
         public StudioInfo StudioInfo { get; set; }
 
         public async Task OnGet()
         {
             StudioInfo = await _siteAdmin.GetStudio();
+        }
+
+        public async Task OnPostUpdate()
+        {
+            //if (StudioInfo.Intro == null) StudioInfo.Intro = " ";
+
+            await _siteAdmin.UpdateStudioInfo(StudioInfo);
+            StudioInfo = await _siteAdmin.GetStudio();
+
+            Redirect("/StudioInfo");
         }
     }
 }

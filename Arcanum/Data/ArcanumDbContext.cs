@@ -119,6 +119,7 @@ namespace Arcanum.Data
                 {
                     Id = -1,
                     Instagram = "@studioarcanum",
+                    Intro = "here are some words",
                     Address = "some where",
                     Policies = "be nice",
                     Aftercare = " be smart"

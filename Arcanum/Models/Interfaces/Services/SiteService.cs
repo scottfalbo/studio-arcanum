@@ -164,6 +164,7 @@ namespace Arcanum.Models.Interfaces.Services
                     Id = y.Id,
                     Instagram = y.Instagram,
                     Address = y.Address,
+                    Intro = y.Intro,
                     Policies = y.Policies,
                     Aftercare = y.Aftercare,
                     StudioImages = y.StudioImages
