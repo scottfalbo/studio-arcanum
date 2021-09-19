@@ -3,6 +3,7 @@
 @{
 }
 
+
 @if (Model.Artist != null)
 {
     <div><img src="@Model.Artist.ProfileImageUri" /></div>
@@ -39,5 +40,8 @@
 else
 {
     <div>select an artist</div>
+    <ul>
+        @await Component.InvokeAsync("ArtistNav")
+    </ul>
 }
 

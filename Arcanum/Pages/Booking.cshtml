@@ -24,6 +24,8 @@
     }
 }
 else
-{
-    <div>select an artist</div>
+{ 
+    <ul>
+        @await Component.InvokeAsync("ArtistNav")
+    </ul>
 }
