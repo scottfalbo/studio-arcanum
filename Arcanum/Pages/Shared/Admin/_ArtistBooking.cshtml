@@ -1,7 +1,24 @@
 ﻿@model Arcanum.Pages.BookingModel
 
-    <div id="artistBooking-admin" class="page-admin">
-        <section>
-            admin stuff
-        </section>
-    </div>
+<div id="artistBooking-admin" class="page-admin">
+    <section>
+        <form asp-page-handler="Update" method="post">
+            <label>
+                Booking Email
+                <input type="text" asp-for="@Model.Booking.BookingEmail" value="@Model.Booking.BookingEmail" placeholder="@Model.Booking.BookingEmail" />
+            </label>
+            <label>
+                Booking Info
+                <textarea type="text" cols="45" rows="3" asp-for="@Model.Booking.BookingInfo" class="form-control" placeholder="@Model.Booking.BookingInfo"></textarea>
+            </label>
+            <label>
+                Form Placeholder Text
+                <textarea type="text" cols="45" rows="3" asp-for="@Model.Booking.FormPlaceHolder" class="form-control" placeholder="@Model.Booking.FormPlaceHolder"></textarea>
+            </label>
+            <input type="hidden" asp-for="@Model.Booking.Id" value="@Model.Booking.Id" />
+            <input type="hidden" asp-for="@Model.Artist.Id" value="@Model.Artist.Id" />
+            <input type="hidden" asp-for="@Model.UserId" value="@Model.UserId" />
+            <input type="submit" value="update" />
+        </form>
+    </section>
+</div>

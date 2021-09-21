@@ -17,17 +17,34 @@ namespace Arcanum.Pages
         private readonly ISite _siteAdmin;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public BookingModel(IArtistAdmin artistAdmin, ISite siteAdmin)
+        public BookingModel(IArtistAdmin artistAdmin, ISite siteAdmin, UserManager<ApplicationUser> userManager)
         {
             _artistAdmin = artistAdmin;
             _siteAdmin = siteAdmin;
+            _userManager = userManager;
         }
         
+        [BindProperty]
         public Booking Booking { get; set; }
+        [BindProperty]
         public Artist Artist { get; set; }
+        [BindProperty]
         public string UserId { get; set; }
 
         public async Task OnGet(string artistId)
+        {
+            await RefreshPage(artistId);
+        }
+
+        public async Task OnPostUpdate()
+        {
+            await _artistAdmin.UpdateArtistBooking(Booking);
+
+            await RefreshPage(Artist.Id);
+            Redirect($"/Booking?artistId={UserId}");
+        }
+
+        private async Task RefreshPage(string artistId)
         {
             if (artistId != null)
             {

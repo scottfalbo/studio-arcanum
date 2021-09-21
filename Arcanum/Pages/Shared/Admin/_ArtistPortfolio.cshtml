@@ -1,0 +1,32 @@
+﻿@model Arcanum.Pages.ArtistModel
+
+
+<div id="artistPortfolio-admin" class="page-admin">
+    <section>
+        @foreach (var portfolio in Model.Artist.ArtistPortfolios)
+        {
+            <div>
+                <form asp-page-handler="UpdatePortfolio" method="post">
+                    <label>
+                        Title
+                        <input type="text" asp-for="@portfolio.Portfolio.Title" value="@portfolio.Portfolio.Title" placeholder="@portfolio.Portfolio.Title" />
+                    </label>
+                    <label>
+                        Intro
+                        <textarea type="text" cols="45" rows="3" asp-for="@portfolio.Portfolio.Intro" class="form-control" placeholder="@portfolio.Portfolio.Intro"></textarea>
+                    </label>
+                    <label>
+                        Display
+                        <input type="checkbox" asp-for="@portfolio.Portfolio.Display" checked="@(portfolio.Portfolio.Display)">
+                    </label>
+                    <input type="hidden" asp-for="@portfolio.Portfolio.Id" value="@portfolio.Portfolio.Id" />
+                    <input type="hidden" asp-for="@portfolio.Portfolio.AccordionId" value="@portfolio.Portfolio.AccordionId" />
+                    <input type="hidden" asp-for="@portfolio.Portfolio.CollapseId" value="@portfolio.Portfolio.CollapseId" />
+                    <input type="hidden" asp-for="@portfolio.Portfolio.AdminAccordionId" value="@portfolio.Portfolio.AdminAccordionId" />
+                    <input type="hidden" asp-for="@portfolio.Portfolio.AdminCollapseId" value="@portfolio.Portfolio.AdminCollapseId" />
+                    <input type="submit" value="update" />
+                </form>
+            </div>
+        }
+    </section>
+</div>

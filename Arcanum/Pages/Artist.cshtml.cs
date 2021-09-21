@@ -13,7 +13,7 @@ namespace Arcanum.Pages
 {
     public class ArtistModel : PageModel
     {
-        public ISite _siteAdmin { get; set; }
+        private readonly ISite _siteAdmin;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public ArtistModel(ISite siteAdmin, UserManager<ApplicationUser> userManager)
