@@ -28,8 +28,6 @@ namespace Arcanum.Pages
 
         public async Task OnPostUpdate()
         {
-            //if (StudioInfo.Intro == null) StudioInfo.Intro = " ";
-
             await _siteAdmin.UpdateStudioInfo(StudioInfo);
             StudioInfo = await _siteAdmin.GetStudio();
 

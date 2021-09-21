@@ -2,6 +2,28 @@
 
 <div id="artistPage-admin" class="page-admin">
     <section>
-        admin stuff
+        profile image admin
+    </section>
+    <section>
+        <form asp-page-handler="Update" method="post">
+            <label>Name
+                <input type="text" asp-for="@Model.Artist.Name" value="@Model.Artist.Name" placeholder="@Model.Artist.Name" />
+            </label>
+            <label>Intro
+                Intro
+                <textarea type="text" cols="45" rows="3" asp-for="@Model.Artist.Intro" class="form-control" placeholder="@Model.Artist.Intro"></textarea>
+            </label>
+            <label>Instagram
+                <input type="text" asp-for="@Model.Artist.Instagram" value="@Model.Artist.Instagram" placeholder="@Model.Artist.Instagram" />
+            </label>
+            <input type="hidden" asp-for="@Model.Artist.Id" value="@Model.Artist.Id" />
+            <input type="hidden" asp-for="@Model.Artist.Order" value="@Model.Artist.Order" />
+            <input type="hidden" asp-for="@Model.Artist.Display" value="@Model.Artist.Display" />
+            <input type="hidden" asp-for="@Model.Artist.Email" value="@Model.Artist.Email" />
+            <input type="hidden" asp-for="@Model.Artist.ProfileImageUri" value="@Model.Artist.ProfileImageUri" />
+            <input type="hidden" asp-for="@Model.Artist.ProfileImageFileName" value="@Model.Artist.ProfileImageFileName" />
+            <input type="hidden" asp-for="@Model.UserId" value="@Model.UserId"/>
+            <input type="submit" value="update" />
+        </form>
     </section>
 </div>

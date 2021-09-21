@@ -35,8 +35,6 @@ namespace Arcanum.Pages
         /// </summary>
         public async Task OnPostUpdate()
         {
-            if (MainPage.IntroA == null) MainPage.IntroA = " ";
-            if (MainPage.IntroB == null) MainPage.IntroB = " ";
             await _siteAdmin.UpdateMainPage(MainPage);
 
             await RefreshPage();

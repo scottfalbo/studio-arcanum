@@ -22,10 +22,25 @@ namespace Arcanum.Pages
             _userManager = userManager;
         }
 
+        [BindProperty]
         public Artist Artist { get; set; }
+        [BindProperty]
         public string UserId { get; set; }
 
         public async Task OnGet(string artistId)
+        {
+            await RefreshPage(artistId);
+        }
+
+        public async Task OnPostUpdate()
+        {
+            await _siteAdmin.UpdateArtist(Artist);
+
+            await RefreshPage(Artist.Id);
+            Redirect($"Artist?artistId={UserId}");
+        }
+
+        private async Task RefreshPage(string artistId)
         {
             if (artistId != null)
                 Artist = await _siteAdmin.GetArtist(artistId);
