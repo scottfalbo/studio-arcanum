@@ -38,6 +38,18 @@ namespace Arcanum.Models.Interfaces.Services
         }
 
         /// <summary>
+        /// Update the portfolio record in the database.
+        /// Reassigns accordion class names incase the portfolio title changed.
+        /// </summary>
+        /// <param name="portfolio"> Portfolio object </param>
+        public async Task UpdatePortfolio(Portfolio portfolio)
+        {
+            portfolio = AssignAccordianIds(portfolio);
+            _db.Entry(portfolio).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
         /// Helper method to assign some unique names for use with Bootstrap accordion menues.
         /// </summary>
         /// <param name="portfolio"> Portfolio object </param>

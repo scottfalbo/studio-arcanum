@@ -8,6 +8,7 @@ namespace Arcanum.Models.Interfaces
     public interface IArtistAdmin
     {
         public Task<Portfolio> CreatePortfolio(string title);
+        public Task UpdatePortfolio(Portfolio portfolio);
         public Task AddPortfolioToArtist(string artistId, int portfolioId);
 
 

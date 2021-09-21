@@ -14,11 +14,14 @@
 
     @foreach (var portfolio in Model.Artist.ArtistPortfolios)
     {
-        <h2>@portfolio.Portfolio.Title</h2>
-        <p>@portfolio.Portfolio.Intro</p>
-        @foreach (var image in portfolio.Portfolio.PortfolioImage)
+        if (portfolio.Portfolio.Display)
         {
-            <img src="@image.Image.ThumbnailUrl" />
+            <h2>@portfolio.Portfolio.Title</h2>
+            <p>@portfolio.Portfolio.Intro</p>
+            @foreach (var image in portfolio.Portfolio.PortfolioImage)
+            {
+                <img src="@image.Image.ThumbnailUrl" />
+            }
         }
     }
 
