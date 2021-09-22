@@ -44,20 +44,30 @@ namespace Arcanum.Pages
             await _siteAdmin.UpdateArtist(Artist);
 
             await RefreshPage(Artist.Id);
-            Redirect($"Artist?artistId={UserId}");
+            Redirect($"Artist?artistId={Artist.Id}");
         }
 
         /// <summary>
         /// Update the general portfolio fields.
         /// </summary>
         /// <param name="index"> index for ArtistPortfolio List </param>
-        public async Task OnPostUpdatePortfolio(int index)
+        public async Task OnPostUpdatePortfolio(string intro)
         {
-            Portfolio.Intro = Artist.ArtistPortfolios[index].Portfolio.Intro;
+
+            Portfolio.Intro = intro;
             await _artistAdmin.UpdatePortfolio(Portfolio);
 
             await RefreshPage(Artist.Id);
-            Redirect($"Artist?artistId={UserId}");
+            Redirect($"Artist?artistId={Artist.Id}");
+        }
+
+        public async Task OnPostAddPortfolio(string title)
+        {
+            Portfolio newPortfolio = await _artistAdmin.CreatePortfolio(title);
+            await _artistAdmin.AddPortfolioToArtist(Artist.Id, newPortfolio.Id);
+
+            await RefreshPage(Artist.Id);
+            Redirect($"Artist?artistId={Artist.Id}");
         }
 
         /// <summary>

@@ -16,7 +16,7 @@
                     }
                     <label>
                         Intro
-                        <textarea type="text" cols="45" rows="3" asp-for="@Model.Artist.ArtistPortfolios[@index].Portfolio.Intro" class="form-control" placeholder="@portfolio.Portfolio.Intro"></textarea>
+                        <textarea type="text" cols="45" rows="3" asp-for="@Model.Artist.ArtistPortfolios[@index].Portfolio.Intro" class="form-control" placeholder="@portfolio.Portfolio.Intro" name="intro"></textarea>
                     </label>
                     <label>
                         Display
@@ -29,7 +29,6 @@
                     <input type="hidden" asp-for="@Model.Portfolio.AdminCollapseId" value="@portfolio.Portfolio.AdminCollapseId" />
                     <input type="hidden" asp-for="@Model.Artist.Id" value="@Model.Artist.Id" />
                     <input type="hidden" asp-for="@Model.UserId" value="@Model.UserId" />
-                    <input type="hidden" name="index" value="@index" />
                     <input type="submit" value="update" />
                 </form>
             </div>
@@ -40,7 +39,8 @@
             <label>
                 New Portfolio
                 <input type="text" name="title" placeholder="new portfolio" required/>
-                <input type="hidden" name="artistId" value="@Model.Artist.Id" />
+                <input type="hidden" asp-for="@Model.Artist.Id" value="@Model.Artist.Id" />
+                <input type="hidden" asp-for="@Model.UserId" value="@Model.UserId" />
                 <input type="submit" value="+" />
             </label>
         </form>
