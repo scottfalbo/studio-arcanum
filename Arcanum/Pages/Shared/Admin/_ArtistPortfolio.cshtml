@@ -35,4 +35,14 @@
             </div>
         }
     </section>
+    <section>
+        <form asp-page-handler="AddPortfolio" method="post">
+            <label>
+                New Portfolio
+                <input type="text" name="title" placeholder="new portfolio" required/>
+                <input type="hidden" name="artistId" value="@Model.Artist.Id" />
+                <input type="submit" value="+" />
+            </label>
+        </form>
+    </section>
 </div>

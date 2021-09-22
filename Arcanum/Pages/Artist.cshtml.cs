@@ -47,6 +47,10 @@ namespace Arcanum.Pages
             Redirect($"Artist?artistId={UserId}");
         }
 
+        /// <summary>
+        /// Update the general portfolio fields.
+        /// </summary>
+        /// <param name="index"> index for ArtistPortfolio List </param>
         public async Task OnPostUpdatePortfolio(int index)
         {
             Portfolio.Intro = Artist.ArtistPortfolios[index].Portfolio.Intro;
