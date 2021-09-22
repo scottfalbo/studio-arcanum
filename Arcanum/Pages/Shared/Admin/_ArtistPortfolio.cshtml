@@ -1,0 +1,48 @@
+﻿@model Arcanum.Pages.ArtistModel
+@using System.Linq
+
+<div id="artistPortfolio-admin" class="page-admin">
+    <section>
+        @foreach (var portfolio in Model.Artist.ArtistPortfolios)
+        {
+            <div>
+                <form asp-page-handler="UpdatePortfolio" method="post">
+                    <label>
+                        Title
+                        <input type="text" asp-for="@Model.Portfolio.Title" value="@portfolio.Portfolio.Title" placeholder="@portfolio.Portfolio.Title" />
+                    </label>
+                    @{ 
+                        int index = Model.Artist.ArtistPortfolios.IndexOf(@portfolio);
+                    }
+                    <label>
+                        Intro
+                        <textarea type="text" cols="45" rows="3" asp-for="@Model.Artist.ArtistPortfolios[@index].Portfolio.Intro" class="form-control" placeholder="@portfolio.Portfolio.Intro" name="intro"></textarea>
+                    </label>
+                    <label>
+                        Display
+                        <input type="checkbox" asp-for="@Model.Portfolio.Display" checked="@(portfolio.Portfolio.Display)">
+                    </label>
+                    <input type="hidden" asp-for="@Model.Portfolio.Id" value="@portfolio.Portfolio.Id" />
+                    <input type="hidden" asp-for="@Model.Portfolio.AccordionId" value="@portfolio.Portfolio.AccordionId" />
+                    <input type="hidden" asp-for="@Model.Portfolio.CollapseId" value="@portfolio.Portfolio.CollapseId" />
+                    <input type="hidden" asp-for="@Model.Portfolio.AdminAccordionId" value="@portfolio.Portfolio.AdminAccordionId" />
+                    <input type="hidden" asp-for="@Model.Portfolio.AdminCollapseId" value="@portfolio.Portfolio.AdminCollapseId" />
+                    <input type="hidden" asp-for="@Model.Artist.Id" value="@Model.Artist.Id" />
+                    <input type="hidden" asp-for="@Model.UserId" value="@Model.UserId" />
+                    <input type="submit" value="update" />
+                </form>
+            </div>
+        }
+    </section>
+    <section>
+        <form asp-page-handler="AddPortfolio" method="post">
+            <label>
+                New Portfolio
+                <input type="text" name="title" placeholder="new portfolio" required/>
+                <input type="hidden" asp-for="@Model.Artist.Id" value="@Model.Artist.Id" />
+                <input type="hidden" asp-for="@Model.UserId" value="@Model.UserId" />
+                <input type="submit" value="+" />
+            </label>
+        </form>
+    </section>
+</div>

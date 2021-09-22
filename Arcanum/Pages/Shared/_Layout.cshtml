@@ -19,6 +19,9 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         @await Component.InvokeAsync("ArtistNav")
+                        <li>
+                            <a class="nav-link text-dark" asp-area="" asp-page="TheStudio">The Studio</a>
+                        </li>
                         @if (User.IsInRole("WizardLord"))
                         {
                             <li>

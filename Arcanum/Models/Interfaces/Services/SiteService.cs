@@ -148,5 +148,37 @@ namespace Arcanum.Models.Interfaces.Services
             _db.Entry(mainPage).State = EntityState.Modified;
             await _db.SaveChangesAsync();
         }
+
+        /// <summary>
+        /// Query the StudioInfo record from the database.
+        /// </summary>
+        /// <returns> StudioInfo object </returns>
+        public async Task<StudioInfo> GetStudio()
+        {
+            return await _db.StudioInfo
+                .Where(x => x.Id == -1)
+                .Include(a => a.StudioImages)
+                .ThenInclude(b => b.Image)
+                .Select(y => new StudioInfo
+                {
+                    Id = y.Id,
+                    Instagram = y.Instagram,
+                    Address = y.Address,
+                    Intro = y.Intro,
+                    Policies = y.Policies,
+                    Aftercare = y.Aftercare,
+                    StudioImages = y.StudioImages
+                }).FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Update the StudioInfo record in the database.
+        /// </summary>
+        /// <param name="studioInfo"> StudioInfo studioInfo </param>
+        public async Task UpdateStudioInfo(StudioInfo studioInfo)
+        {
+            _db.Entry(studioInfo).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
     }
 }

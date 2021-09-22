@@ -22,11 +22,12 @@ namespace Arcanum.Pages
         }
 
         [BindProperty]
-        public Models.ArcanumMain MainPage { get; set; }
+        public ArcanumMain MainPage { get; set; }
+        public string Instagram { get; set; }
 
         public async Task OnGet()
         {
-            MainPage = await _siteAdmin.GetMainPage();
+            await RefreshPage();
         }
 
         /// <summary>
@@ -34,11 +35,19 @@ namespace Arcanum.Pages
         /// </summary>
         public async Task OnPostUpdate()
         {
-            if (MainPage.IntroA == null) MainPage.IntroA = " ";
-            if (MainPage.IntroB == null) MainPage.IntroB = " ";
             await _siteAdmin.UpdateMainPage(MainPage);
-            MainPage = await _siteAdmin.GetMainPage();
+
+            await RefreshPage();
             Redirect("/");
+        }
+
+        /// <summary>
+        /// Helper method to refresh the page properties when refreshed without an IActionResult.
+        /// </summary>
+        private async Task RefreshPage()
+        {
+            Instagram = (await _siteAdmin.GetStudio()).Instagram;
+            MainPage = await _siteAdmin.GetMainPage();
         }
     }
 }

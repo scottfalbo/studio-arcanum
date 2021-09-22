@@ -1,0 +1,29 @@
+﻿@model Arcanum.Pages.TheStudioModel
+
+<div id="studioPage-admin" class="page-admin">
+    <section>
+        <section>
+            <form asp-page-handler="Update" method="post">
+                <label>
+                    Intro
+                    <textarea type="text" cols="45" rows="3" asp-for="@Model.StudioInfo.Intro" class="form-control" placeholder="@Model.StudioInfo.Intro"></textarea>
+                </label>
+                <label>
+                    Address
+                    <textarea type="text" cols="45" rows="3" asp-for="@Model.StudioInfo.Address" class="form-control" placeholder="@Model.StudioInfo.Address"></textarea>
+                </label>
+                <label>
+                    Policies
+                    <textarea type="text" cols="45" rows="3" asp-for="@Model.StudioInfo.Policies" class="form-control" placeholder="@Model.StudioInfo.Policies"></textarea>
+                </label>
+                <label>
+                    Aftercare
+                    <textarea type="text" cols="45" rows="3" asp-for="@Model.StudioInfo.Aftercare" class="form-control" placeholder="@Model.StudioInfo.Aftercare"></textarea>
+                </label>
+                <input type="text" asp-for="@Model.StudioInfo.Instagram" value="@Model.StudioInfo.Instagram" placeholder="@Model.StudioInfo.Instagram" />
+                <input type="hidden" asp-for="@Model.StudioInfo.Id" value="@Model.StudioInfo.Id" />
+                <input type="submit" value="update" />
+            </form>
+        </section>
+    </section>
+</div>

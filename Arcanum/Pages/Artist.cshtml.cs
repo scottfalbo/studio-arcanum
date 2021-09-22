@@ -13,21 +13,71 @@ namespace Arcanum.Pages
 {
     public class ArtistModel : PageModel
     {
-        public ISite _siteAdmin { get; set; }
+        private readonly ISite _siteAdmin;
+        private readonly IArtistAdmin _artistAdmin;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ArtistModel(ISite siteAdmin, UserManager<ApplicationUser> userManager)
+        public ArtistModel(ISite siteAdmin, IArtistAdmin artistAdmin, UserManager<ApplicationUser> userManager)
         {
             _siteAdmin = siteAdmin;
+            _artistAdmin = artistAdmin;
             _userManager = userManager;
         }
 
+        [BindProperty]
         public Artist Artist { get; set; }
+        [BindProperty]
         public string UserId { get; set; }
+        [BindProperty]
+        public Portfolio Portfolio { get; set; }
 
         public async Task OnGet(string artistId)
         {
-            Artist = await _siteAdmin.GetArtist(artistId);
+            await RefreshPage(artistId);
+        }
+
+        /// <summary>
+        /// Method to update the general page data
+        /// </summary>
+        public async Task OnPostUpdate()
+        {
+            await _siteAdmin.UpdateArtist(Artist);
+
+            await RefreshPage(Artist.Id);
+            Redirect($"Artist?artistId={Artist.Id}");
+        }
+
+        /// <summary>
+        /// Update the general portfolio fields.
+        /// </summary>
+        /// <param name="index"> index for ArtistPortfolio List </param>
+        public async Task OnPostUpdatePortfolio(string intro)
+        {
+
+            Portfolio.Intro = intro;
+            await _artistAdmin.UpdatePortfolio(Portfolio);
+
+            await RefreshPage(Artist.Id);
+            Redirect($"Artist?artistId={Artist.Id}");
+        }
+
+        public async Task OnPostAddPortfolio(string title)
+        {
+            Portfolio newPortfolio = await _artistAdmin.CreatePortfolio(title);
+            await _artistAdmin.AddPortfolioToArtist(Artist.Id, newPortfolio.Id);
+
+            await RefreshPage(Artist.Id);
+            Redirect($"Artist?artistId={Artist.Id}");
+        }
+
+        /// <summary>
+        /// Helper method to refresh the page model properties
+        /// </summary>
+        /// <param name="artistId"> string artistId </param>
+        private async Task RefreshPage(string artistId)
+        {
+            if (artistId != null)
+                Artist = await _siteAdmin.GetArtist(artistId);
 
             if (User.IsInRole("ArtistAdmin"))
             {
@@ -37,6 +87,7 @@ namespace Arcanum.Pages
             }
             else
                 UserId = "";
+            Portfolio = new Portfolio();
         }
     }
 }

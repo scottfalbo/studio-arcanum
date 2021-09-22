@@ -1,0 +1,31 @@
+﻿@page
+@model Arcanum.Pages.BookingModel
+@{
+}
+
+
+@if (Model.Booking != null)
+{
+    <h1>Booking</h1>
+
+    <div>Booking for @Model.Artist.Name</div>
+
+    <div>@Model.Booking.BookingInfo.</div>
+    <div>@Model.Booking.BookingEmail.</div>
+    <div>@Model.Artist.Instagram</div>
+
+    @if (User.IsInRole("WizardLord") || (User.IsInRole("ArtistAdmin") && Model.Artist.Id == Model.UserId))
+    {
+        <div class="fullscreen admin-outer">
+            <div class="admin-inner">
+                <partial name="Admin/_ArtistBooking" />
+            </div>
+        </div>
+    }
+}
+else
+{ 
+    <ul>
+        @await Component.InvokeAsync("ArtistNav")
+    </ul>
+}

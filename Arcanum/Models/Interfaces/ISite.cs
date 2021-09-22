@@ -15,5 +15,8 @@ namespace Arcanum.Models.Interfaces
 
         public Task<ArcanumMain> GetMainPage();
         public Task UpdateMainPage(ArcanumMain mainPage);
+
+        public Task<StudioInfo> GetStudio();
+        public Task UpdateStudioInfo(StudioInfo studioInfo);
     }
 }

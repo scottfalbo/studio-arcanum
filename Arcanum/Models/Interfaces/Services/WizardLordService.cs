@@ -113,7 +113,7 @@ namespace Arcanum.Models.Interfaces.Services
         public async Task UpdateUserRoles(string userId, string[] roles)
         {
             var user = await _userManager.FindByIdAsync(userId);
-            var currentRoles = GetUserRoles(userId).Result;
+            IEnumerable<string> currentRoles = GetUserRoles(userId).Result;
 
             await _userManager.RemoveFromRolesAsync(user, currentRoles);
             await _userManager.AddToRolesAsync(user, roles);

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Arcanum.Models.Interfaces.Services
@@ -27,11 +28,42 @@ namespace Arcanum.Models.Interfaces.Services
             {
                 Title = title,
                 Intro = "new portfolio",
+                Order = 0,
                 Display = false
             };
+            newPortfolio = AssignAccordianIds(newPortfolio);
             _db.Entry(newPortfolio).State = EntityState.Added;
             await _db.SaveChangesAsync();
             return newPortfolio;
+        }
+
+        /// <summary>
+        /// Update the portfolio record in the database.
+        /// Reassigns accordion class names incase the portfolio title changed.
+        /// </summary>
+        /// <param name="portfolio"> Portfolio object </param>
+        public async Task UpdatePortfolio(Portfolio portfolio)
+        {
+            portfolio = AssignAccordianIds(portfolio);
+            _db.Entry(portfolio).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Helper method to assign some unique names for use with Bootstrap accordion menues.
+        /// </summary>
+        /// <param name="portfolio"> Portfolio object </param>
+        /// <returns> Portfolio object w/accordion ids </returns>
+        private Portfolio AssignAccordianIds(Portfolio portfolio)
+        {
+            string str = Regex.Replace(portfolio.Title, @"\s+", String.Empty).ToLower();
+
+            portfolio.AccordionId = str;
+            portfolio.CollapseId = $"{str}{portfolio.Id}";
+            portfolio.AdminAccordionId = $"{str}admin";
+            portfolio.AdminCollapseId = $"{str}{portfolio.Id}admin";
+
+            return portfolio;
         }
 
         /// <summary>
@@ -85,6 +117,35 @@ namespace Arcanum.Models.Interfaces.Services
                 ImageId = imageId
             };
             _db.Entry(portfolioImage).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Query the database for an artists associated booking record.
+        /// </summary>
+        /// <param name="artistId"> string artistId </param>
+        /// <returns> Booking object </returns>
+        public async Task<Booking> GetArtistBooking(string artistId)
+        {
+            return await _db.ArtistBooking
+                .Where(x => x.ArtistId == artistId)
+                .Include(y => y.Booking)
+                .Select(z => new Booking
+                {
+                    Id = z.Booking.Id,
+                    BookingEmail = z.Booking.BookingEmail,
+                    BookingInfo = z.Booking.BookingInfo,
+                    FormPlaceHolder = z.Booking.FormPlaceHolder
+                }).FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Update the booking record in the database.
+        /// </summary>
+        /// <param name="booking"> Booking object </param>
+        public async Task UpdateArtistBooking(Booking booking)
+        {
+            _db.Entry(booking).State = EntityState.Modified;
             await _db.SaveChangesAsync();
         }
     }

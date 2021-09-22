@@ -11,6 +11,7 @@ namespace Arcanum.Models
         public string Title { get; set; }
         public string Intro { get; set; }
         public bool Display { get; set; }
+        public int Order { get; set; }
 
         /// <summary>
         /// unique class names for the bootstrap accordion
