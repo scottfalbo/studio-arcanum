@@ -137,11 +137,13 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="code"> string access code </param>
         /// <returns> RegistrationAccessCode object </returns>
-        public async Task<RegistrationAccessCode> CreateRegistrationAccessCode(string code)
+        public async Task<RegistrationAccessCode> CreateRegistrationAccessCode(string name)
         {
+            string code = name;
             RegistrationAccessCode accessCode = new RegistrationAccessCode()
             {
-                Code = code
+                Code = code,
+                Name = name
             };
             _db.Entry(accessCode).State = EntityState.Added;
             await _db.SaveChangesAsync();
@@ -160,7 +162,8 @@ namespace Arcanum.Models.Interfaces.Services
                 .Select(y => new RegistrationAccessCode
                 {
                     Id = y.Id,
-                    Code = y.Code
+                    Code = y.Code,
+                    Name = y.Name
                 }).FirstOrDefaultAsync();
         }
 
@@ -174,7 +177,8 @@ namespace Arcanum.Models.Interfaces.Services
                 .Select(x => new RegistrationAccessCode
                 {
                     Id = x.Id,
-                    Code = x.Code
+                    Code = x.Code,
+                    Name = x.Name
                 }).ToListAsync();
         }
 
