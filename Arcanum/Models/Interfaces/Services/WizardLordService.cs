@@ -165,6 +165,20 @@ namespace Arcanum.Models.Interfaces.Services
         }
 
         /// <summary>
+        /// Retrieve a list of all RegistrationAccessCode records.
+        /// </summary>
+        /// <returns> List<RegistrationAccessCode> </returns>
+        public async Task<List<RegistrationAccessCode>> GetRegistrationAccessCodes()
+        {
+            return await _db.RegistrationAccessCodes
+                .Select(x => new RegistrationAccessCode
+                {
+                    Id = x.Id,
+                    Code = x.Code
+                }).ToListAsync();
+        }
+
+        /// <summary>
         /// Remove an access code record from the data base.
         /// </summary>
         /// <param name="code"> string access code </param>
