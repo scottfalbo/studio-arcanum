@@ -17,12 +17,19 @@ namespace Arcanum.Pages
             _userService = userService;
         }
 
+        public bool InValid { get; set; }
+
+        public void OnGet(bool invalid = false)
+        {
+            InValid = invalid;
+        }
+
         public async Task<IActionResult> OnPostAsync(string username, string password)
         {
             var user = await _userService.Authenticate(username, password);
             if (user != null)
                 return Redirect($"/Artist?artistId={user.Id}");
-            return Redirect("/Login");
+            return Redirect("/Login?invalid=true");
         }
     }
 }
