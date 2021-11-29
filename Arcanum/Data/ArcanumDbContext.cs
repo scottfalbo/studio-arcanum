@@ -23,6 +23,7 @@ namespace Arcanum.Data
         public DbSet<Booking> Booking { get; set; }
         public DbSet<Portfolio> Portfolio { get; set; }
         public DbSet<PortfolioImage> PortfolioImage { get; set; }
+        public DbSet<RegistrationAccessCode> RegistrationAccessCodes { get; set; }
 
         public IConfiguration _config { get; }
 

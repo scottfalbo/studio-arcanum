@@ -131,5 +131,48 @@ namespace Arcanum.Models.Interfaces.Services
             await _userManager.RemoveFromRolesAsync(user, roleNames);
             await _userManager.DeleteAsync(user);
         }
+
+        /// <summary>
+        /// Instantiate a new RegistrationAccessCode object and add a record to the database.
+        /// </summary>
+        /// <param name="code"> string access code </param>
+        /// <returns> RegistrationAccessCode object </returns>
+        public async Task<RegistrationAccessCode> CreateRegistrationAccessCode(string code)
+        {
+            RegistrationAccessCode accessCode = new RegistrationAccessCode()
+            {
+                Code = code
+            };
+            _db.Entry(accessCode).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+            return accessCode;
+        }
+
+        /// <summary>
+        /// Retrieve an access code from the data base by code.
+        /// </summary>
+        /// <param name="code"> string access code </param>
+        /// <returns> RegistrationAccessCode object </returns>
+        public async Task<RegistrationAccessCode> GetRegistrationAccessCode(string code)
+        {
+            return await _db.RegistrationAccessCodes
+                .Where(x => x.Code == code)
+                .Select(y => new RegistrationAccessCode
+                {
+                    Id = y.Id,
+                    Code = y.Code
+                }).FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Remove an access code record from the data base.
+        /// </summary>
+        /// <param name="code"> string access code </param>
+        public async Task DeleteRegistrationAccessCode(string code)
+        {
+            RegistrationAccessCode accessCode = await GetRegistrationAccessCode(code);
+            _db.Entry(accessCode).State = EntityState.Deleted;
+            await _db.SaveChangesAsync();
+        }
     }
 }

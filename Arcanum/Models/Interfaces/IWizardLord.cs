@@ -14,5 +14,9 @@ namespace Arcanum.Models.Interfaces
         public Task UpdateUserRoles(string userId, string[] roles);
         public Task<List<ApplicationUserDto>> GetRegisteredUsers();
         public Task DeleteUser(string userId);
+
+        public Task<RegistrationAccessCode> CreateRegistrationAccessCode(string code);
+        public Task<RegistrationAccessCode> GetRegistrationAccessCode(string code);
+        public Task DeleteRegistrationAccessCode(string code);
     }
 }
