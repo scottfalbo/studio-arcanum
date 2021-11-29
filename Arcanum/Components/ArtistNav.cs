@@ -1,5 +1,7 @@
-﻿using Arcanum.Models;
+﻿using Arcanum.Auth.Models;
+using Arcanum.Models;
 using Arcanum.Models.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,18 +14,29 @@ namespace Arcanum.Components
     public class ArtistNavViewComponent : ViewComponent
     {
         public ISite _siteAdmin;
-        public ArtistNavViewComponent(ISite site)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public ArtistNavViewComponent(ISite site, UserManager<ApplicationUser> userManager)
         {
             _siteAdmin = site;
+            _userManager = userManager;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
+            ApplicationUser user = null;
+            if (User.IsInRole("ArtistAdmin"))
+            {
+                var userName = User.Identity.Name;
+                user = await _userManager.FindByNameAsync(userName);
+            }
+
             List<Artist> artists = await _siteAdmin.GetArtists();
 
             ViewModel viewModel = new ViewModel()
             {
                 Artists = artists,
+                UserId = user != null ? user.Id : ""
             };
 
             return View(viewModel);
@@ -32,9 +45,7 @@ namespace Arcanum.Components
         public class ViewModel
         {
             public List<Artist> Artists { get; set; }
+            public string UserId { get; set; }
         }
     }
-
-
-
 }
