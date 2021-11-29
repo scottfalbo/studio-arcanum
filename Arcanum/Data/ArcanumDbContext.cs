@@ -23,6 +23,7 @@ namespace Arcanum.Data
         public DbSet<Booking> Booking { get; set; }
         public DbSet<Portfolio> Portfolio { get; set; }
         public DbSet<PortfolioImage> PortfolioImage { get; set; }
+        public DbSet<RegistrationAccessCode> RegistrationAccessCodes { get; set; }
 
         public IConfiguration _config { get; }
 
@@ -69,8 +70,8 @@ namespace Arcanum.Data
                     Id = "artist1",
                     UserName = "luci",
                     NormalizedUserName = "LUCI",
-                    Email = "scottfalboart@gmail.com",
-                    NormalizedEmail = "scottfalboart@gmail.com",
+                    Email = "whatever@whatever.com",
+                    NormalizedEmail = "whatever@whatever.com",
                     EmailConfirmed = false,
                     PasswordHash = hasher.HashPassword(null, "Pass!23"),
                     SecurityStamp = string.Empty
@@ -80,8 +81,8 @@ namespace Arcanum.Data
                     Id = "artist2",
                     UserName = "harry",
                     NormalizedUserName = "HARRY",
-                    Email = "scottfalboart@gmail.com",
-                    NormalizedEmail = "scottfalboart@gmail.com",
+                    Email = "whatever2@whatever.com",
+                    NormalizedEmail = "whatever2@whatever.com",
                     EmailConfirmed = false,
                     PasswordHash = hasher.HashPassword(null, "Pass!23"),
                     SecurityStamp = string.Empty

@@ -1,0 +1,24 @@
+﻿@model Arcanum.Pages.Admin.SecretLairModel
+
+<div>
+    <section>
+        <form asp-page-handler="CreateRegistrationCode" method="post">
+            <label> Access Code For:
+                <input type="text" name="name" placeholder="enter name" required/>
+            </label>
+            <input type="submit" value="create" />
+        </form>
+    </section>
+    <section>
+        <h3>Current Access Codes</h3>
+        @foreach(var accessCode in Model.AccessCodes)
+        {
+            <form asp-page-handler="DeleteRegistrationCode" method="post">
+                <p>@accessCode.Name</p>
+                <p>@accessCode.Code</p>
+                <input type="hidden" value="@accessCode.Code" name="code"/>
+                <input type="submit" value="delete" />
+            </form>
+        }
+    </section>
+</div>

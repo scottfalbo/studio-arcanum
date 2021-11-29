@@ -26,12 +26,14 @@ namespace Arcanum.Pages.Admin
         public List<ApplicationUserDto> Users { get; set; }
         public IQueryable<IdentityRole> Roles { get; set; }
         public List<Artist> Artists { get; set; }
+        public List<RegistrationAccessCode> AccessCodes { get; set; }
 
         public async Task OnGet()
         {
             Users = await _wizard.GetRegisteredUsers();
             Roles = _wizard.GetRoles();
             Artists = await _siteAdmin.GetArtists();
+            AccessCodes = await _wizard.GetRegistrationAccessCodes();
         }
 
         public async Task<IActionResult> OnPostUpdateUserRoles(string userId, string[] isChecked)
@@ -52,6 +54,18 @@ namespace Arcanum.Pages.Admin
             Artist artist = await _siteAdmin.GetArtist(artistId);
             artist.Display = display;
             await _siteAdmin.UpdateArtist(artist);
+            return Redirect("/Admin/SecretLair");
+        }
+
+        public async Task<IActionResult> OnPostCreateRegistrationCode(string name)
+        {
+            await _wizard.CreateRegistrationAccessCode(name);
+            return Redirect("/Admin/SecretLair");
+        }
+
+        public async Task<IActionResult> OnPostDeleteRegistrationCode(string code)
+        {
+            await _wizard.DeleteRegistrationAccessCode(code);
             return Redirect("/Admin/SecretLair");
         }
     }
