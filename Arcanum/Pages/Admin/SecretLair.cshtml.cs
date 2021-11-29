@@ -57,9 +57,9 @@ namespace Arcanum.Pages.Admin
             return Redirect("/Admin/SecretLair");
         }
 
-        public async Task<IActionResult> OnPostCreateRegistrationCode(string code)
+        public async Task<IActionResult> OnPostCreateRegistrationCode(string name)
         {
-            await _wizard.CreateRegistrationAccessCode(code);
+            await _wizard.CreateRegistrationAccessCode(name);
             return Redirect("/Admin/SecretLair");
         }
     }

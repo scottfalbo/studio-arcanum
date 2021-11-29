@@ -4,7 +4,7 @@
     <section>
         <form asp-page-handler="CreateRegistrationCode" method="post">
             <label> Access Code For:
-                <input type="text" name="code" placeholder="enter access code" required/>
+                <input type="text" name="name" placeholder="enter name" required/>
             </label>
             <input type="submit" value="create" />
         </form>
@@ -14,7 +14,8 @@
         @foreach(var accessCode in Model.AccessCodes)
         {
             <form asp-page-handler="DeleteRegistrationCode" method="post">
-                
+                <label>@accessCode.Name</label>
+                <label>@accessCode.Code</label>
             </form>
         }
     </section>

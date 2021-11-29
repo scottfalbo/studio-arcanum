@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Arcanum.Spells;
 
 namespace Arcanum.Models.Interfaces.Services
 {
@@ -139,7 +140,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// <returns> RegistrationAccessCode object </returns>
         public async Task<RegistrationAccessCode> CreateRegistrationAccessCode(string name)
         {
-            string code = name;
+            string code = NameHasher.HashNameToAccessCode(name);
             RegistrationAccessCode accessCode = new RegistrationAccessCode()
             {
                 Code = code,
