@@ -29,15 +29,21 @@
         <a asp-area="" asp-page="Booking" asp-route-artistId="@Model.Artist.Id">Booking</a>
     </div>
 
+    @if (User.IsInRole("WizardLord") || (User.IsInRole("ArtistAdmin") && Model.Artist.Id == Model.UserId))
+    {
+        <button class="show-artist-admin">admin</button>
+    }
+
 
 
     @if (User.IsInRole("WizardLord") || (User.IsInRole("ArtistAdmin") && Model.Artist.Id == Model.UserId))
     {
-        <div class="fullscreen admin-outer">
+        <div class="fullscreen admin-outer artist-admin hide-me">
             <div class="admin-inner">
                 <partial name="Admin/_ArtistPage" />
                 <partial name="Admin/_ArtistPortfolio" />
             </div>
+            <partial name="Admin/_ClosePopUp" />
         </div>
     }
 }

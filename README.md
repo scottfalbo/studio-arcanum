@@ -48,7 +48,7 @@ Currently under development website for Studio Arcanum Tattoo in Seattle.
 
 ## Change Log
 
-- [Development Log](development.md)
+
 
 ---
 
