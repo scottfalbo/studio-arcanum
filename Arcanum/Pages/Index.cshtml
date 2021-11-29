@@ -9,18 +9,24 @@
 <div>@Model.MainPage.IntroB</div>
 <div>@Model.Instagram</div>
 
-@foreach(var image in Model.MainPage.RecentImage)
+@foreach (var image in Model.MainPage.RecentImage)
 {
     <img src="@image.Image.ThumbnailUrl." />
 }
 
-
-@if(User.IsInRole("WizardLord"))
+@if (User.IsInRole("WizardLord"))
 {
-    <div class="fullscreen admin-outer">
+    <partial name="Admin/_ShowPopUp" />
+}
+
+
+@if (User.IsInRole("WizardLord"))
+{
+    <div class="fullscreen admin-outer mainpage-admin @(Model.ActiveAdmin ? "" : "hide-me")">
         <div class="admin-inner">
             <partial name="Admin/_MainPage" />
         </div>
+        <partial name="Admin/_ClosePopUp" />
     </div>
 }
 

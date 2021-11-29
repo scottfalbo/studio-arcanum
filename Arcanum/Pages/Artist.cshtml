@@ -31,7 +31,7 @@
 
     @if (User.IsInRole("WizardLord") || (User.IsInRole("ArtistAdmin") && Model.Artist.Id == Model.UserId))
     {
-        <button class="show-artist-admin">admin</button>
+        <partial name="Admin/_ShowPopUp" />
     }
 
 

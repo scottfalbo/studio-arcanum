@@ -1,14 +1,14 @@
 ﻿'use strict';
 
-// Show the artist admin window
+// Shows popup windows.
 $(function() {
-    $('.show-artist-admin').click(function() {
-        $('.artist-admin').removeClass('hide-me');
+    $('.show-popup').click(function() {
+        $('.admin-outer').removeClass('hide-me');
     });
 });
 
 
-// Closes popup windows
+// Closes popup windows.
 $(function() {
     $('.close-popup').click(function() {
         $('.fullscreen').addClass('hide-me');

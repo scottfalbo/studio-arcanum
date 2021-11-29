@@ -13,41 +13,34 @@ namespace Arcanum.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private readonly ISite _siteAdmin;
+        private readonly ISite _site;
 
         public IndexModel(ILogger<IndexModel> logger, ISite siteAdmin)
         {
             _logger = logger;
-            _siteAdmin = siteAdmin;
+            _site = siteAdmin;
         }
 
         [BindProperty]
         public ArcanumMain MainPage { get; set; }
         public string Instagram { get; set; }
+        public bool ActiveAdmin { get; set; }
 
-        public async Task OnGet()
+        public async Task OnGet(bool isActive = false)
         {
-            await RefreshPage();
+            Instagram = (await _site.GetStudio()).Instagram;
+            MainPage = await _site.GetMainPage();
+            ActiveAdmin = isActive;
         }
 
         /// <summary>
         /// Update the main page text area
         /// </summary>
-        public async Task OnPostUpdate()
+        public async Task<IActionResult> OnPostUpdate()
         {
-            await _siteAdmin.UpdateMainPage(MainPage);
+            await _site.UpdateMainPage(MainPage);
 
-            await RefreshPage();
-            Redirect("/");
-        }
-
-        /// <summary>
-        /// Helper method to refresh the page properties when refreshed without an IActionResult.
-        /// </summary>
-        private async Task RefreshPage()
-        {
-            Instagram = (await _siteAdmin.GetStudio()).Instagram;
-            MainPage = await _siteAdmin.GetMainPage();
+            return Redirect("/Index?isActive=true");
         }
     }
 }
