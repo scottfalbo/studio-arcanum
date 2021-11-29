@@ -3,11 +3,31 @@
 @{
 }
 
-<h1>Please register an account below.</h1>
 
-<form method="post">
-    <div><input type="text" name="username" placeholder="username" /></div>
-    <div><input type="text" name="email" placeholder="email" /></div>
-    <div><input type="password" name="password" placeholder="password" /></div>
-    <div><input type="submit" value="Add Account" /></div>
-</form>
+@if (Model.PageState == PageState.Inital || Model.PageState == PageState.NotValid)
+{
+    <h2>Please enter your access code</h2>
+    <form asp-page-handler="ValidateAccessCode" method="post">
+        <label>
+            <input type="text"name="code" placeholder="enter access code" />
+            <input type="submit" value="validate code" />
+        </label>
+    </form>
+}
+
+@if (Model.PageState == PageState.NotValid)
+{
+    <p>Invalid access code, please double check and try again.</p>
+}
+
+@if (Model.PageState == PageState.Confirmed)
+{
+    <h2>Registration Form</h2>
+    <form asp-page-handler="Register" method="post">
+        <div><input type="text" name="username" placeholder="username" /></div>
+        <div><input type="text" name="email" placeholder="email" /></div>
+        <div><input type="password" name="password" placeholder="password" /></div>
+        <input type="hidden" asp-for="@Model.ValidCode" value="@Model.ValidCode" />
+        <div><input type="submit" value="Add Account" /></div>
+    </form>
+}
