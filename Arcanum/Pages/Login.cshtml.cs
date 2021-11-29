@@ -20,8 +20,8 @@ namespace Arcanum.Pages
         public async Task<IActionResult> OnPostAsync(string username, string password)
         {
             var user = await _userService.Authenticate(username, password);
-            if(user != null)
-                return Redirect("/Index");
+            if (user != null)
+                return Redirect($"/Artist?artistId={user.Id}");
             return Redirect("/Login");
         }
     }

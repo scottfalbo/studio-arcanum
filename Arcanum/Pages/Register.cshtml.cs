@@ -57,7 +57,6 @@ namespace Arcanum.Pages
                 await _wizard.DeleteRegistrationAccessCode(ValidCode);
             }
             await AddDefaultPortfolio(artist.Id);
-
             return Redirect("/Login");
         }
 
