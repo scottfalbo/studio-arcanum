@@ -1,8 +1,9 @@
 ﻿@model Arcanum.Components.ArtistNavViewComponent.ViewModel
 
-@foreach(var artist in Model.Artists)
+
+@foreach (var artist in Model.Artists)
 {
-    if (artist.Display)
+    if (artist.Display || (User.IsInRole("ArtistAdmin") && Model.UserId == artist.Id))
     {
         <li>
             <a class="nav-link text-dark" asp-area="" asp-page="/Artist" asp-route-artistId="@artist.Id">@artist.Name</a>

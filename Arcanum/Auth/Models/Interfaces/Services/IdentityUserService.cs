@@ -53,14 +53,14 @@ namespace Arcanum.Auth.Models.Interfaces.Services
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRolesAsync(user, new List<string>() { "Guest" });
+                await _userManager.AddToRolesAsync(user, new List<string>() { "ArtistAdmin" });
 
                 return new ApplicationUserDto
                 {
                     Id = user.Id,
                     UserName = user.UserName,
                     Email = user.Email,
-                    Roles = new List<string>() { "Guest" }
+                    Roles = new List<string>() { "ArtistAdmin" }
                 };
             }
             return null;
