@@ -14,8 +14,10 @@
         @foreach(var accessCode in Model.AccessCodes)
         {
             <form asp-page-handler="DeleteRegistrationCode" method="post">
-                <label>@accessCode.Name</label>
-                <label>@accessCode.Code</label>
+                <p>@accessCode.Name</p>
+                <p>@accessCode.Code</p>
+                <input type="hidden" value="@accessCode.Code" name="code"/>
+                <input type="submit" value="delete" />
             </form>
         }
     </section>
