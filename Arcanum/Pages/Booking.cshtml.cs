@@ -30,28 +30,16 @@ namespace Arcanum.Pages
         public Artist Artist { get; set; }
         [BindProperty]
         public string UserId { get; set; }
+        public bool ActiveAdmin { get; set; }
 
-        public async Task OnGet(string artistId)
-        {
-            await RefreshPage(artistId);
-        }
-
-        public async Task OnPostUpdate()
-        {
-            await _artistAdmin.UpdateArtistBooking(Booking);
-
-            await RefreshPage(Artist.Id);
-            Redirect($"/Booking?artistId={UserId}");
-        }
-
-        private async Task RefreshPage(string artistId)
+        public async Task OnGet(string artistId, bool IsActive = false)
         {
             if (artistId != null)
             {
                 Booking = await _artistAdmin.GetArtistBooking(artistId);
                 Artist = await _siteAdmin.GetArtist(artistId);
             }
-            if (User.IsInRole("ArtistAdmin"))
+            if (User.IsInRole("ArtistAdmin") || User.IsInRole("WizardLord"))
             {
                 var userName = User.Identity.Name;
                 var user = await _userManager.FindByNameAsync(userName);
@@ -59,6 +47,15 @@ namespace Arcanum.Pages
             }
             else
                 UserId = "";
+            ActiveAdmin = IsActive;
         }
+
+        public async Task<IActionResult> OnPostUpdate()
+        {
+            await _artistAdmin.UpdateArtistBooking(Booking);
+
+            return Redirect($"/Booking?artistId={UserId}&isActive=true");
+        }
+
     }
 }

@@ -1,10 +1,10 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Studio Arcanum";
+    ViewData["Title"] = Model.MainPage.SiteTitle;
 }
 
-<h1>Studio Arcanum</h1>
+<h1>@Model.MainPage.SiteTitle</h1>
 <div>@Model.MainPage.IntroA</div>
 <div>@Model.MainPage.IntroB</div>
 <div>@Model.Instagram</div>
