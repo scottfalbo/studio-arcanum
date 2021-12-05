@@ -4,23 +4,28 @@ using Arcanum.Auth.Models.Interfaces.Services;
 using Arcanum.Data;
 using Arcanum.Models.Interfaces;
 using Arcanum.Models.Interfaces.Services;
+using Azure.Core.Extensions;
+using Azure.Storage.Blobs;
+using Azure.Storage.Queues;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace Arcanum
 {
     public class Startup
     {
-        public IConfiguration Config { get; }
+        public IConfiguration _config { get; }
 
         public Startup(IConfiguration configuration)
         {
-            Config = configuration;
+            _config = configuration;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -30,7 +35,7 @@ namespace Arcanum
 
             services.AddDbContext<ArcanumDbContext>(options =>
             {
-                string connectionString = Config.GetConnectionString("DefaultConnection");
+                string connectionString = _config.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);
             });
 
@@ -58,6 +63,12 @@ namespace Arcanum
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+
+            services.AddAzureClients(builder =>
+            {
+                builder.AddBlobServiceClient(_config["StorageBlob:ConnectionStringsblob"], preferMsi: true);
+                builder.AddQueueServiceClient(_config["StorageBlob:ConnectionString:queue"], preferMsi: true);
+            });
         }
 
         
@@ -88,6 +99,35 @@ namespace Arcanum
             {
                 endpoints.MapRazorPages();
             });
+        }
+    }
+
+    /// <summary>
+    /// Azure Blob sorcery
+    /// </summary>
+    internal static class StartupExtensions
+    {
+        public static IAzureClientBuilder<BlobServiceClient, BlobClientOptions> AddBlobServiceClient(this AzureClientFactoryBuilder builder, string serviceUriOrConnectionString, bool preferMsi)
+        {
+            if (preferMsi && Uri.TryCreate(serviceUriOrConnectionString, UriKind.Absolute, out Uri serviceUri))
+            {
+                return builder.AddBlobServiceClient(serviceUri);
+            }
+            else
+            {
+                return builder.AddBlobServiceClient(serviceUriOrConnectionString);
+            }
+        }
+        public static IAzureClientBuilder<QueueServiceClient, QueueClientOptions> AddQueueServiceClient(this AzureClientFactoryBuilder builder, string serviceUriOrConnectionString, bool preferMsi)
+        {
+            if (preferMsi && Uri.TryCreate(serviceUriOrConnectionString, UriKind.Absolute, out Uri serviceUri))
+            {
+                return builder.AddQueueServiceClient(serviceUri);
+            }
+            else
+            {
+                return builder.AddQueueServiceClient(serviceUriOrConnectionString);
+            }
         }
     }
 }
