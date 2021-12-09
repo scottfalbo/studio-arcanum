@@ -96,7 +96,8 @@ namespace Arcanum.Models.Interfaces.Services
                 SourceUrl = image.SourceUrl,
                 ThumbnailUrl = image.ThumbnailUrl,
                 FileName = image.FileName,
-                ThumbFileName = image.ThumbFileName
+                ThumbFileName = image.ThumbFileName,
+                Order = image.Order
             };
             _db.Entry(newImage).State = EntityState.Added;
             await _db.SaveChangesAsync();

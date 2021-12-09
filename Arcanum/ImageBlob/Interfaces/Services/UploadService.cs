@@ -21,50 +21,10 @@ namespace Arcanum.ImageBlob.Interfaces.Services
         public IConfiguration _config { get; }
         public IArtistAdmin _artistAdmin;
 
-        public UploadService(IConfiguration config, ArcanumDbContext db, IArtistAdmin artistAdmin)
+        public UploadService(IConfiguration config, IArtistAdmin artistAdmin)
         {
             _config = config;
             _artistAdmin = artistAdmin;
-        }
-
-        /// <summary>
-        /// Uploads the image to azure blob storage
-        /// </summary>
-        /// <param name="file"> file to upload </param>
-        /// <returns> new BlobClient object </returns>
-        public async Task<BlobClient> UploadImage(Stream stream, string filename, string contentType)
-        {
-            filename = AugmentFileName(filename);
-            BlobContainerClient container = new BlobContainerClient(_config["ImageBlob"], "images");
-
-            await container.CreateIfNotExistsAsync();
-            BlobClient blob = container.GetBlobClient(filename);
-
-            BlobUploadOptions options = new BlobUploadOptions()
-            {
-                HttpHeaders = new BlobHttpHeaders() { ContentType = contentType }
-            };
-
-            if (!blob.Exists())
-                await blob.UploadAsync(stream, options);
-            return blob;
-        }
-        /// <summary>
-        /// Helper method that adds the time and date to the end of the filename to ensure it is unique.
-        /// </summary>
-        /// <param name="file"> string filename </param>
-        /// <returns> augmented filename </returns>
-        private string AugmentFileName(string file)
-        {
-            string timeStamp = DateTime.Now.ToString();
-            timeStamp = Regex.Replace(timeStamp, "[^0-9]", "");
-
-            string pattern = @"[^.]+$";
-            string fileType = Regex.Match(file, pattern).ToString();
-
-            file = Regex.Replace(file, $@"\b.{fileType}\b", "");
-            file = file.Replace(" ", String.Empty);
-            return file + $"{timeStamp}.{fileType}";
         }
 
         /// <summary>
@@ -95,6 +55,47 @@ namespace Arcanum.ImageBlob.Interfaces.Services
         }
 
         /// <summary>
+        /// Uploads the image to azure blob storage
+        /// </summary>
+        /// <param name="file"> file to upload </param>
+        /// <returns> new BlobClient object </returns>
+        private async Task<BlobClient> UploadImage(Stream stream, string filename, string contentType)
+        {
+            filename = AugmentFileName(filename);
+            BlobContainerClient container = new BlobContainerClient(_config["StorageBlob:ConnectionString"], "images");
+
+            await container.CreateIfNotExistsAsync();
+            BlobClient blob = container.GetBlobClient(filename);
+
+            BlobUploadOptions options = new BlobUploadOptions()
+            {
+                HttpHeaders = new BlobHttpHeaders() { ContentType = contentType }
+            };
+
+            if (!blob.Exists())
+                await blob.UploadAsync(stream, options);
+            return blob;
+        }
+      
+        /// <summary>
+        /// Helper method that adds the time and date to the end of the filename to ensure it is unique.
+        /// </summary>
+        /// <param name="file"> string filename </param>
+        /// <returns> augmented filename </returns>
+        private string AugmentFileName(string file)
+        {
+            string timeStamp = DateTime.Now.ToString();
+            timeStamp = Regex.Replace(timeStamp, "[^0-9]", "");
+
+            string pattern = @"[^.]+$";
+            string fileType = Regex.Match(file, pattern).ToString();
+
+            file = Regex.Replace(file, $@"\b.{fileType}\b", "");
+            file = file.Replace(" ", String.Empty);
+            return file + $"{timeStamp}.{fileType}";
+        }
+
+        /// <summary>
         /// Helper method to insert "_thumb" before the file extension
         /// </summary>
         /// <param name="file"> string filename </param>
@@ -106,7 +107,6 @@ namespace Arcanum.ImageBlob.Interfaces.Services
             string thumb = Regex.Replace(file, $@"\b.{fileType}\b", "");
             return $"{thumb}_thumb.{fileType}";
         }
-
 
         /// <summary>
         /// Create Image object from the upload file.
