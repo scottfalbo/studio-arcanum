@@ -32,6 +32,12 @@
                     <input type="submit" value="update" />
                 </form>
             </div>
+            <div>
+                <form asp-page-handler="DeletePortfolio" method="post">
+                    <input type="hidden" name="portfolioId" value="@Model.Portfolio.Id" />
+                    <input type="hidden" name="artistId" value="@Model.Artist.Id" />
+                </form>
+            </div>
         }
     </section>
     <section>

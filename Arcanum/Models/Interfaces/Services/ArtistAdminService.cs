@@ -49,6 +49,34 @@ namespace Arcanum.Models.Interfaces.Services
             await _db.SaveChangesAsync();
         }
 
+        public async Task DeletePortfolio(int portfolioId, string artistId)
+        {
+            
+        }
+
+        /// <summary>
+        /// Helper method fo retrieve a portfolio record and return a list of it's relational images.
+        /// </summary>
+        /// <param name="id"> portfolio id </param>
+        /// <returns> List<Image> </returns>
+        private async Task<List<Image>> GetPortfolioImages(int id)
+        {
+            Portfolio portfolio = await  _db.Portfolio
+                .Where(a => a.Id == id)
+                .Include(b => b.PortfolioImage)
+                .ThenInclude(c => c.Image)
+                .Select(x => new Portfolio
+                {
+                    PortfolioImage = x.PortfolioImage
+                }).FirstOrDefaultAsync();
+            List<Image> images = new List<Image>();
+            foreach(PortfolioImage image in portfolio.PortfolioImage)
+            {
+                images.Add(image.Image);
+            }
+            return images;
+        }
+
         /// <summary>
         /// Helper method to assign some unique names for use with Bootstrap accordion menues.
         /// </summary>
