@@ -2,6 +2,8 @@ using Arcanum.Auth.Models;
 using Arcanum.Auth.Models.Interfaces;
 using Arcanum.Auth.Models.Interfaces.Services;
 using Arcanum.Data;
+using Arcanum.ImageBlob.Interfaces;
+using Arcanum.ImageBlob.Interfaces.Services;
 using Arcanum.Models.Interfaces;
 using Arcanum.Models.Interfaces.Services;
 using Azure.Core.Extensions;
@@ -58,6 +60,7 @@ namespace Arcanum
             services.AddTransient<IUserService, IdentityUserService>();
             services.AddTransient<IArtistAdmin, ArtistAdminService>();
             services.AddTransient<IWizardLord, WizardLordService>();
+            services.AddTransient<IUpload, UploadService>();
             services.AddTransient<ISite, SiteService>();
 
             services.AddControllers().AddNewtonsoftJson(options =>
