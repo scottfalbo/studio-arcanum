@@ -20,18 +20,19 @@ namespace Arcanum.Pages
 
         [BindProperty]
         public StudioInfo StudioInfo { get; set; }
+        public bool ActiveAdmin { get; set; }
 
-        public async Task OnGet()
+        public async Task OnGet(bool isActive = false)
         {
             StudioInfo = await _siteAdmin.GetStudio();
+            ActiveAdmin = isActive;
         }
 
-        public async Task OnPostUpdate()
+        public async Task<IActionResult> OnPostUpdate()
         {
             await _siteAdmin.UpdateStudioInfo(StudioInfo);
-            StudioInfo = await _siteAdmin.GetStudio();
 
-            Redirect("/StudioInfo");
+            return Redirect("/TheStudio?isActive=true");
         }
     }
 }

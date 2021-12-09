@@ -1,6 +1,7 @@
 ﻿@page
 @model Arcanum.Pages.TheStudioModel
 @{
+    ViewData["Title"] = "The Studio";
 }
 
 <div>@Model.StudioInfo.Instagram</div>
@@ -9,7 +10,7 @@
 <div>@Model.StudioInfo.Policies</div>
 <div>@Model.StudioInfo.Aftercare</div>
 
-@foreach(var image in Model.StudioInfo.StudioImages)
+@foreach (var image in Model.StudioInfo.StudioImages)
 {
     <img src="@image.Image.ThumbnailUrl" />
 }
@@ -17,9 +18,15 @@
 
 @if (User.IsInRole("WizardLord"))
 {
-    <div class="fullscreen admin-outer">
+    <partial name="Admin/_ShowPopUp" />
+}
+
+@if (User.IsInRole("WizardLord"))
+{
+    <div class="fullscreen admin-outer studio-page-admin @(Model.ActiveAdmin ? "" : "hide-me")">
         <div class="admin-inner">
             <partial name="Admin/_StudioPage" />
         </div>
+        <partial name="Admin/_ClosePopUp" />
     </div>
 }

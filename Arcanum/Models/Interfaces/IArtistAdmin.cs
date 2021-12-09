@@ -10,7 +10,7 @@ namespace Arcanum.Models.Interfaces
         public Task<Portfolio> CreatePortfolio(string title);
         public Task UpdatePortfolio(Portfolio portfolio);
         public Task AddPortfolioToArtist(string artistId, int portfolioId);
-
+        public Task DeletePortfolio(int portfolioId, string artistId);
 
         public Task<Image> CreateImage(Image image);
         public Task AddImageToPortfolio(int portfolioId, int imageId);

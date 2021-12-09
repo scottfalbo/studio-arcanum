@@ -1,6 +1,7 @@
 ﻿@page
 @model Arcanum.Pages.BookingModel
 @{
+    ViewData["Title"] = $"{Model.Artist.Name}'s Booking";
 }
 
 
@@ -16,15 +17,21 @@
 
     @if (User.IsInRole("WizardLord") || (User.IsInRole("ArtistAdmin") && Model.Artist.Id == Model.UserId))
     {
-        <div class="fullscreen admin-outer">
+        <partial name="Admin/_ShowPopUp" />
+    }
+
+    @if (User.IsInRole("WizardLord") || (User.IsInRole("ArtistAdmin") && Model.Artist.Id == Model.UserId))
+    {
+        <div class="fullscreen admin-outer booking-page-admin @(Model.ActiveAdmin ? "" : "hide-me")">
             <div class="admin-inner">
                 <partial name="Admin/_ArtistBooking" />
             </div>
+            <partial name="Admin/_ClosePopUp" />
         </div>
     }
 }
 else
-{ 
+{
     <ul>
         @await Component.InvokeAsync("ArtistNav")
     </ul>

@@ -1,8 +1,8 @@
 ﻿@page
 @model Arcanum.Pages.ArtistModel
 @{
+    ViewData["Title"] = Model.Artist.Name;
 }
-
 
 @if (Model.Artist != null)
 {
@@ -38,7 +38,7 @@
 
     @if (User.IsInRole("WizardLord") || (User.IsInRole("ArtistAdmin") && Model.Artist.Id == Model.UserId))
     {
-        <div class="fullscreen admin-outer artist-admin hide-me">
+        <div class="fullscreen admin-outer artist-admin @(Model.ActiveAdmin ? "" : "hide-me")">
             <div class="admin-inner">
                 <partial name="Admin/_ArtistPage" />
                 <partial name="Admin/_ArtistPortfolio" />
