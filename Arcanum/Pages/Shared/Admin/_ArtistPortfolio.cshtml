@@ -34,7 +34,7 @@
             </div>
             <div>
                 <form asp-page-handler="DeletePortfolio" method="post">
-                    <input type="hidden" asp-for="@Model.Portfolio.Id" value="@Model.Portfolio.Id" />
+                    <input type="hidden" asp-for="@Model.Portfolio.Id" value="@portfolio.Portfolio.Id" />
                     <input type="hidden" asp-for="@Model.Artist.Id" value="@Model.Artist.Id" />
                     <input type="submit" value="delete" />
                 </form>
