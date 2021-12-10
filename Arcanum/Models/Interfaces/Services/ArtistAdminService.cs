@@ -205,6 +205,21 @@ namespace Arcanum.Models.Interfaces.Services
         }
 
         /// <summary>
+        /// Removes image record, portfolio join table and files in storage blob.
+        /// </summary>
+        /// <param name="imageId"> int image id </param>
+        /// <param name="portfolioId"> int portfolio id </param>
+        /// <returns></returns>
+        public async Task DeleteImage(int imageId, int portfolioId)
+        {
+            await RemoveImageFromPortfolio(portfolioId, imageId);
+            Image image = await _db.Image.FindAsync(imageId);
+            await _upload.RemoveImage(image.FileName);
+            _db.Entry(image).State = EntityState.Deleted;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
         /// Query the database for an artists associated booking record.
         /// </summary>
         /// <param name="artistId"> string artistId </param>

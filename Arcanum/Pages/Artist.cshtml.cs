@@ -70,6 +70,10 @@ namespace Arcanum.Pages
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
 
+        /// <summary>
+        /// Add a portfolio record and join table.
+        /// </summary>
+        /// <param name="title"> string portfolio title </param>
         public async Task<IActionResult> OnPostAddPortfolio(string title)
         {
             Portfolio newPortfolio = await _artistAdmin.CreatePortfolio(title);
@@ -77,12 +81,21 @@ namespace Arcanum.Pages
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
 
+        /// <summary>
+        /// Removes a portolio record and associated join tables.
+        /// </summary>
         public async Task<IActionResult> OnPostDeletePortfolio()
         {
             await _artistAdmin.DeletePortfolio(Portfolio.Id, Artist.Id);
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
 
+        /// <summary>
+        /// Uploads images to blob storage, creates an image record and portfolio join table.
+        /// </summary>
+        /// <param name="files"> IFormFile[] input images </param>
+        /// <param name="title"> string optional title </param>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAddImages(IFormFile[] files, string title ="untitled")
         {
             foreach(IFormFile file in files)

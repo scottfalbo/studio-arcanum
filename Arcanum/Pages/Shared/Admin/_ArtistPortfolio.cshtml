@@ -55,7 +55,7 @@
                     </form>
                 </section>
                 <section>
-                    component?
+                    @await Component.InvokeAsync("GalleryAdmin", new { portfolioId = portfolio.PortfolioId })
                 </section>
             </div>
         }

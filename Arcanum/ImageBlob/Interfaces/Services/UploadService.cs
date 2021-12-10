@@ -157,5 +157,17 @@ namespace Arcanum.ImageBlob.Interfaces.Services
             return newWidth;
         }
 
+        /// <summary>
+        /// Remove image and thumb from blob storage on image deletion.
+        /// </summary>
+        /// <param name="fileName"> blob filename </param>
+        public async Task RemoveImage(string fileName)
+        {
+            BlobContainerClient container = new BlobContainerClient(_config["StorageBlob:ConnectionString"], "images");
+            BlobClient blob = container.GetBlobClient(fileName);
+            await blob.DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots, null, default);
+            blob = container.GetBlobClient($"{fileName}_thumb");
+            await blob.DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots, null, default);
+        }
     }
 }
