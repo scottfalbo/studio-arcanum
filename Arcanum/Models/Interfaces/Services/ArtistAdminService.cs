@@ -49,9 +49,19 @@ namespace Arcanum.Models.Interfaces.Services
             await _db.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Delete the portfolio record.
+        /// Remove the ArtistPortfolio and associated PortfolioImage join tables.
+        /// </summary>
+        /// <param name="portfolioId"> int portfolioId </param>
+        /// <param name="artistId"> string artistId </param>
+        /// <returns></returns>
         public async Task DeletePortfolio(int portfolioId, string artistId)
         {
-            
+            //get images
+            //remove images
+            //remove portfolio
+            //delete portfolio
         }
 
         /// <summary>
@@ -70,6 +80,12 @@ namespace Arcanum.Models.Interfaces.Services
             await _db.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Remove ArtistPortfolio join table record.
+        /// </summary>
+        /// <param name="portfolioId"> int portfolioId </param>
+        /// <param name="artistId"> string artistId </param>
+        /// <returns></returns>
         public async Task RemovePortfolioFromArtist(int portfolioId, string artistId)
         {
             // remove portfolioImages here
@@ -85,7 +101,7 @@ namespace Arcanum.Models.Interfaces.Services
         }
 
         /// <summary>
-        /// Helper method fo retrieve a portfolio record and return a list of it's relational images.
+        /// Helper method to retrieve a portfolio record and return a list of it's relational images.
         /// </summary>
         /// <param name="id"> portfolio id </param>
         /// <returns> List<Image> </returns>
@@ -163,9 +179,23 @@ namespace Arcanum.Models.Interfaces.Services
             await _db.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Remove PortfolioImage join tables records.
+        /// </summary>
+        /// <param name="portfolioId"> int portfolioId </param>
+        /// <param name="imageId"> int imageId </param>
+        /// <returns></returns>
         public async Task RemoveImageFromPortfolio(int portfolioId, int imageId)
         {
-
+            PortfolioImage portfolioImage = await _db.PortfolioImage
+                .Where(x => x.ImageId == imageId && x.PortfolioId == portfolioId)
+                .Select(y => new PortfolioImage
+                {
+                    PortfolioId = y.PortfolioId,
+                    ImageId = y.ImageId
+                }).FirstOrDefaultAsync();
+            _db.Entry(portfolioImage).State = EntityState.Deleted;
+            await _db.SaveChangesAsync();
         }
 
         /// <summary>
