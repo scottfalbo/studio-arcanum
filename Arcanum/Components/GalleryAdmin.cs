@@ -1,4 +1,5 @@
-﻿using Arcanum.Models.Interfaces;
+﻿using Arcanum.Models;
+using Arcanum.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,8 @@ namespace Arcanum.Components
         {
             ViewModel viewModel = new ViewModel
             {
-                PortfolioId = portfolioId
+                PortfolioId = portfolioId,
+                Images = 
             };
             return View(viewModel);
         }
@@ -29,6 +31,7 @@ namespace Arcanum.Components
         public class ViewModel
         {
             public int PortfolioId { get; set; }
+            public List<PortfolioImage> Images { get; set; }
         }
     }
 }

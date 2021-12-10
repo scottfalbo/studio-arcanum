@@ -61,10 +61,10 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="artistId"> string artistId </param>
         public async Task DeletePortfolio(int portfolioId, string artistId)
         {
-            List<Image> images = await GetPortfolioImages(portfolioId);
-            foreach(Image image in images)
+            List<PortfolioImage> images = await GetPortfolioImages(portfolioId);
+            foreach(PortfolioImage image in images)
             {
-                await RemoveImageFromPortfolio(portfolioId, image.Id);
+                await RemoveImageFromPortfolio(portfolioId, image.ImageId);
             }
             await RemovePortfolioFromArtist(portfolioId, artistId);
             Portfolio portfolio = await _db.Portfolio.FindAsync(portfolioId);
@@ -111,7 +111,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="id"> portfolio id </param>
         /// <returns> List<Image> </returns>
-        private async Task<List<Image>> GetPortfolioImages(int id)
+        public async Task<List<PortfolioImage>> GetPortfolioImages(int id)
         {
             Portfolio portfolio = await  _db.Portfolio
                 .Where(a => a.Id == id)
@@ -121,12 +121,7 @@ namespace Arcanum.Models.Interfaces.Services
                 {
                     PortfolioImage = x.PortfolioImage
                 }).FirstOrDefaultAsync();
-            List<Image> images = new List<Image>();
-            foreach(PortfolioImage image in portfolio.PortfolioImage)
-            {
-                images.Add(image.Image);
-            }
-            return images;
+            return portfolio.PortfolioImage;
         }
 
         /// <summary>
