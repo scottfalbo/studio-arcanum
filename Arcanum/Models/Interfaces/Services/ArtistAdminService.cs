@@ -1,4 +1,6 @@
 ﻿using Arcanum.Data;
+using Arcanum.ImageBlob.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,10 +13,12 @@ namespace Arcanum.Models.Interfaces.Services
     public class ArtistAdminService : IArtistAdmin
     {
         private readonly ArcanumDbContext _db;
+        public IUpload _upload;
 
-        public ArtistAdminService(ArcanumDbContext db)
+        public ArtistAdminService(ArcanumDbContext db, IUpload upload)
         {
             _db = db;
+            _upload = upload;
         }
 
         /// <summary>
@@ -49,13 +53,61 @@ namespace Arcanum.Models.Interfaces.Services
             await _db.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Delete the portfolio record.
+        /// Remove the ArtistPortfolio and associated PortfolioImage join tables.
+        /// </summary>
+        /// <param name="portfolioId"> int portfolioId </param>
+        /// <param name="artistId"> string artistId </param>
         public async Task DeletePortfolio(int portfolioId, string artistId)
         {
-            
+            List<Image> images = await GetPortfolioImages(portfolioId);
+            foreach(Image image in images)
+            {
+                await RemoveImageFromPortfolio(portfolioId, image.Id);
+            }
+            await RemovePortfolioFromArtist(portfolioId, artistId);
+            Portfolio portfolio = await _db.Portfolio.FindAsync(portfolioId);
+            _db.Entry(portfolio).State = EntityState.Deleted;
+            await _db.SaveChangesAsync();
         }
 
         /// <summary>
-        /// Helper method fo retrieve a portfolio record and return a list of it's relational images.
+        /// Add a portfolio object to an artist with a PortfolioArtist join table.
+        /// </summary>
+        /// <param name="artistId"> string artistId </param>
+        /// <param name="portfolioId"> int portfolioId </param>
+        public async Task AddPortfolioToArtist(string artistId, int portfolioId)
+        {
+            ArtistPortfolio artistPortfolio = new ArtistPortfolio()
+            {
+                ArtistId = artistId,
+                PortfolioId = portfolioId
+            };
+            _db.Entry(artistPortfolio).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Remove ArtistPortfolio join table record.
+        /// </summary>
+        /// <param name="portfolioId"> int portfolioId </param>
+        /// <param name="artistId"> string artistId </param>
+        public async Task RemovePortfolioFromArtist(int portfolioId, string artistId)
+        {
+            ArtistPortfolio artistPortfolio = await _db.ArtistPortfolio
+                .Where(x => x.PortfolioId == portfolioId && x.ArtistId == artistId)
+                .Select(y => new ArtistPortfolio
+                {
+                    ArtistId = artistId,
+                    PortfolioId = portfolioId
+                }).FirstOrDefaultAsync();
+            _db.Entry(artistPortfolio).State = EntityState.Deleted;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Helper method to retrieve a portfolio record and return a list of it's relational images.
         /// </summary>
         /// <param name="id"> portfolio id </param>
         /// <returns> List<Image> </returns>
@@ -95,37 +147,23 @@ namespace Arcanum.Models.Interfaces.Services
         }
 
         /// <summary>
-        /// Add a portfolio object to an artist with a PortfolioArtist join table.
-        /// </summary>
-        /// <param name="artistId"> string artistId </param>
-        /// <param name="portfolioId"> int portfolioId </param>
-        public async Task AddPortfolioToArtist(string artistId, int portfolioId)
-        {
-            ArtistPortfolio artistPortfolio = new ArtistPortfolio()
-            {
-                ArtistId = artistId,
-                PortfolioId = portfolioId
-            };
-            _db.Entry(artistPortfolio).State = EntityState.Added;
-            await _db.SaveChangesAsync();
-        }
-
-        /// <summary>
         /// Create a new image object and record in the database.
         /// </summary>
         /// <param name="image"> Image image </param>
         /// <returns> new Image object </returns>
-        public async Task<Image> CreateImage(Image image)
+        public async Task<Image> CreateImage(IFormFile file, string artistId, string title)
         {
+            Artist artist = await GetArtist(artistId);
+            Image image = await _upload.AddImage(file);
             Image newImage = new Image()
             {
-                Title = image.Title,
-                Artist = image.Artist,
+                Title = title,
+                Artist = artist.Name,
                 SourceUrl = image.SourceUrl,
                 ThumbnailUrl = image.ThumbnailUrl,
                 FileName = image.FileName,
                 ThumbFileName = image.ThumbFileName,
-                Order = image.Order
+                Order = 0
             };
             _db.Entry(newImage).State = EntityState.Added;
             await _db.SaveChangesAsync();
@@ -137,7 +175,6 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="portfolioId"> int portfolio id </param>
         /// <param name="imageId"> int image id </param>
-        /// <returns></returns>
         public async Task AddImageToPortfolio(int portfolioId, int imageId)
         {
             PortfolioImage portfolioImage = new PortfolioImage()
@@ -146,6 +183,24 @@ namespace Arcanum.Models.Interfaces.Services
                 ImageId = imageId
             };
             _db.Entry(portfolioImage).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Remove PortfolioImage join tables records.
+        /// </summary>
+        /// <param name="portfolioId"> int portfolioId </param>
+        /// <param name="imageId"> int imageId </param>
+        public async Task RemoveImageFromPortfolio(int portfolioId, int imageId)
+        {
+            PortfolioImage portfolioImage = await _db.PortfolioImage
+                .Where(x => x.ImageId == imageId && x.PortfolioId == portfolioId)
+                .Select(y => new PortfolioImage
+                {
+                    PortfolioId = y.PortfolioId,
+                    ImageId = y.ImageId
+                }).FirstOrDefaultAsync();
+            _db.Entry(portfolioImage).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
         }
 
@@ -176,6 +231,35 @@ namespace Arcanum.Models.Interfaces.Services
         {
             _db.Entry(booking).State = EntityState.Modified;
             await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Retrieve an artist record by id.
+        /// </summary>
+        /// <param name="id"> string id </param>
+        /// <returns> Artist object </returns>
+        public async Task<Artist> GetArtist(string id)
+        {
+            return await _db.Artist
+                .Where(x => x.Id == id)
+                .Include(a => a.ArtistPortfolios)
+                .ThenInclude(b => b.Portfolio)
+                .Include(c => c.ArtistBooking)
+                .ThenInclude(d => d.Booking)
+                .Select(y => new Artist
+                {
+                    Id = y.Id,
+                    Name = y.Name,
+                    Email = y.Email,
+                    Intro = y.Intro,
+                    Instagram = y.Instagram,
+                    ProfileImageUri = y.ProfileImageUri,
+                    ProfileImageFileName = y.ProfileImageFileName,
+                    Order = y.Order,
+                    Display = y.Display,
+                    ArtistPortfolios = y.ArtistPortfolios,
+                    ArtistBooking = y.ArtistBooking
+                }).FirstOrDefaultAsync();
         }
     }
 }
