@@ -153,18 +153,17 @@ namespace Arcanum.Models.Interfaces.Services
         /// <returns> new Image object </returns>
         public async Task<Image> CreateImage(IFormFile file, string artistId, string title)
         {
-            
-
+            Artist artist = await GetArtist(artistId);
             Image image = await _upload.AddImage(file);
             Image newImage = new Image()
             {
-                Title = image.Title,
-                Artist = image.Artist,
+                Title = title,
+                Artist = artist.Name,
                 SourceUrl = image.SourceUrl,
                 ThumbnailUrl = image.ThumbnailUrl,
                 FileName = image.FileName,
                 ThumbFileName = image.ThumbFileName,
-                Order = image.Order
+                Order = 0
             };
             _db.Entry(newImage).State = EntityState.Added;
             await _db.SaveChangesAsync();
