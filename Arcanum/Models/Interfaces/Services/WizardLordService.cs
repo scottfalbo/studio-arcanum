@@ -51,7 +51,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="id"> string UserId </param>
         /// <returns> List<string> userRoles </returns>
-        private async Task<List<string>> GetUserRoles(string id)
+        public async Task<List<string>> GetUserRoles(string id)
         {
             var roles = await _db.UserRoles
                 .Where(x => x.UserId == id)

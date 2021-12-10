@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Arcanum.Auth.Models;
 using Arcanum.Models;
 using Arcanum.Models.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -79,6 +80,16 @@ namespace Arcanum.Pages
         public async Task<IActionResult> OnPostDeletePortfolio()
         {
             await _artistAdmin.DeletePortfolio(Portfolio.Id, Artist.Id);
+            return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
+        }
+
+        public async Task<IActionResult> OnPostAddImages(IFormFile[] files, string title ="untitled")
+        {
+            foreach(IFormFile file in files)
+            {
+                Image image = await _artistAdmin.CreateImage(file, Artist.Id, title);
+                await _artistAdmin.AddImageToPortfolio(Portfolio.Id, image.Id);
+            }
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
     }
