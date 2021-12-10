@@ -1,3 +1,7 @@
 ﻿@model Arcanum.Components.GalleryAdminViewComponent.ViewModel
 
 Portfolio Id = @Model.PortfolioId
+@foreach(var image in Model.Images)
+{
+    <img src="@image.ThumbnailUrl" />
+}
