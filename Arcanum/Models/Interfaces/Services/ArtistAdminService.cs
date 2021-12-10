@@ -55,13 +55,17 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="portfolioId"> int portfolioId </param>
         /// <param name="artistId"> string artistId </param>
-        /// <returns></returns>
         public async Task DeletePortfolio(int portfolioId, string artistId)
         {
-            //get images
-            //remove images
-            //remove portfolio
-            //delete portfolio
+            List<Image> images = await GetPortfolioImages(portfolioId);
+            foreach(Image image in images)
+            {
+                await RemoveImageFromPortfolio(portfolioId, image.Id);
+            }
+            await RemovePortfolioFromArtist(portfolioId, artistId);
+            Portfolio portfolio = await _db.Portfolio.FindAsync(portfolioId);
+            _db.Entry(portfolio).State = EntityState.Deleted;
+            await _db.SaveChangesAsync();
         }
 
         /// <summary>
@@ -85,10 +89,8 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="portfolioId"> int portfolioId </param>
         /// <param name="artistId"> string artistId </param>
-        /// <returns></returns>
         public async Task RemovePortfolioFromArtist(int portfolioId, string artistId)
         {
-            // remove portfolioImages here
             ArtistPortfolio artistPortfolio = await _db.ArtistPortfolio
                 .Where(x => x.PortfolioId == portfolioId && x.ArtistId == artistId)
                 .Select(y => new ArtistPortfolio
@@ -167,7 +169,6 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="portfolioId"> int portfolio id </param>
         /// <param name="imageId"> int image id </param>
-        /// <returns></returns>
         public async Task AddImageToPortfolio(int portfolioId, int imageId)
         {
             PortfolioImage portfolioImage = new PortfolioImage()
@@ -184,7 +185,6 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="portfolioId"> int portfolioId </param>
         /// <param name="imageId"> int imageId </param>
-        /// <returns></returns>
         public async Task RemoveImageFromPortfolio(int portfolioId, int imageId)
         {
             PortfolioImage portfolioImage = await _db.PortfolioImage
