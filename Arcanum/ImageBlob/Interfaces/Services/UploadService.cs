@@ -19,12 +19,10 @@ namespace Arcanum.ImageBlob.Interfaces.Services
     public class UploadService : IUpload
     {
         public IConfiguration _config { get; }
-        public IArtistAdmin _artistAdmin;
 
-        public UploadService(IConfiguration config, IArtistAdmin artistAdmin)
+        public UploadService(IConfiguration config)
         {
             _config = config;
-            _artistAdmin = artistAdmin;
         }
 
         /// <summary>
@@ -51,7 +49,7 @@ namespace Arcanum.ImageBlob.Interfaces.Services
                 ThumbFileName = thumbFile,
                 Order = 0
             };
-            return await _artistAdmin.CreateImage(image);
+            return image;
         }
 
         /// <summary>

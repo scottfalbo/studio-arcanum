@@ -1,4 +1,6 @@
 ﻿using Arcanum.Data;
+using Arcanum.ImageBlob.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,10 +13,12 @@ namespace Arcanum.Models.Interfaces.Services
     public class ArtistAdminService : IArtistAdmin
     {
         private readonly ArcanumDbContext _db;
+        public IUpload _upload;
 
-        public ArtistAdminService(ArcanumDbContext db)
+        public ArtistAdminService(ArcanumDbContext db, IUpload upload)
         {
             _db = db;
+            _upload = upload;
         }
 
         /// <summary>
@@ -147,8 +151,11 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="image"> Image image </param>
         /// <returns> new Image object </returns>
-        public async Task<Image> CreateImage(Image image)
+        public async Task<Image> CreateImage(IFormFile file, string artistId, string title)
         {
+            
+
+            Image image = await _upload.AddImage(file);
             Image newImage = new Image()
             {
                 Title = image.Title,
@@ -225,6 +232,29 @@ namespace Arcanum.Models.Interfaces.Services
         {
             _db.Entry(booking).State = EntityState.Modified;
             await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Retrieve an artist record by id.
+        /// </summary>
+        /// <param name="id"> string id </param>
+        /// <returns> Artist object </returns>
+        public async Task<Artist> GetArtist(string id)
+        {
+            return await _db.Artist
+                .Where(x => x.Id == id)
+                .Select(y => new Artist
+                {
+                    Id = y.Id,
+                    Name = y.Name,
+                    Email = y.Email,
+                    Intro = y.Intro,
+                    ProfileImageUri = y.ProfileImageUri,
+                    ProfileImageFileName = y.ProfileImageFileName,
+                    Order = y.Order,
+                    Display = y.Display
+                    
+                }).FirstOrDefaultAsync();
         }
     }
 }
