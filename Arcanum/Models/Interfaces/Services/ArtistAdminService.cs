@@ -61,7 +61,6 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="artistId"> string artistId </param>
         public async Task DeletePortfolio(int portfolioId, string artistId)
         {
-            //TODO: unidentified error on user delete
             List<Image> images = await GetPortfolioImages(portfolioId);
             foreach(Image image in images)
             {
@@ -243,17 +242,23 @@ namespace Arcanum.Models.Interfaces.Services
         {
             return await _db.Artist
                 .Where(x => x.Id == id)
+                .Include(a => a.ArtistPortfolios)
+                .ThenInclude(b => b.Portfolio)
+                .Include(c => c.ArtistBooking)
+                .ThenInclude(d => d.Booking)
                 .Select(y => new Artist
                 {
                     Id = y.Id,
                     Name = y.Name,
                     Email = y.Email,
                     Intro = y.Intro,
+                    Instagram = y.Instagram,
                     ProfileImageUri = y.ProfileImageUri,
                     ProfileImageFileName = y.ProfileImageFileName,
                     Order = y.Order,
-                    Display = y.Display
-                    
+                    Display = y.Display,
+                    ArtistPortfolios = y.ArtistPortfolios,
+                    ArtistBooking = y.ArtistBooking
                 }).FirstOrDefaultAsync();
         }
     }

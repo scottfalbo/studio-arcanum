@@ -10,10 +10,12 @@ namespace Arcanum.Models.Interfaces.Services
     public class SiteService : ISite
     {
         private readonly ArcanumDbContext _db;
+        public IArtistAdmin _artistAdmin;
 
-        public SiteService(ArcanumDbContext context)
+        public SiteService(ArcanumDbContext context, IArtistAdmin artistAdmin)
         {
             _db = context;
+            _artistAdmin = artistAdmin;
         }
 
         /// <summary>
@@ -112,11 +114,13 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="id"> string Artist.Id </param>
         public async Task DeleteArtist(string id)
         {
-            Artist artist = await _db.Artist.FindAsync(id);
+            Artist artist = await _artistAdmin.GetArtist(id);
+            foreach(ArtistPortfolio artistPortfolio in artist.ArtistPortfolios)
+            {
+                await _artistAdmin.RemovePortfolioFromArtist(artistPortfolio.PortfolioId, id);
+            }
             _db.Entry(artist).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
-
-            //TODO: Need to add logic to delete portfoios, images and booking page once they are built.
         }
 
         /// <summary>
