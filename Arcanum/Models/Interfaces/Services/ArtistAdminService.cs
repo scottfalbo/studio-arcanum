@@ -61,6 +61,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="artistId"> string artistId </param>
         public async Task DeletePortfolio(int portfolioId, string artistId)
         {
+            //TODO: unidentified error on user delete
             List<Image> images = await GetPortfolioImages(portfolioId);
             foreach(Image image in images)
             {

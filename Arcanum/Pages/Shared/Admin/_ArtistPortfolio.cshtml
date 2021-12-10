@@ -11,7 +11,7 @@
                         Title
                         <input type="text" asp-for="@Model.Portfolio.Title" value="@portfolio.Portfolio.Title" placeholder="@portfolio.Portfolio.Title" />
                     </label>
-                    @{ 
+                    @{
                         int index = Model.Artist.ArtistPortfolios.IndexOf(@portfolio);
                     }
                     <label>
@@ -34,14 +34,13 @@
             </div>
             <div>
                 <form asp-page-handler="DeletePortfolio" method="post">
-                    <input type="hidden" name="portfolioId" value="@Model.Portfolio.Id" />
-                    <input type="hidden" name="artistId" value="@Model.Artist.Id" />
+                    <input type="hidden" asp-for="@Model.Portfolio.Id" value="@Model.Portfolio.Id" />
+                    <input type="hidden" asp-for="@Model.Artist.Id" value="@Model.Artist.Id" />
+                    <input type="submit" value="delete" />
                 </form>
             </div>
+            <partial name="Admin/_Images" />
         }
-    </section>
-    <section>
-        <partial name="Admin/_Images" />
     </section>
     <section>
         <form asp-page-handler="AddPortfolio" method="post">

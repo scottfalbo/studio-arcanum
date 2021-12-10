@@ -56,7 +56,6 @@ namespace Arcanum.Pages
             {
                 await _wizard.DeleteRegistrationAccessCode(ValidCode);
             }
-            await AddDefaultPortfolio(artist.Id);
             return Redirect("/Login");
         }
 
@@ -73,41 +72,6 @@ namespace Arcanum.Pages
                 ValidCode = code;
             }
             Redirect("/Registration");
-        }
-
-        /// <summary>
-        /// Helper method to add a default portfolio with placeholder images to a new artist profile.
-        /// </summary>
-        /// <param name="artistId"> string artistId </param>
-        private async Task AddDefaultPortfolio(string artistId)
-        {
-            Portfolio portfolio = await _artistAdmin.CreatePortfolio("Gallery One");
-            await _artistAdmin.AddPortfolioToArtist(artistId, portfolio.Id);
-            List<Image> images = await CreateDefaultImages();
-
-            foreach (Image image in images)
-                await _artistAdmin.AddImageToPortfolio(portfolio.Id, image.Id);
-        }
-
-        /// <summary>
-        /// Helper method to create a list of default placeholder images.
-        /// </summary>
-        /// <returns> List<Image> image objects </returns>
-        private async Task<List<Image>> CreateDefaultImages()
-        {
-            List<Image> images = new List<Image>();
-            for (int i = 0; i < 10; i++)
-            {
-                Image image = new Image()
-                {
-                    Title = $"default-image-{i}",
-                    Artist = "unknown",
-                    SourceUrl = "https://via.placeholder.com/60",
-                    ThumbnailUrl = "https://via.placeholder.com/60"
-                };
-                images.Add(await _artistAdmin.CreateImage(image));
-            }
-            return images;
         }
 
         /// <summary>

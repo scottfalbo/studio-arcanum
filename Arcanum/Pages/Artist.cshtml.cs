@@ -76,9 +76,9 @@ namespace Arcanum.Pages
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
 
-        public async Task<IActionResult> OnPostDeletePortfolio(int portfolioId, string artistId)
+        public async Task<IActionResult> OnPostDeletePortfolio()
         {
-            await _artistAdmin.DeletePortfolio(portfolioId, artistId);
+            await _artistAdmin.DeletePortfolio(Portfolio.Id, Artist.Id);
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
     }
