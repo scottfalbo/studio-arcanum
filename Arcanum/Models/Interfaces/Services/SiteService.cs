@@ -158,6 +158,16 @@ namespace Arcanum.Models.Interfaces.Services
         }
 
         /// <summary>
+        /// Updates a booking record.
+        /// </summary>
+        /// <param name="booking"> Booking object </param>
+        public async Task UpdateBooking(Booking booking)
+        {
+            _db.Entry(booking).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
         /// Removes a booking record from the database.
         /// </summary>
         /// <param name="id"> int booking id </param>
@@ -186,8 +196,10 @@ namespace Arcanum.Models.Interfaces.Services
             await _db.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Gets the mainpage record.
         /// </summary>
-        /// <returns> ArcanumMain object </returns>
+        /// <returns> MainPage object </returns>
         public async Task<ArcanumMain> GetMainPage()
         {
             return await _db.ArcanumMain

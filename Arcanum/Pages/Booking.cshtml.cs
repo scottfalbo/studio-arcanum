@@ -52,7 +52,7 @@ namespace Arcanum.Pages
 
         public async Task<IActionResult> OnPostUpdate()
         {
-            await _artistAdmin.UpdateArtistBooking(Booking);
+            await _siteAdmin.UpdateBooking(Booking);
 
             return Redirect($"/Booking?artistId={UserId}&isActive=true");
         }

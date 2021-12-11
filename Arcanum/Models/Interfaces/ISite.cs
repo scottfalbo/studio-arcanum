@@ -16,6 +16,7 @@ namespace Arcanum.Models.Interfaces
 
         public Task<Booking> CreateBooking();
         public Task AddBookingToArtist(string artistId, int bookingId);
+        public Task UpdateBooking(Booking booking);
         public Task DeleteBooking(int id);
         public Task RemoveBookingFromArtist(string artistId, int bookingId);
 
