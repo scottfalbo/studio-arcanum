@@ -34,9 +34,10 @@ namespace Arcanum.ImageBlob.Interfaces.Services
         public async Task<Models.Image> AddImage(IFormFile file)
         {
             Stream stream = ResizeImage(file, 1900);
-            BlobClient blob = await UploadImage(stream, file.FileName, file.ContentType);
+            string filename = AugmentFileName(file.FileName);
+            BlobClient blob = await UploadImage(stream, filename, file.ContentType);
 
-            string thumbFile = ThumbNailFileName(file.FileName);
+            string thumbFile = $"{filename}_thumb";
 
             Stream thumbStream = ResizeImage(file, 100);
             BlobClient thumb = await UploadImage(thumbStream, thumbFile, file.ContentType);
@@ -44,7 +45,7 @@ namespace Arcanum.ImageBlob.Interfaces.Services
             Models.Image image = new Models.Image()
             {
                 SourceUrl = blob.Uri.ToString(),
-                FileName = file.FileName,
+                FileName = filename,
                 ThumbnailUrl = thumb.Uri.ToString(),
                 ThumbFileName = thumbFile,
                 Order = 0
@@ -59,9 +60,7 @@ namespace Arcanum.ImageBlob.Interfaces.Services
         /// <returns> new BlobClient object </returns>
         private async Task<BlobClient> UploadImage(Stream stream, string filename, string contentType)
         {
-            filename = AugmentFileName(filename);
             BlobContainerClient container = new BlobContainerClient(_config["StorageBlob:ConnectionString"], "images");
-
             await container.CreateIfNotExistsAsync();
             BlobClient blob = container.GetBlobClient(filename);
 

@@ -105,5 +105,11 @@ namespace Arcanum.Pages
             }
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
+
+        public async Task<IActionResult> OnPostDeleteImage(int imageId, int portfolioId)
+        {
+            await _artistAdmin.DeleteImage(imageId, portfolioId);
+            return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
+        }
     }
 }
