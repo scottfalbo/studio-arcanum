@@ -23,7 +23,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="artist"> Artist object </param>
         public async Task<Artist> CreateArtist(Artist artist)
-        {
+        { 
             Artist newArtist = new Artist()
             {
                 Id = artist.Id,
@@ -31,12 +31,13 @@ namespace Arcanum.Models.Interfaces.Services
                 Email = artist.Email,
                 ProfileImageUri = "https://via.placeholder.com/200x300",
                 Display = false,
-                Order = 0
+                Order = 0,
             };
             _db.Entry(newArtist).State = EntityState.Added;
             await _db.SaveChangesAsync();
-            //create booking page
-            // attach to artist
+
+            Booking booking = await CreateBooking();
+            await AddBookingToArtist(newArtist.Id, booking.Id);
             return newArtist;
         }
 
@@ -121,8 +122,9 @@ namespace Arcanum.Models.Interfaces.Services
             {
                 await _artistAdmin.RemovePortfolioFromArtist(artistPortfolio.PortfolioId, id);
             }
-            //remove booking
-            //delete booking
+
+            await RemoveBookingFromArtist(id, artist.ArtistBooking.BookingId);
+            await DeleteBooking(artist.ArtistBooking.BookingId);
             _db.Entry(artist).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
         }
