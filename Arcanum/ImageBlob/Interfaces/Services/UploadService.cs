@@ -93,19 +93,6 @@ namespace Arcanum.ImageBlob.Interfaces.Services
         }
 
         /// <summary>
-        /// Helper method to insert "_thumb" before the file extension
-        /// </summary>
-        /// <param name="file"> string filename </param>
-        /// <returns> string filename + _thumb </returns>
-        private string ThumbNailFileName(string file)
-        {
-            string pattern = @"[^.]+$";
-            string fileType = Regex.Match(file, pattern).ToString();
-            string thumb = Regex.Replace(file, $@"\b.{fileType}\b", "");
-            return $"{thumb}_thumb.{fileType}";
-        }
-
-        /// <summary>
         /// Create Image object from the upload file.
         /// Resize for max gallery height or thumbnail based on n parameter.
         /// Save the updated Image to a Stream for upload to blob.

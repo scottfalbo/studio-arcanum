@@ -65,6 +65,7 @@ namespace Arcanum.Models.Interfaces.Services
             foreach(PortfolioImage image in images)
             {
                 await RemoveImageFromPortfolio(portfolioId, image.ImageId);
+                await DeleteImage(image.ImageId, portfolioId);
             }
             await RemovePortfolioFromArtist(portfolioId, artistId);
             Portfolio portfolio = await _db.Portfolio.FindAsync(portfolioId);
