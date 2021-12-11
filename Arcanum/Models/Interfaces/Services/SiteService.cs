@@ -123,6 +123,26 @@ namespace Arcanum.Models.Interfaces.Services
             await _db.SaveChangesAsync();
         }
 
+        public async Task<Booking> CreateBooking()
+        {
+            return null;
+        }
+
+        public async Task AddBookingToArtist(string artistId, int bookingId)
+        {
+
+        }
+
+        public async Task DeleteBooking(int id)
+        {
+
+        }
+
+        public async Task RemoveBookingFromArtist(string artistId, int bookingId)
+        {
+
+        }
+
         /// <summary>
         /// Query the main page data from the database
         /// </summary>
