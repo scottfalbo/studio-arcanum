@@ -235,16 +235,6 @@ namespace Arcanum.Models.Interfaces.Services
         }
 
         /// <summary>
-        /// Update the booking record in the database.
-        /// </summary>
-        /// <param name="booking"> Booking object </param>
-        public async Task UpdateArtistBooking(Booking booking)
-        {
-            _db.Entry(booking).State = EntityState.Modified;
-            await _db.SaveChangesAsync();
-        }
-
-        /// <summary>
         /// Retrieve an artist record by id.
         /// </summary>
         /// <param name="id"> string id </param>

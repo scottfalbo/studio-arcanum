@@ -23,7 +23,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="artist"> Artist object </param>
         public async Task<Artist> CreateArtist(Artist artist)
-        {
+        { 
             Artist newArtist = new Artist()
             {
                 Id = artist.Id,
@@ -31,10 +31,13 @@ namespace Arcanum.Models.Interfaces.Services
                 Email = artist.Email,
                 ProfileImageUri = "https://via.placeholder.com/200x300",
                 Display = false,
-                Order = 0
+                Order = 0,
             };
             _db.Entry(newArtist).State = EntityState.Added;
             await _db.SaveChangesAsync();
+
+            Booking booking = await CreateBooking();
+            await AddBookingToArtist(newArtist.Id, booking.Id);
             return newArtist;
         }
 
@@ -119,14 +122,84 @@ namespace Arcanum.Models.Interfaces.Services
             {
                 await _artistAdmin.RemovePortfolioFromArtist(artistPortfolio.PortfolioId, id);
             }
+
+            await RemoveBookingFromArtist(id, artist.ArtistBooking.BookingId);
+            await DeleteBooking(artist.ArtistBooking.BookingId);
             _db.Entry(artist).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
         }
 
         /// <summary>
-        /// Query the main page data from the database
+        /// Creates a new booking record.
         /// </summary>
-        /// <returns> ArcanumMain object </returns>
+        /// <returns> new Booking object </returns>
+        public async Task<Booking> CreateBooking()
+        {
+            Booking booking = new Booking();
+            _db.Entry(booking).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+            return booking;
+        }
+
+        /// <summary>
+        /// Create ArtistBooking join table.
+        /// </summary>
+        /// <param name="artistId"> string artist id </param>
+        /// <param name="bookingId"> int booking id </param>
+        public async Task AddBookingToArtist(string artistId, int bookingId)
+        {
+            ArtistBooking artistBooking = new ArtistBooking
+            {
+                ArtistId = artistId,
+                BookingId = bookingId
+            };
+            _db.Entry(artistBooking).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Updates a booking record.
+        /// </summary>
+        /// <param name="booking"> Booking object </param>
+        public async Task UpdateBooking(Booking booking)
+        {
+            _db.Entry(booking).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Removes a booking record from the database.
+        /// </summary>
+        /// <param name="id"> int booking id </param>
+        public async Task DeleteBooking(int id)
+        {
+            Booking booking = await _db.Booking.FindAsync(id);
+            _db.Entry(booking).State = EntityState.Deleted;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Removes a ArtistBooking join table record.
+        /// </summary>
+        /// <param name="artistId"> string artist id </param>
+        /// <param name="bookingId"> int booking id </param>
+        public async Task RemoveBookingFromArtist(string artistId, int bookingId)
+        {
+            ArtistBooking artistBooking = await _db.ArtistBooking
+                .Where(x => x.ArtistId == artistId && x.BookingId == bookingId)
+                .Select(y => new ArtistBooking
+                {
+                    ArtistId = y.ArtistId,
+                    BookingId = y.BookingId
+                }).FirstOrDefaultAsync();
+            _db.Entry(artistBooking).State = EntityState.Deleted;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Gets the mainpage record.
+        /// </summary>
+        /// <returns> MainPage object </returns>
         public async Task<ArcanumMain> GetMainPage()
         {
             return await _db.ArcanumMain

@@ -21,7 +21,6 @@ namespace Arcanum.Models.Interfaces
         public Task DeleteImage(int imageId, int portfolioId);
 
         public Task<Booking> GetArtistBooking(string artistId);
-        public Task UpdateArtistBooking(Booking booking);
 
         public Task<Artist> GetArtist(string id);
 
