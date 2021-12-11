@@ -1,8 +1,8 @@
-# Studio Arcanum
+# Tattoo Studio Site
 
 ## Summary
 
-Currently under development website for Studio Arcanum Tattoo in Seattle.
+Web app for tattoo studio portfolios and booking.  Currently under development.
 
 ---
 
@@ -32,10 +32,6 @@ Currently under development website for Studio Arcanum Tattoo in Seattle.
 
 ---
 
-## Data Flow (Frontend, Backend, REST API)
-
----
-
 ## Data Model
 
 [Entity Relationship Diagram](assets/ERD.jpg)
@@ -47,8 +43,6 @@ Currently under development website for Studio Arcanum Tattoo in Seattle.
 ---
 
 ## Change Log
-
-
 
 ---
 

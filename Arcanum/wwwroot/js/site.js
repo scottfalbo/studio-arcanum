@@ -1,5 +1,7 @@
 ﻿'use strict';
 
+console.log('Hello');
+
 // Shows popup windows.
 $(function() {
     $('.show-popup').click(function() {

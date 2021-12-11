@@ -34,9 +34,10 @@ namespace Arcanum.ImageBlob.Interfaces.Services
         public async Task<Models.Image> AddImage(IFormFile file)
         {
             Stream stream = ResizeImage(file, 1900);
-            BlobClient blob = await UploadImage(stream, file.FileName, file.ContentType);
+            string filename = AugmentFileName(file.FileName);
+            BlobClient blob = await UploadImage(stream, filename, file.ContentType);
 
-            string thumbFile = ThumbNailFileName(file.FileName);
+            string thumbFile = $"{filename}_thumb";
 
             Stream thumbStream = ResizeImage(file, 100);
             BlobClient thumb = await UploadImage(thumbStream, thumbFile, file.ContentType);
@@ -44,7 +45,7 @@ namespace Arcanum.ImageBlob.Interfaces.Services
             Models.Image image = new Models.Image()
             {
                 SourceUrl = blob.Uri.ToString(),
-                FileName = file.FileName,
+                FileName = filename,
                 ThumbnailUrl = thumb.Uri.ToString(),
                 ThumbFileName = thumbFile,
                 Order = 0
@@ -59,9 +60,7 @@ namespace Arcanum.ImageBlob.Interfaces.Services
         /// <returns> new BlobClient object </returns>
         private async Task<BlobClient> UploadImage(Stream stream, string filename, string contentType)
         {
-            filename = AugmentFileName(filename);
             BlobContainerClient container = new BlobContainerClient(_config["StorageBlob:ConnectionString"], "images");
-
             await container.CreateIfNotExistsAsync();
             BlobClient blob = container.GetBlobClient(filename);
 
@@ -91,19 +90,6 @@ namespace Arcanum.ImageBlob.Interfaces.Services
             file = Regex.Replace(file, $@"\b.{fileType}\b", "");
             file = file.Replace(" ", String.Empty);
             return file + $"{timeStamp}.{fileType}";
-        }
-
-        /// <summary>
-        /// Helper method to insert "_thumb" before the file extension
-        /// </summary>
-        /// <param name="file"> string filename </param>
-        /// <returns> string filename + _thumb </returns>
-        private string ThumbNailFileName(string file)
-        {
-            string pattern = @"[^.]+$";
-            string fileType = Regex.Match(file, pattern).ToString();
-            string thumb = Regex.Replace(file, $@"\b.{fileType}\b", "");
-            return $"{thumb}_thumb.{fileType}";
         }
 
         /// <summary>
@@ -157,5 +143,17 @@ namespace Arcanum.ImageBlob.Interfaces.Services
             return newWidth;
         }
 
+        /// <summary>
+        /// Remove image and thumb from blob storage on image deletion.
+        /// </summary>
+        /// <param name="fileName"> blob filename </param>
+        public async Task RemoveImage(string fileName)
+        {
+            BlobContainerClient container = new BlobContainerClient(_config["StorageBlob:ConnectionString"], "images");
+            BlobClient blob = container.GetBlobClient(fileName);
+            await blob.DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots, null, default);
+            blob = container.GetBlobClient($"{fileName}_thumb");
+            await blob.DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots, null, default);
+        }
     }
 }

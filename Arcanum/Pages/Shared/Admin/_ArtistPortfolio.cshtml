@@ -55,7 +55,16 @@
                     </form>
                 </section>
                 <section>
-                    component?
+                    @foreach(var image in portfolio.Portfolio.PortfolioImage)
+                    {
+                        <img src="@image.Image.ThumbnailUrl" />
+                        <form asp-page-handler="DeleteImage" method="post">
+                            <input type="hidden" name="imageId" value="@image.Image.Id" />
+                            <input type="hidden" name="portfolioId" value="@portfolio.PortfolioId" />
+                            <input type="hidden" asp-for="@Model.Artist.Id" value="@Model.Artist.Id" />
+                            <input type="submit" value="✖" />
+                        </form>
+                    }
                 </section>
             </div>
         }
