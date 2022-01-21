@@ -47,7 +47,7 @@ namespace Arcanum.Pages
             {
                 UserName = username,
                 Password = password,
-                Email = email,
+                Email = email
             };
 
             ApplicationUserDto user = await _userService.Register(newUser, this.ModelState);
