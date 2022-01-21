@@ -24,9 +24,9 @@
 {
     <h2>Registration Form</h2>
     <form asp-page-handler="Register" method="post">
-        <div><input type="text" name="username" placeholder="username" /></div>
-        <div><input type="text" name="email" placeholder="email" /></div>
-        <div><input type="password" name="password" placeholder="password" /></div>
+        <div><input type="text" name="username" placeholder="username" required/></div>
+        <div><input type="text" name="email" placeholder="email" required/></div>
+        <div><input type="password" name="password" placeholder="password" required/></div>
         <input type="hidden" asp-for="@Model.ValidCode" value="@Model.ValidCode" />
         <div><input type="submit" value="Add Account" /></div>
     </form>
