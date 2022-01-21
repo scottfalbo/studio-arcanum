@@ -32,11 +32,12 @@ namespace Arcanum.Components
             }
 
             List<Artist> artists = await _siteAdmin.GetArtists();
+            IEnumerable<Artist> artistList = artists.OrderBy(artist => artist.Order);
 
             ViewModel viewModel = new ViewModel()
             {
-                Artists = artists,
-                UserId = user != null ? user.Id : ""
+                Artists = artistList,
+                UserId = user != null ? user.Id : "",
             };
 
             return View(viewModel);
@@ -44,7 +45,7 @@ namespace Arcanum.Components
 
         public class ViewModel
         {
-            public List<Artist> Artists { get; set; }
+            public IEnumerable<Artist> Artists { get; set; }
             public string UserId { get; set; }
         }
     }
