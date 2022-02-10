@@ -1,4 +1,5 @@
 ﻿@model Arcanum.Pages.Admin.SecretLairModel
+@inject Arcanum.Models.Interfaces.IWizardLord wizard
 
 <section>
     <h2>Artist Display</h2>
@@ -8,11 +9,47 @@
             <form asp-page-handler="ToggleArtistDisplay" method="post">
                 <label>
                     <span>@artist.Name</span>
-                    <input type="checkbox" name="display" value="true" checked ="@artist.Display" />
+                    <input type="checkbox" name="display" value="true" checked="@artist.Display" />
                     <input type="hidden" name="artistId" value="@artist.Id" />
                     <input type="submit" value="update" />
                 </label>
             </form>
+        </div>
+    }
+</section>
+<section>
+    <h2>User Roles</h2>
+    @foreach (var user in Model.Users)
+    {
+        <div>
+            <h3>@user.UserName</h3>
+            <form asp-page-handler="UpdateUserRoles" method="post">
+                <ul>
+                    @{
+                        foreach (var role in Model.Roles)
+                        {
+                            <li>
+                                <label>
+                                    <span>@role.Name</span>
+                                    <input type="hidden" name="userId" value="@user.Id" />
+                                    <input type="checkbox" name="isChecked" value="@role.Name" checked="@(user.Roles.Contains(role.Name) ? true : false)" />
+                                </label>
+                            </li>
+                        }
+                    }
+                </ul>
+                <input type="submit" value="update" />
+            </form>
+            @{
+                var roles = await wizard.GetUserRoles(user.Id);
+                if (!roles.Contains("WizardLord"))
+                {
+                    <form asp-page-handler="DeleteUser" method="post">
+                        <input type="hidden" name="userId" value="@user.Id" />
+                        <input type="submit" value="X" />
+                    </form>
+                }
+            }
         </div>
     }
 </section>

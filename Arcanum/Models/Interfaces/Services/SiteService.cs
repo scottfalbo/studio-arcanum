@@ -128,6 +128,7 @@ namespace Arcanum.Models.Interfaces.Services
             await DeleteBooking(artist.ArtistBooking.BookingId);
             _db.Entry(artist).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
+            await ReOrderArtists(artist.Order);
         }
 
         /// <summary>
@@ -257,6 +258,23 @@ namespace Arcanum.Models.Interfaces.Services
         {
             _db.Entry(studioInfo).State = EntityState.Modified;
             await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Helper method to re-order the artists when one is removed.
+        /// </summary>
+        /// <param name="n"> place removed </param>
+        private async Task ReOrderArtists(int n)
+        {
+            IEnumerable<Artist> artists = await GetArtists();
+            foreach (Artist artist in artists)
+            {
+                if (artist.Order > n)
+                {
+                    artist.Order--;
+                }
+                await UpdateArtist(artist);
+            }
         }
     }
 }
