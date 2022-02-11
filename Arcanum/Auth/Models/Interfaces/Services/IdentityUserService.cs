@@ -21,6 +21,12 @@ namespace Arcanum.Auth.Models.Interfaces.Services
             _db = db;
         }
 
+        /// <summary>
+        /// Authenticates a user at login.
+        /// </summary>
+        /// <param name="userName"> string userName</param>
+        /// <param name="password"></param>
+        /// <returns> ApplicationUserDto of authenticated user </returns>
         public  async Task<ApplicationUserDto> Authenticate(string userName, string password)
         {
             var result = await _signin.PasswordSignInAsync(userName, password, true, false);
@@ -41,6 +47,12 @@ namespace Arcanum.Auth.Models.Interfaces.Services
             return null;
         }
 
+        /// <summary>
+        /// Registers a new user identity.
+        /// </summary>
+        /// <param name="data"> RegisterUser object </param>
+        /// <param name="modelState"></param>
+        /// <returns> ApplicationUserCto of the new user </returns>
         public async Task<ApplicationUserDto> Register(RegisterUser data, ModelStateDictionary modelState)
         {
             var user = new ApplicationUser()
@@ -49,7 +61,6 @@ namespace Arcanum.Auth.Models.Interfaces.Services
                 Email = data.Email
             };
             var result = await _userManager.CreateAsync(user, data.Password);
-
 
             if (result.Succeeded)
             {
@@ -64,6 +75,19 @@ namespace Arcanum.Auth.Models.Interfaces.Services
                 };
             }
             return null;
+        }
+
+        /// <summary>
+        /// Updates a users password.
+        /// </summary>
+        /// <param name="userId"> string userId </param>
+        /// <param name="currentPassword"> string currentPassword </param>
+        /// <param name="newPassword"> string newPassword </param>
+        /// <returns></returns>
+        public async Task<IdentityResult> UpdatePassword(string userId, string currentPassword, string newPassword)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
         }
     }
 }

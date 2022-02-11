@@ -111,5 +111,11 @@ namespace Arcanum.Pages
             await _artistAdmin.DeleteImage(imageId, portfolioId);
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
+
+        public async Task<IActionResult> OnPostUpdateArtistPassword(string currentPassword, string newPassword)
+        {
+
+            return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
+        }
     }
 }
