@@ -30,12 +30,12 @@
     <h2>Registration Form</h2>
     <form asp-page-handler="Register" method="post">
         <div><input type="text" name="username" placeholder="username" required /></div>
-        <div><input type="text" name="email" placeholder="email" required id="email-input"/></div>
-        <p id="email-validator">X</p>
-        <div><input type="password" name="password" placeholder="password" required id="password-input" /></div>
-        <div><input type="password" placeholder="password" required id="password-validator"/></div>
-        <p id="password-valid-status">X</p>
+        <div><input type="text" name="email" placeholder="email" required class="email-input"/></div>
+        <p class="email-validator">X</p>
+        <div><input type="password" name="password" placeholder="password" required class="password-input" /></div>
+        <div><input type="password" placeholder="password" required class="password-validator"/></div>
+        <p class="password-valid-status">X</p>
         <input type="hidden" asp-for="@Model.ValidCode" value="@Model.ValidCode" />
-        <div><input type="submit" value="Create Account" id="create-account-submit" class="fade-me"/></div>
+        <div><input type="submit" value="Create Account" class="conditional-submit fade-me"/></div>
     </form>
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Arcanum.Auth.Models;
+using Arcanum.Auth.Models.Interfaces;
 using Arcanum.Models;
 using Arcanum.Models.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -17,12 +18,14 @@ namespace Arcanum.Pages
         private readonly ISite _siteAdmin;
         private readonly IArtistAdmin _artistAdmin;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserService _userService;
 
-        public ArtistModel(ISite siteAdmin, IArtistAdmin artistAdmin, UserManager<ApplicationUser> userManager)
+        public ArtistModel(ISite siteAdmin, IArtistAdmin artistAdmin, UserManager<ApplicationUser> userManager, IUserService userService)
         {
             _siteAdmin = siteAdmin;
             _artistAdmin = artistAdmin;
             _userManager = userManager;
+            _userService = userService;
         }
 
         [BindProperty]
@@ -112,10 +115,10 @@ namespace Arcanum.Pages
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
 
-        public async Task<IActionResult> OnPostUpdateArtistPassword(string currentPassword, string newPassword)
+        public async Task<IActionResult> OnPostUpdateArtistPassword(string userId, string currentPassword, string newPassword)
         {
-
-            return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
+            var response = await _userService.UpdatePassword(userId, currentPassword, newPassword);
+            return Redirect($"Artist?artistId={userId}&isActive=true");
         }
     }
 }
