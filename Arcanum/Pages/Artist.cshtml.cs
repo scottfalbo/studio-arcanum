@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Arcanum.Auth.Models;
+using Arcanum.Auth.Models.Interfaces;
 using Arcanum.Models;
 using Arcanum.Models.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -17,12 +18,14 @@ namespace Arcanum.Pages
         private readonly ISite _siteAdmin;
         private readonly IArtistAdmin _artistAdmin;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserService _userService;
 
-        public ArtistModel(ISite siteAdmin, IArtistAdmin artistAdmin, UserManager<ApplicationUser> userManager)
+        public ArtistModel(ISite siteAdmin, IArtistAdmin artistAdmin, UserManager<ApplicationUser> userManager, IUserService userService)
         {
             _siteAdmin = siteAdmin;
             _artistAdmin = artistAdmin;
             _userManager = userManager;
+            _userService = userService;
         }
 
         [BindProperty]
@@ -31,9 +34,11 @@ namespace Arcanum.Pages
         public string UserId { get; set; }
         [BindProperty]
         public Portfolio Portfolio { get; set; }
+        [BindProperty]
+        public PasswordUpdateState PasswordUpdateState { get; set; }
         public bool ActiveAdmin { get; set; }
 
-        public async Task OnGet(string artistId, bool isActive = false)
+        public async Task OnGet(string artistId, bool isActive = false, PasswordUpdateState updateState = PasswordUpdateState.Inital)
         {
             if (artistId != null)
                 Artist = await _siteAdmin.GetArtist(artistId);
@@ -47,6 +52,7 @@ namespace Arcanum.Pages
             else
                 UserId = "";
             Portfolio = new Portfolio();
+            PasswordUpdateState = updateState;
             ActiveAdmin = isActive;
         }
 
@@ -111,5 +117,18 @@ namespace Arcanum.Pages
             await _artistAdmin.DeleteImage(imageId, portfolioId);
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
+
+        public async Task<IActionResult> OnPostUpdateArtistPassword(string userId, string currentPassword, string newPassword)
+        {
+            var response = await _userService.UpdatePassword(userId, currentPassword, newPassword);
+            PasswordUpdateState updateState = response.Succeeded ? PasswordUpdateState.Success : PasswordUpdateState.Failed;
+            return Redirect($"Artist?artistId={userId}&isActive=true&updateState={updateState}");
+        }
+    }
+    public enum PasswordUpdateState
+    {
+        Inital,
+        Success,
+        Failed
     }
 }

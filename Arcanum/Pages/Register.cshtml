@@ -1,8 +1,13 @@
 ﻿@page
 @model Arcanum.Pages.RegisterModel
+
 @{
 }
 
+<script>
+    console.log("hello");
+
+</script>
 
 @if (Model.PageState == PageState.Inital || Model.PageState == PageState.NotValid)
 {
@@ -24,10 +29,15 @@
 {
     <h2>Registration Form</h2>
     <form asp-page-handler="Register" method="post">
-        <div><input type="text" name="username" placeholder="username" required/></div>
-        <div><input type="text" name="email" placeholder="email" required/></div>
-        <div><input type="password" name="password" placeholder="password" required/></div>
+        <div><input type="text" name="username" placeholder="username" required /></div>
+        <div><input type="text" name="email" placeholder="email" required class="email-input"/></div>
+        <p class="email-validator">X</p>
+        <div><input type="password" name="password" placeholder="password" required class="password-input" /></div>
+            <i class="peek-password-input password-peek-icon">ooo</i>
+        <div><input type="password" placeholder="password" required class="password-validator"/></div>
+            <i class="peek-password-validator password-peek-icon">ooo</i>
+        <p class="password-valid-status">X</p>
         <input type="hidden" asp-for="@Model.ValidCode" value="@Model.ValidCode" />
-        <div><input type="submit" value="Add Account" /></div>
+        <div><input type="submit" value="Create Account" class="conditional-submit fade-me"/></div>
     </form>
 }

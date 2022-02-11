@@ -25,14 +25,15 @@ namespace Arcanum.Pages.Admin
 
         public List<ApplicationUserDto> Users { get; set; }
         public IQueryable<IdentityRole> Roles { get; set; }
-        public List<Artist> Artists { get; set; }
+        public IEnumerable<Artist> Artists { get; set; }
         public List<RegistrationAccessCode> AccessCodes { get; set; }
 
         public async Task OnGet()
         {
             Users = await _wizard.GetRegisteredUsers();
             Roles = _wizard.GetRoles();
-            Artists = await _siteAdmin.GetArtists();
+            List<Artist> UnOrderedArtists = await _siteAdmin.GetArtists();
+            Artists = UnOrderedArtists.OrderBy(artist => artist.Order);
             AccessCodes = await _wizard.GetRegistrationAccessCodes();
         }
 

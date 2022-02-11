@@ -49,7 +49,7 @@ namespace Arcanum.Pages
                 Password = password,
                 Email = email
             };
-
+            
             ApplicationUserDto user = await _userService.Register(newUser, this.ModelState);
             Artist artist = await _siteAdmin.CreateArtist(NewArtist(user));
             if (artist != null)
