@@ -34,9 +34,11 @@ namespace Arcanum.Pages
         public string UserId { get; set; }
         [BindProperty]
         public Portfolio Portfolio { get; set; }
+        [BindProperty]
+        public PasswordUpdateState PasswordUpdateState { get; set; }
         public bool ActiveAdmin { get; set; }
 
-        public async Task OnGet(string artistId, bool isActive = false)
+        public async Task OnGet(string artistId, bool isActive = false, PasswordUpdateState updateState = PasswordUpdateState.Inital)
         {
             if (artistId != null)
                 Artist = await _siteAdmin.GetArtist(artistId);
@@ -50,6 +52,7 @@ namespace Arcanum.Pages
             else
                 UserId = "";
             Portfolio = new Portfolio();
+            PasswordUpdateState = updateState;
             ActiveAdmin = isActive;
         }
 
@@ -118,7 +121,14 @@ namespace Arcanum.Pages
         public async Task<IActionResult> OnPostUpdateArtistPassword(string userId, string currentPassword, string newPassword)
         {
             var response = await _userService.UpdatePassword(userId, currentPassword, newPassword);
-            return Redirect($"Artist?artistId={userId}&isActive=true");
+            PasswordUpdateState updateState = response.Succeeded ? PasswordUpdateState.Success : PasswordUpdateState.Failed;
+            return Redirect($"Artist?artistId={userId}&isActive=true&updateState={updateState}");
         }
+    }
+    public enum PasswordUpdateState
+    {
+        Inital,
+        Success,
+        Failed
     }
 }
