@@ -24,7 +24,8 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="artist"> Artist object </param>
         public async Task<Artist> CreateArtist(Artist artist)
         {
-            int order = GetArtists().Result.Count();
+            var artists = await GetArtists();
+            int order = artists.Count();
             Artist newArtist = new Artist()
             {
                 Id = artist.Id,
@@ -32,7 +33,7 @@ namespace Arcanum.Models.Interfaces.Services
                 Email = artist.Email,
                 ProfileImageUri = "https://via.placeholder.com/200x300",
                 Display = false,
-                Order = order + 1,
+                Order = order + 1
             };
             _db.Entry(newArtist).State = EntityState.Added;
             await _db.SaveChangesAsync();

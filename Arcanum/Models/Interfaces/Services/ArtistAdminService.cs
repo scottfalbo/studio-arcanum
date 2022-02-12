@@ -61,7 +61,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="artistId"> string artistId </param>
         public async Task DeletePortfolio(int portfolioId, string artistId)
         {
-            List<PortfolioImage> images = await GetPortfolioImages(portfolioId);
+            IEnumerable<PortfolioImage> images = await GetPortfolioImages(portfolioId);
             foreach(PortfolioImage image in images)
             {
                 await RemoveImageFromPortfolio(portfolioId, image.ImageId);
@@ -112,7 +112,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="id"> portfolio id </param>
         /// <returns> List<Image> </returns>
-        public async Task<List<PortfolioImage>> GetPortfolioImages(int id)
+        public async Task<IEnumerable<PortfolioImage>> GetPortfolioImages(int id)
         {
             Portfolio portfolio = await  _db.Portfolio
                 .Where(a => a.Id == id)
@@ -173,11 +173,13 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="imageId"> int image id </param>
         public async Task AddImageToPortfolio(int portfolioId, int imageId)
         {
+            var images = await GetPortfolioImages(portfolioId);
+            int order = images.Count();
             PortfolioImage portfolioImage = new PortfolioImage()
             {
                 PortfolioId = portfolioId,
                 ImageId = imageId,
-                Order = 0
+                Order = order + 1
             };
             _db.Entry(portfolioImage).State = EntityState.Added;
             await _db.SaveChangesAsync();
@@ -208,11 +210,13 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="imageId"> int imageId </param>
         public async Task AddImageToRecent(int arcanumMainId, int imageId)
         {
+            var images = await GetRecentImages(arcanumMainId);
+            int order = images.Count();
             RecentImage recentImage = new RecentImage()
             {
                 ArcanumMainId = arcanumMainId,
                 ImageId = imageId,
-                Order = 0
+                Order = order + 1
             };
             _db.Entry(recentImage).State = EntityState.Added;
             await _db.SaveChangesAsync();
@@ -234,6 +238,25 @@ namespace Arcanum.Models.Interfaces.Services
                 }).FirstOrDefaultAsync();
             _db.Entry(recentImage).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Gets a list of RecentImages by page id.
+        /// </summary>
+        /// <param name="arcanumMainId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<RecentImage>> GetRecentImages(int arcanumMainId)
+        {
+            return await _db.RecentImage
+                .Where(x => x.ArcanumMainId == arcanumMainId)
+                .Include(y => y.Image)
+                .Select(z => new RecentImage
+                {
+                    ArcanumMainId = z.ArcanumMainId,
+                    ImageId = z.ImageId,
+                    Image = z.Image,
+                    Order = z.Order
+                }).ToListAsync();
         }
 
         /// <summary>
