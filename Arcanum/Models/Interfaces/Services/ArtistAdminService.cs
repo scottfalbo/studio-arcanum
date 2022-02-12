@@ -120,6 +120,7 @@ namespace Arcanum.Models.Interfaces.Services
                 .ThenInclude(c => c.Image)
                 .Select(x => new Portfolio
                 {
+                    Order = x.Order,
                     PortfolioImage = x.PortfolioImage
                 }).FirstOrDefaultAsync();
             return portfolio.PortfolioImage;
@@ -158,8 +159,7 @@ namespace Arcanum.Models.Interfaces.Services
                 SourceUrl = image.SourceUrl,
                 ThumbnailUrl = image.ThumbnailUrl,
                 FileName = image.FileName,
-                ThumbFileName = image.ThumbFileName,
-                Order = 0
+                ThumbFileName = image.ThumbFileName
             };
             _db.Entry(newImage).State = EntityState.Added;
             await _db.SaveChangesAsync();
@@ -176,7 +176,8 @@ namespace Arcanum.Models.Interfaces.Services
             PortfolioImage portfolioImage = new PortfolioImage()
             {
                 PortfolioId = portfolioId,
-                ImageId = imageId
+                ImageId = imageId,
+                Order = 0
             };
             _db.Entry(portfolioImage).State = EntityState.Added;
             await _db.SaveChangesAsync();
@@ -197,6 +198,41 @@ namespace Arcanum.Models.Interfaces.Services
                     ImageId = y.ImageId
                 }).FirstOrDefaultAsync();
             _db.Entry(portfolioImage).State = EntityState.Deleted;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Creates a RecentImage join table to put recently uploaded content on the main page.
+        /// </summary>
+        /// <param name="arcanumMainId"> ing mainPageId </param>
+        /// <param name="imageId"> int imageId </param>
+        public async Task AddImageToRecent(int arcanumMainId, int imageId)
+        {
+            RecentImage recentImage = new RecentImage()
+            {
+                ArcanumMainId = arcanumMainId,
+                ImageId = imageId,
+                Order = 0
+            };
+            _db.Entry(recentImage).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Remove the RecentImage join table effectively removing the image from the main page.
+        /// </summary>
+        /// <param name="arcanumMainId"> int mainPageId </param>
+        /// <param name="imageId"> int imageId </param>
+        public async Task RemoveImageFromRecent(int arcanumMainId, int imageId)
+        {
+            RecentImage recentImage = await _db.RecentImage
+                .Where(x => x.ArcanumMainId == arcanumMainId && x.ImageId == imageId)
+                .Select(y => new RecentImage
+                {
+                    ArcanumMainId = y.ArcanumMainId,
+                    ImageId = y.ImageId
+                }).FirstOrDefaultAsync();
+            _db.Entry(recentImage).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
         }
 

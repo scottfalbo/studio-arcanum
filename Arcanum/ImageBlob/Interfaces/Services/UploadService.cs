@@ -47,8 +47,7 @@ namespace Arcanum.ImageBlob.Interfaces.Services
                 SourceUrl = blob.Uri.ToString(),
                 FileName = filename,
                 ThumbnailUrl = thumb.Uri.ToString(),
-                ThumbFileName = thumbFile,
-                Order = 0
+                ThumbFileName = thumbFile
             };
             return image;
         }
