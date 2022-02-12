@@ -62,7 +62,7 @@ namespace Arcanum.Models.Interfaces.Services
         public async Task DeletePortfolio(int portfolioId, string artistId)
         {
             IEnumerable<PortfolioImage> images = await GetPortfolioImages(portfolioId);
-            foreach(PortfolioImage image in images)
+            foreach (PortfolioImage image in images)
             {
                 await RemoveImageFromPortfolio(portfolioId, image.Image.Id);
                 await DeleteImage(image.Image.Id, portfolioId);
@@ -114,7 +114,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// <returns> List<Image> </returns>
         public async Task<IEnumerable<PortfolioImage>> GetPortfolioImages(int id)
         {
-            return await  _db.PortfolioImage
+            return await _db.PortfolioImage
                 .Where(a => a.PortfolioId == id)
                 .Include(b => b.Image)
                 .Select(x => new PortfolioImage
@@ -196,11 +196,12 @@ namespace Arcanum.Models.Interfaces.Services
                 .Select(y => new PortfolioImage
                 {
                     PortfolioId = y.PortfolioId,
-                    ImageId = y.ImageId
+                    ImageId = y.ImageId,
+                    Order = y.Order
                 }).FirstOrDefaultAsync();
             _db.Entry(portfolioImage).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
-            //TODO: reorder
+            await ReOrderPortfolioImages(portfolioId, portfolioImage.Order);
         }
 
         /// <summary>
@@ -329,5 +330,23 @@ namespace Arcanum.Models.Interfaces.Services
                 }).FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// Helper method to reorder images when one is deleted.
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        private async Task ReOrderPortfolioImages(int portfolioId, int n)
+        {
+            IEnumerable<PortfolioImage> images = await GetPortfolioImages(portfolioId);
+            foreach (PortfolioImage image in images)
+            {
+                if (image.Order > n)
+                {
+                    image.Order--;
+                }
+                _db.Entry(image).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
+            }
+        }
     }
 }
