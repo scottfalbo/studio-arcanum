@@ -262,6 +262,65 @@ namespace Arcanum.Models.Interfaces.Services
         }
 
         /// <summary>
+        /// Get a list of all studio images by join table.
+        /// </summary>
+        /// <param name="studioId"> int studioId </param>
+        /// <returns> IEnumerable of images </returns>
+        public async Task<IEnumerable<Image>> GetStudioImages(int studioId)
+        {
+            return await _db.StudioImage
+                .Where(a => a.StudioInfoId == studioId)
+                .Include(b => b.Image)
+                .Select(x => new Image
+                {
+                    Id = x.Image.Id,
+                    Title = x.Image.Title,
+                    AltText = x.Image.AltText,
+                    SourceUrl = x.Image.SourceUrl,
+                    ThumbnailUrl = x.Image.ThumbnailUrl,
+                    FileName = x.Image.FileName,
+                    ThumbFileName = x.Image.ThumbFileName
+                }).ToListAsync();
+        }
+
+        /// <summary>
+        /// Create a StudioImage join table.
+        /// </summary>
+        /// <param name="studioId"> int studio id </param>
+        /// <param name="imageId"> int image id </param>
+        public async Task AddImageToStudio(int studioId, int imageId)
+        {
+            var images = await GetStudioImages(studioId);
+            int order = images.Count();
+            StudioImage studioImage = new StudioImage()
+            {
+                StudioInfoId = studioId,
+                ImageId = imageId,
+                Order = order + 1
+            };
+            _db.Entry(studioImage).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Removes a StudioImage join table.
+        /// </summary>
+        /// <param name="studioId"> int studio id </param>
+        /// <param name="imageId"> int image id </param>
+        public async Task RemoveImageFromStudio(int studioId, int imageId)
+        {
+            StudioImage studioImage = await _db.StudioImage
+                .Where(x => x.StudioInfoId == studioId && x.ImageId == imageId)
+                .Select(y => new StudioImage
+                {
+                    StudioInfoId = y.StudioInfoId,
+                    ImageId = y.ImageId
+                }).FirstOrDefaultAsync();
+            _db.Entry(studioImage).State = EntityState.Deleted;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
         /// Helper method to re-order the artists when one is removed.
         /// </summary>
         /// <param name="n"> place removed </param>

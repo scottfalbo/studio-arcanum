@@ -61,11 +61,11 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="artistId"> string artistId </param>
         public async Task DeletePortfolio(int portfolioId, string artistId)
         {
-            IEnumerable<PortfolioImage> images = await GetPortfolioImages(portfolioId);
-            foreach(PortfolioImage image in images)
+            IEnumerable<Image> images = await GetPortfolioImages(portfolioId);
+            foreach(Image image in images)
             {
-                await RemoveImageFromPortfolio(portfolioId, image.ImageId);
-                await DeleteImage(image.ImageId, portfolioId);
+                await RemoveImageFromPortfolio(portfolioId, image.Id);
+                await DeleteImage(image.Id, portfolioId);
             }
             await RemovePortfolioFromArtist(portfolioId, artistId);
             Portfolio portfolio = await _db.Portfolio.FindAsync(portfolioId);
@@ -112,18 +112,21 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="id"> portfolio id </param>
         /// <returns> List<Image> </returns>
-        public async Task<IEnumerable<PortfolioImage>> GetPortfolioImages(int id)
+        public async Task<IEnumerable<Image>> GetPortfolioImages(int id)
         {
-            Portfolio portfolio = await  _db.Portfolio
-                .Where(a => a.Id == id)
-                .Include(b => b.PortfolioImage)
-                .ThenInclude(c => c.Image)
-                .Select(x => new Portfolio
+            return await  _db.PortfolioImage
+                .Where(a => a.PortfolioId == id)
+                .Include(b => b.Image)
+                .Select(x => new Image
                 {
-                    Order = x.Order,
-                    PortfolioImage = x.PortfolioImage
-                }).FirstOrDefaultAsync();
-            return portfolio.PortfolioImage;
+                    Id = x.Image.Id,
+                    Title = x.Image.Title,
+                    AltText = x.Image.AltText,
+                    SourceUrl = x.Image.SourceUrl,
+                    ThumbnailUrl = x.Image.ThumbnailUrl,
+                    FileName = x.Image.FileName,
+                    ThumbFileName = x.Image.ThumbFileName
+                }).ToListAsync();
         }
 
         /// <summary>
@@ -245,17 +248,20 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="arcanumMainId"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<RecentImage>> GetRecentImages(int arcanumMainId)
+        public async Task<IEnumerable<Image>> GetRecentImages(int arcanumMainId)
         {
             return await _db.RecentImage
-                .Where(x => x.ArcanumMainId == arcanumMainId)
-                .Include(y => y.Image)
-                .Select(z => new RecentImage
+                .Where(a => a.ArcanumMainId == arcanumMainId)
+                .Include(b => b.Image)
+                .Select(x => new Image
                 {
-                    ArcanumMainId = z.ArcanumMainId,
-                    ImageId = z.ImageId,
-                    Image = z.Image,
-                    Order = z.Order
+                    Id = x.Image.Id,
+                    Title = x.Image.Title,
+                    AltText = x.Image.AltText,
+                    SourceUrl = x.Image.SourceUrl,
+                    ThumbnailUrl = x.Image.ThumbnailUrl,
+                    FileName = x.Image.FileName,
+                    ThumbFileName = x.Image.ThumbFileName
                 }).ToListAsync();
         }
 

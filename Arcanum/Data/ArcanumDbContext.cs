@@ -20,6 +20,7 @@ namespace Arcanum.Data
         public DbSet<ArtistPortfolio> ArtistPortfolio { get; set; }
         public DbSet<Image> Image { get; set; }
         public DbSet<StudioInfo> StudioInfo { get; set; }
+        public DbSet<StudioImage> StudioImage { get; set; }
         public DbSet<Booking> Booking { get; set; }
         public DbSet<Portfolio> Portfolio { get; set; }
         public DbSet<PortfolioImage> PortfolioImage { get; set; }

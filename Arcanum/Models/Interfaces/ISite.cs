@@ -25,8 +25,8 @@ namespace Arcanum.Models.Interfaces
 
         public Task<StudioInfo> GetStudio();
         public Task UpdateStudioInfo(StudioInfo studioInfo);
-
-        // add image to studio
-        // remove image from studio
+        public Task<IEnumerable<Image>> GetStudioImages(int studioId);
+        public Task AddImageToStudio(int studioId, int imageId);
+        public Task RemoveImageFromStudio(int studioId, int imageId);
     }
 }
