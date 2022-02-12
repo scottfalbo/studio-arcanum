@@ -61,11 +61,11 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="artistId"> string artistId </param>
         public async Task DeletePortfolio(int portfolioId, string artistId)
         {
-            IEnumerable<Image> images = await GetPortfolioImages(portfolioId);
-            foreach(Image image in images)
+            IEnumerable<PortfolioImage> images = await GetPortfolioImages(portfolioId);
+            foreach(PortfolioImage image in images)
             {
-                await RemoveImageFromPortfolio(portfolioId, image.Id);
-                await DeleteImage(image.Id, portfolioId);
+                await RemoveImageFromPortfolio(portfolioId, image.Image.Id);
+                await DeleteImage(image.Image.Id, portfolioId);
             }
             await RemovePortfolioFromArtist(portfolioId, artistId);
             Portfolio portfolio = await _db.Portfolio.FindAsync(portfolioId);
@@ -112,20 +112,16 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="id"> portfolio id </param>
         /// <returns> List<Image> </returns>
-        public async Task<IEnumerable<Image>> GetPortfolioImages(int id)
+        public async Task<IEnumerable<PortfolioImage>> GetPortfolioImages(int id)
         {
             return await  _db.PortfolioImage
                 .Where(a => a.PortfolioId == id)
                 .Include(b => b.Image)
-                .Select(x => new Image
+                .Select(x => new PortfolioImage
                 {
-                    Id = x.Image.Id,
-                    Title = x.Image.Title,
-                    AltText = x.Image.AltText,
-                    SourceUrl = x.Image.SourceUrl,
-                    ThumbnailUrl = x.Image.ThumbnailUrl,
-                    FileName = x.Image.FileName,
-                    ThumbFileName = x.Image.ThumbFileName
+                    PortfolioId = x.PortfolioId,
+                    ImageId = x.ImageId,
+                    Image = x.Image
                 }).ToListAsync();
         }
 
@@ -151,13 +147,13 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="image"> Image image </param>
         /// <returns> new Image object </returns>
-        public async Task<Image> CreateImage(IFormFile file, string artistId, string title)
+        public async Task<Image> CreateImage(IFormFile file, string artistId)
         {
             Artist artist = await GetArtist(artistId);
             Image image = await _upload.AddImage(file);
             Image newImage = new Image()
             {
-                Title = title,
+                Title = "untitled",
                 Artist = artist.Name,
                 SourceUrl = image.SourceUrl,
                 ThumbnailUrl = image.ThumbnailUrl,
@@ -204,22 +200,29 @@ namespace Arcanum.Models.Interfaces.Services
                 }).FirstOrDefaultAsync();
             _db.Entry(portfolioImage).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
+            //TODO: reorder
         }
 
         /// <summary>
         /// Creates a RecentImage join table to put recently uploaded content on the main page.
+        /// If there are more than 10 images remove it removes the oldest.
         /// </summary>
         /// <param name="arcanumMainId"> ing mainPageId </param>
         /// <param name="imageId"> int imageId </param>
         public async Task AddImageToRecent(int arcanumMainId, int imageId)
         {
             var images = await GetRecentImages(arcanumMainId);
-            int order = images.Count();
+            if (images.Count() > 10)
+            {
+                RecentImage oldestImage = images.OrderBy(x => x.DateTime).First();
+                await RemoveImageFromRecent(oldestImage.ArcanumMainId, oldestImage.ImageId);
+            }
+
             RecentImage recentImage = new RecentImage()
             {
                 ArcanumMainId = arcanumMainId,
                 ImageId = imageId,
-                Order = order + 1
+                DateTime = DateTime.Now
             };
             _db.Entry(recentImage).State = EntityState.Added;
             await _db.SaveChangesAsync();
@@ -241,6 +244,7 @@ namespace Arcanum.Models.Interfaces.Services
                 }).FirstOrDefaultAsync();
             _db.Entry(recentImage).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
+            //TODO: reorder
         }
 
         /// <summary>
@@ -248,20 +252,16 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="arcanumMainId"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Image>> GetRecentImages(int arcanumMainId)
+        public async Task<IEnumerable<RecentImage>> GetRecentImages(int arcanumMainId)
         {
             return await _db.RecentImage
                 .Where(a => a.ArcanumMainId == arcanumMainId)
                 .Include(b => b.Image)
-                .Select(x => new Image
+                .Select(x => new RecentImage
                 {
-                    Id = x.Image.Id,
-                    Title = x.Image.Title,
-                    AltText = x.Image.AltText,
-                    SourceUrl = x.Image.SourceUrl,
-                    ThumbnailUrl = x.Image.ThumbnailUrl,
-                    FileName = x.Image.FileName,
-                    ThumbFileName = x.Image.ThumbFileName
+                    ArcanumMainId = x.ArcanumMainId,
+                    ImageId = x.ImageId,
+                    Image = x.Image
                 }).ToListAsync();
         }
 
@@ -274,6 +274,7 @@ namespace Arcanum.Models.Interfaces.Services
         public async Task DeleteImage(int imageId, int portfolioId)
         {
             await RemoveImageFromPortfolio(portfolioId, imageId);
+            await RemoveImageFromRecent(-1, imageId);
             Image image = await _db.Image.FindAsync(imageId);
             await _upload.RemoveImage(image.FileName);
             _db.Entry(image).State = EntityState.Deleted;
@@ -327,5 +328,6 @@ namespace Arcanum.Models.Interfaces.Services
                     ArtistBooking = y.ArtistBooking
                 }).FirstOrDefaultAsync();
         }
+
     }
 }

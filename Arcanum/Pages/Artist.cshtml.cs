@@ -102,12 +102,13 @@ namespace Arcanum.Pages
         /// <param name="files"> IFormFile[] input images </param>
         /// <param name="title"> string optional title </param>
         /// <returns></returns>
-        public async Task<IActionResult> OnPostAddImages(IFormFile[] files, string title ="untitled")
+        public async Task<IActionResult> OnPostAddImages(IFormFile[] files)
         {
             foreach(IFormFile file in files)
             {
-                Image image = await _artistAdmin.CreateImage(file, Artist.Id, title);
+                Image image = await _artistAdmin.CreateImage(file, Artist.Id);
                 await _artistAdmin.AddImageToPortfolio(Portfolio.Id, image.Id);
+                await _artistAdmin.AddImageToRecent(-1, image.Id);
             }
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }

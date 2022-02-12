@@ -318,6 +318,7 @@ namespace Arcanum.Models.Interfaces.Services
                 }).FirstOrDefaultAsync();
             _db.Entry(studioImage).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
+            //TODO: reorder
         }
 
         /// <summary>
