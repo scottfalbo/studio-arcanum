@@ -25,11 +25,15 @@ namespace Arcanum.Pages
         public ArcanumMain MainPage { get; set; }
         public string Instagram { get; set; }
         public bool ActiveAdmin { get; set; }
+        public IEnumerable<Artist> Artists { get; set; }
+        public StudioInfo StudioInfo { get; set; }
 
         public async Task OnGet(bool isActive = false)
         {
             Instagram = (await _site.GetStudio()).Instagram;
             MainPage = await _site.GetMainPage();
+            Artists = await _site.GetArtists();
+            StudioInfo = await _site.GetStudio();
             ActiveAdmin = isActive;
         }
 

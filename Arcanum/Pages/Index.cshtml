@@ -6,6 +6,11 @@
 
 <h1>@Model.MainPage.SiteTitle</h1>
 <div>@Model.MainPage.IntroA</div>
+
+
+@await Component.InvokeAsync("ArtistLargeNav")
+
+
 <div>@Model.MainPage.IntroB</div>
 <div>@Model.Instagram</div>
 
