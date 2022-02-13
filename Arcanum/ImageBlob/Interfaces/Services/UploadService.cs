@@ -53,6 +53,27 @@ namespace Arcanum.ImageBlob.Interfaces.Services
         }
 
         /// <summary>
+        /// Resizes and uploads the site photos to the storage blob.
+        /// </summary>
+        /// <param name="file"> inputted file </param>
+        /// <returns> new Image </returns>
+        public async Task<Models.Image> AddSiteImage(IFormFile file)
+        {
+            Stream stream = ResizeImage(file, 400);
+            string filename = AugmentFileName(file.FileName);
+            BlobClient blob = await UploadImage(stream, filename, file.ContentType);
+
+            Models.Image image = new Models.Image()
+            {
+                SourceUrl = blob.Uri.ToString(),
+                FileName = filename,
+                ThumbnailUrl = "site-image",
+                ThumbFileName = "site-image"
+            };
+            return image;
+        }
+
+        /// <summary>
         /// Uploads the image to azure blob storage
         /// </summary>
         /// <param name="file"> file to upload </param>

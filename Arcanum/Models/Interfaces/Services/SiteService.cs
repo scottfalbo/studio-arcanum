@@ -1,4 +1,6 @@
 ﻿using Arcanum.Data;
+using Arcanum.ImageBlob.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,11 +13,13 @@ namespace Arcanum.Models.Interfaces.Services
     {
         private readonly ArcanumDbContext _db;
         public IArtistAdmin _artistAdmin;
+        public IUpload _upload;
 
-        public SiteService(ArcanumDbContext context, IArtistAdmin artistAdmin)
+        public SiteService(ArcanumDbContext context, IArtistAdmin artistAdmin, IUpload upload)
         {
             _db = context;
             _artistAdmin = artistAdmin;
+            _upload = upload;
         }
 
         /// <summary>
@@ -208,8 +212,6 @@ namespace Arcanum.Models.Interfaces.Services
             return await _db.ArcanumMain
                 .Include(a => a.RecentImage)
                 .ThenInclude(b => b.Image)
-                .Include(c => c.PageImages)
-                .ThenInclude(d => d.Image)
                 .Where(x => x.Id == -1)
                 .Select(y => new ArcanumMain
                 {
@@ -218,7 +220,9 @@ namespace Arcanum.Models.Interfaces.Services
                     IntroA = y.IntroA,
                     IntroB = y.IntroB,
                     RecentImage = y.RecentImage,
-                    PageImages = y.PageImages
+                    ImageOneSourceUrl = y.ImageOneSourceUrl,
+                    ImageTwoSourceUrl = y.ImageTwoSourceUrl,
+                    ImageThreeSourceUrl = y.ImageThreeSourceUrl
                 }).FirstOrDefaultAsync();
         }
 
@@ -231,6 +235,24 @@ namespace Arcanum.Models.Interfaces.Services
             _db.Entry(mainPage).State = EntityState.Modified;
             await _db.SaveChangesAsync();
         }
+
+        public async Task<Image> UpdateMainPageImage(IFormFile file)
+        {
+            Image image = await _upload.AddSiteImage(file);
+            Image newImage = new Image()
+            {
+                Title = "site-image",
+                ArtistId = "site-image",
+                SourceUrl = image.SourceUrl,
+                ThumbnailUrl = image.ThumbnailUrl,
+                FileName = image.FileName,
+                ThumbFileName = image.ThumbFileName
+            };
+            _db.Entry(newImage).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+            return newImage;
+        }
+
 
         /// <summary>
         /// Query the StudioInfo record from the database.

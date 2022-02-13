@@ -1,5 +1,6 @@
 ﻿using Arcanum.Models;
 using Arcanum.Models.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -45,6 +46,32 @@ namespace Arcanum.Pages
         public async Task<IActionResult> OnPostUpdate()
         {
             await _site.UpdateMainPage(MainPage);
+
+            return Redirect("/Index?isActive=true");
+        }
+
+        /// <summary>
+        /// Updates the images on the main page.
+        /// </summary>
+        public async Task<IActionResult> OnPostUpdatePageImage(IFormFile file, int i)
+        {
+            Image image = await _site.UpdateMainPageImage(file);
+            ArcanumMain arcanumMain = await _site.GetMainPage();
+            switch (i)
+            {
+                case 0:
+                    arcanumMain.ImageOneSourceUrl = image.SourceUrl;
+                    break;
+                case 1:
+                    arcanumMain.ImageTwoSourceUrl = image.SourceUrl;
+                    break;
+                case 2:
+                    arcanumMain.ImageThreeSourceUrl = image.SourceUrl;
+                    break;
+                default:
+                    break;
+            }
+            await _site.UpdateMainPage(arcanumMain);
 
             return Redirect("/Index?isActive=true");
         }
