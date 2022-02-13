@@ -154,7 +154,7 @@ namespace Arcanum.Models.Interfaces.Services
             Image newImage = new Image()
             {
                 Title = "untitled",
-                Artist = artist.Name,
+                ArtistId = artistId,
                 SourceUrl = image.SourceUrl,
                 ThumbnailUrl = image.ThumbnailUrl,
                 FileName = image.FileName,
