@@ -208,6 +208,8 @@ namespace Arcanum.Models.Interfaces.Services
             return await _db.ArcanumMain
                 .Include(a => a.RecentImage)
                 .ThenInclude(b => b.Image)
+                .Include(c => c.PageImages)
+                .ThenInclude(d => d.Image)
                 .Where(x => x.Id == -1)
                 .Select(y => new ArcanumMain
                 {
@@ -215,7 +217,8 @@ namespace Arcanum.Models.Interfaces.Services
                     SiteTitle = y.SiteTitle,
                     IntroA = y.IntroA,
                     IntroB = y.IntroB,
-                    RecentImage = y.RecentImage
+                    RecentImage = y.RecentImage,
+                    PageImages = y.PageImages
                 }).FirstOrDefaultAsync();
         }
 

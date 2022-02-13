@@ -18,6 +18,6 @@ namespace Arcanum.Models
         public List<RecentImage> RecentImage { get; set; }
         public List<PortfolioImage> PortfolioImage { get; set; }
         public List<StudioImage> StudioImages { get; set; }
-        public PageImage PageImage { get; set; }
+        public IEnumerable<PageImage> PageImages { get; set; }
     }
 }

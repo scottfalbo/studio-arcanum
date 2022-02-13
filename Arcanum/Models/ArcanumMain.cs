@@ -11,9 +11,7 @@ namespace Arcanum.Models
         public string SiteTitle { get; set; }
         public string IntroA { get; set; }
         public string IntroB { get; set; }
-        public PageImage ImageOne { get; set; }
-        public PageImage ImageTwo { get; set; }
-        public PageImage ImageThree { get; set; }
+        public IEnumerable<PageImage> PageImages { get; set; }
         public List<RecentImage> RecentImage { get; set; }
     }
 }
