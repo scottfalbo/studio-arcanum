@@ -1,0 +1,8 @@
+﻿@model IndexModel
+
+<section id="recent-image-gallery-container">
+    @foreach (var recentImage in Model.MainPage.RecentImage)
+    {
+        <img src="@recentImage.Image.ThumbnailUrl" alt="@recentImage.Image.AltText" />
+    }
+</section>

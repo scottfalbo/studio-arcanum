@@ -213,7 +213,7 @@ namespace Arcanum.Models.Interfaces.Services
         public async Task AddImageToRecent(int arcanumMainId, int imageId)
         {
             var images = await GetRecentImages(arcanumMainId);
-            if (images.Count() > 10)
+            if (images.Count() > 9)
             {
                 RecentImage oldestImage = images.OrderBy(x => x.DateTime).First();
                 await RemoveImageFromRecent(oldestImage.ArcanumMainId, oldestImage.ImageId);
@@ -243,9 +243,11 @@ namespace Arcanum.Models.Interfaces.Services
                     ArcanumMainId = y.ArcanumMainId,
                     ImageId = y.ImageId
                 }).FirstOrDefaultAsync();
-            _db.Entry(recentImage).State = EntityState.Deleted;
-            await _db.SaveChangesAsync();
-            //TODO: reorder
+            if (recentImage != null)
+            {
+                _db.Entry(recentImage).State = EntityState.Deleted;
+                await _db.SaveChangesAsync();
+            }
         }
 
         /// <summary>

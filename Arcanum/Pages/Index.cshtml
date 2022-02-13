@@ -4,24 +4,32 @@
     ViewData["Title"] = Model.MainPage.SiteTitle;
 }
 
-<h1>@Model.MainPage.SiteTitle</h1>
-<div>@Model.MainPage.IntroA</div>
+<div>
+    <div><p>@Model.MainPage.IntroA</p></div>
+    <div>
+        <partial name="_ArtistNav" />
+    </div>
+</div>
 
+<div>
+    <div><img src="https://via.placeholder.com/260x80" alt="" /></div>
+    <div><h3>Recent Posts</h3></div>
+    <div>
+        <partial name="_RecentImageGallery" />
+    </div>
+</div>
 
-@await Component.InvokeAsync("ArtistLargeNav")
-
-
-<div>@Model.MainPage.IntroB</div>
-<div>@Model.Instagram</div>
-
-@foreach (var image in Model.MainPage.RecentImage)
-{
-    <img src="@image.Image.ThumbnailUrl." />
-}
+<div>
+    <div><img src="https://via.placeholder.com/260x100" alt="" /></div>
+    <div><p>@Model.MainPage.IntroB</p></div>
+    <div><img src="https://via.placeholder.com/260x50" alt="" /></div>
+</div>
 
 @if (User.IsInRole("WizardLord"))
 {
-    <partial name="Admin/_ShowPopUp" />
+    <div>
+        <partial name="Admin/_ShowPopUp" />
+    </div>
 }
 
 

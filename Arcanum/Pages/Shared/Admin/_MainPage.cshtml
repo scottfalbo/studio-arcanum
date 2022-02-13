@@ -3,20 +3,31 @@
 <div id="mainpage-admin" class="page-admin">
     <section>
         <form asp-page-handler="Update" method="post">
-            <label>Site Title
-                <input type="text" asp-for="@Model.MainPage.SiteTitle" value="@Model.MainPage.SiteTitle" placeholder="@Model.MainPage.SiteTitle"/>
+            <label>
+                Site Title
+                <input type="text" asp-for="@Model.MainPage.SiteTitle" value="@Model.MainPage.SiteTitle" placeholder="@Model.MainPage.SiteTitle" />
             </label>
-            <label>Intro A
+            <label>
+                Intro A
                 <textarea type="text" cols="45" rows="5" asp-for="@Model.MainPage.IntroA" class="form-control" placeholder="@Model.MainPage.IntroA"></textarea>
             </label>
-            <label>Intro B
+            <label>
+                Intro B
                 <textarea type="text" cols="45" rows="5" asp-for="@Model.MainPage.IntroB" class="form-control" placeholder="@Model.MainPage.IntroB"></textarea>
             </label>
-            <input type="hidden" asp-for="@Model.MainPage.Id" value="@Model.MainPage.Id"/>
+            <input type="hidden" asp-for="@Model.MainPage.Id" value="@Model.MainPage.Id" />
             <input type="submit" value="update" />
         </form>
     </section>
     <section>
-        RecentImage admin eventually
+        @foreach (var recentImage in Model.MainPage.RecentImage)
+        {
+            <img src="@recentImage.Image.ThumbnailUrl" />
+            <form asp-page-handler="DeleteRecentImage" method="post">
+                <input type="hidden" name="imageId" value="@recentImage.Image.Id" />
+                <input type="hidden" name="arcanumMainId" value="@recentImage.ArcanumMainId" />
+                <input type="submit" value="✖" />
+            </form>
+        }
     </section>
 </div>
