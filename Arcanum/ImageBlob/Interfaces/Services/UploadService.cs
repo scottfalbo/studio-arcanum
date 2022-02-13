@@ -57,9 +57,9 @@ namespace Arcanum.ImageBlob.Interfaces.Services
         /// </summary>
         /// <param name="file"> inputted file </param>
         /// <returns> new Image </returns>
-        public async Task<Models.Image> AddSiteImage(IFormFile file)
+        public async Task<Models.Image> UpdateSiteImage(IFormFile file)
         {
-            Stream stream = ResizeImage(file, 400);
+            Stream stream = ResizeImage(file, 300);
             string filename = AugmentFileName(file.FileName);
             BlobClient blob = await UploadImage(stream, filename, file.ContentType);
 

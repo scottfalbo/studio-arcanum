@@ -26,7 +26,7 @@ namespace Arcanum.Pages
 
         [BindProperty]
         public ArcanumMain MainPage { get; set; }
-        public string[] PageImages { get; set; }
+        public Image[] PageImages { get; set; }
         public bool ActiveAdmin { get; set; }
         [BindProperty]
         public IEnumerable<Artist> Artists { get; set; }
@@ -36,10 +36,10 @@ namespace Arcanum.Pages
         public async Task OnGet(bool isActive = false)
         {
             MainPage = await _site.GetMainPage();
-            PageImages = new string[3];
-            PageImages[0] = MainPage.ImageOneSourceUrl;
-            PageImages[1] = MainPage.ImageTwoSourceUrl;
-            PageImages[2] = MainPage.ImageThreeSourceUrl;
+            PageImages = new Image[3];
+            PageImages[0].SourceUrl = MainPage.ImageOneSourceUrl;
+            PageImages[1].SourceUrl = MainPage.ImageTwoSourceUrl;
+            PageImages[2].SourceUrl = MainPage.ImageThreeSourceUrl;
             Artists = await _site.GetArtists();
             StudioInfo = await _site.GetStudio();
             ActiveAdmin = isActive;
@@ -77,6 +77,18 @@ namespace Arcanum.Pages
                     break;
             }
             await _site.UpdateMainPage(arcanumMain);
+
+            return Redirect("/Index?isActive=true");
+        }
+
+        /// <summary>
+        /// Update images diplay option.
+        /// </summary>
+        public async Task<IActionResult> OnPostDisplayImageToggle(bool isDisplay, int imageId)
+        {
+            Image image = await _artistAdmin.GetImage(imageId);
+            image.Display = isDisplay;
+            await _artistAdmin.UpdateImage(image);
 
             return Redirect("/Index?isActive=true");
         }

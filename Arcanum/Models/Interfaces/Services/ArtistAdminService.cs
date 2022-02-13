@@ -158,11 +158,45 @@ namespace Arcanum.Models.Interfaces.Services
                 SourceUrl = image.SourceUrl,
                 ThumbnailUrl = image.ThumbnailUrl,
                 FileName = image.FileName,
-                ThumbFileName = image.ThumbFileName
+                ThumbFileName = image.ThumbFileName,
+                Display = true
             };
             _db.Entry(newImage).State = EntityState.Added;
             await _db.SaveChangesAsync();
             return newImage;
+        }
+
+        /// <summary>
+        /// Get an image from the database by id.
+        /// </summary>
+        /// <param name="imageId"> int imageId </param>
+        /// <returns> Image object </returns>
+        public async Task<Image> GetImage(int imageId)
+        {
+            return await _db.Image
+                .Where(x => x.Id == imageId)
+                .Select(y => new Image
+                {
+                    Id = y.Id,
+                    Title = y.Title,
+                    AltText = y.AltText,
+                    ArtistId = y.ArtistId,
+                    SourceUrl = y.SourceUrl,
+                    ThumbnailUrl = y.ThumbnailUrl,
+                    FileName = y.FileName,
+                    ThumbFileName = y.ThumbFileName,
+                    Display = y.Display
+                }).FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Updates an image record in the database.
+        /// </summary>
+        /// <param name="image"> Image object </param>
+        public async Task UpdateImage(Image image)
+        {
+            _db.Entry(image).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
         }
 
         /// <summary>
