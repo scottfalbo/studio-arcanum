@@ -1,4 +1,6 @@
 ﻿using Arcanum.Data;
+using Arcanum.ImageBlob.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,11 +13,13 @@ namespace Arcanum.Models.Interfaces.Services
     {
         private readonly ArcanumDbContext _db;
         public IArtistAdmin _artistAdmin;
+        public IUpload _upload;
 
-        public SiteService(ArcanumDbContext context, IArtistAdmin artistAdmin)
+        public SiteService(ArcanumDbContext context, IArtistAdmin artistAdmin, IUpload upload)
         {
             _db = context;
             _artistAdmin = artistAdmin;
+            _upload = upload;
         }
 
         /// <summary>
@@ -24,7 +28,8 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="artist"> Artist object </param>
         public async Task<Artist> CreateArtist(Artist artist)
         {
-            int order = GetArtists().Result.Count();
+            var artists = await GetArtists();
+            int order = artists.Count();
             Artist newArtist = new Artist()
             {
                 Id = artist.Id,
@@ -32,7 +37,7 @@ namespace Arcanum.Models.Interfaces.Services
                 Email = artist.Email,
                 ProfileImageUri = "https://via.placeholder.com/200x300",
                 Display = false,
-                Order = order + 1,
+                Order = order + 1
             };
             _db.Entry(newArtist).State = EntityState.Added;
             await _db.SaveChangesAsync();
@@ -214,7 +219,10 @@ namespace Arcanum.Models.Interfaces.Services
                     SiteTitle = y.SiteTitle,
                     IntroA = y.IntroA,
                     IntroB = y.IntroB,
-                    RecentImage = y.RecentImage
+                    RecentImage = y.RecentImage,
+                    ImageOneSourceUrl = y.ImageOneSourceUrl,
+                    ImageTwoSourceUrl = y.ImageTwoSourceUrl,
+                    ImageThreeSourceUrl = y.ImageThreeSourceUrl
                 }).FirstOrDefaultAsync();
         }
 
@@ -227,6 +235,24 @@ namespace Arcanum.Models.Interfaces.Services
             _db.Entry(mainPage).State = EntityState.Modified;
             await _db.SaveChangesAsync();
         }
+
+        public async Task<Image> UpdateMainPageImage(IFormFile file)
+        {
+            Image image = await _upload.UpdateSiteImage(file);
+            Image newImage = new Image()
+            {
+                Title = "site-image",
+                ArtistId = "site-image",
+                SourceUrl = image.SourceUrl,
+                ThumbnailUrl = image.ThumbnailUrl,
+                FileName = image.FileName,
+                ThumbFileName = image.ThumbFileName
+            };
+            _db.Entry(newImage).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+            return newImage;
+        }
+
 
         /// <summary>
         /// Query the StudioInfo record from the database.
@@ -258,6 +284,66 @@ namespace Arcanum.Models.Interfaces.Services
         {
             _db.Entry(studioInfo).State = EntityState.Modified;
             await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Get a list of all studio images by join table.
+        /// </summary>
+        /// <param name="studioId"> int studioId </param>
+        /// <returns> IEnumerable of images </returns>
+        public async Task<IEnumerable<Image>> GetStudioImages(int studioId)
+        {
+            return await _db.StudioImage
+                .Where(a => a.StudioInfoId == studioId)
+                .Include(b => b.Image)
+                .Select(x => new Image
+                {
+                    Id = x.Image.Id,
+                    Title = x.Image.Title,
+                    AltText = x.Image.AltText,
+                    SourceUrl = x.Image.SourceUrl,
+                    ThumbnailUrl = x.Image.ThumbnailUrl,
+                    FileName = x.Image.FileName,
+                    ThumbFileName = x.Image.ThumbFileName
+                }).ToListAsync();
+        }
+
+        /// <summary>
+        /// Create a StudioImage join table.
+        /// </summary>
+        /// <param name="studioId"> int studio id </param>
+        /// <param name="imageId"> int image id </param>
+        public async Task AddImageToStudio(int studioId, int imageId)
+        {
+            var images = await GetStudioImages(studioId);
+            int order = images.Count();
+            StudioImage studioImage = new StudioImage()
+            {
+                StudioInfoId = studioId,
+                ImageId = imageId,
+                Order = order + 1
+            };
+            _db.Entry(studioImage).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Removes a StudioImage join table.
+        /// </summary>
+        /// <param name="studioId"> int studio id </param>
+        /// <param name="imageId"> int image id </param>
+        public async Task RemoveImageFromStudio(int studioId, int imageId)
+        {
+            StudioImage studioImage = await _db.StudioImage
+                .Where(x => x.StudioInfoId == studioId && x.ImageId == imageId)
+                .Select(y => new StudioImage
+                {
+                    StudioInfoId = y.StudioInfoId,
+                    ImageId = y.ImageId
+                }).FirstOrDefaultAsync();
+            _db.Entry(studioImage).State = EntityState.Deleted;
+            await _db.SaveChangesAsync();
+            //TODO: reorder
         }
 
         /// <summary>

@@ -1,0 +1,12 @@
+﻿@model IndexModel
+
+<section id="recent-image-gallery-container">
+    @foreach (var recentImage in Model.MainPage.RecentImage)
+    {
+        var artist = Model.Artists.Where(x => x.Id == recentImage.Image.ArtistId).FirstOrDefault();
+        string name = artist.Name;
+        
+        <img src="@recentImage.Image.ThumbnailUrl" alt="@recentImage.Image.AltText" />
+        <p>@name</p>
+    }
+</section>

@@ -9,6 +9,7 @@ namespace Arcanum.Models
     {
         public int StudioInfoId { get; set; }
         public int ImageId { get; set; }
+        public int Order { get; set; }
         public StudioInfo StudioInfo { get; set; }
         public Image Image { get; set; }
     }

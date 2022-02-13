@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,8 +23,12 @@ namespace Arcanum.Models.Interfaces
 
         public Task<ArcanumMain> GetMainPage();
         public Task UpdateMainPage(ArcanumMain mainPage);
+        public Task<Image> UpdateMainPageImage(IFormFile file);
 
         public Task<StudioInfo> GetStudio();
         public Task UpdateStudioInfo(StudioInfo studioInfo);
+        public Task<IEnumerable<Image>> GetStudioImages(int studioId);
+        public Task AddImageToStudio(int studioId, int imageId);
+        public Task RemoveImageFromStudio(int studioId, int imageId);
     }
 }

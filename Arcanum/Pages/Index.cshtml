@@ -4,21 +4,48 @@
     ViewData["Title"] = Model.MainPage.SiteTitle;
 }
 
-<h1>@Model.MainPage.SiteTitle</h1>
-<div>@Model.MainPage.IntroA</div>
-<div>@Model.MainPage.IntroB</div>
-<div>@Model.Instagram</div>
+<div>
+    <div><p>@Model.MainPage.IntroA</p></div>
+    <div>
+        <partial name="_ArtistNav" />
+    </div>
+</div>
 
-@foreach (var image in Model.MainPage.RecentImage)
-{
-    <img src="@image.Image.ThumbnailUrl." />
-}
+<div>
+    <div>
+        @if (Model.PageImages[0].Display)
+        {
+            <img src="@Model.PageImages[0].SourceUrl" alt="site-image" />
+        }
+    </div>
+    <div><h3>Recent Posts</h3></div>
+    <div>
+        <partial name="_RecentImageGallery" />
+    </div>
+</div>
+
+<div>
+    <div>
+        @if (Model.PageImages[1].Display)
+        {
+            <img src="@Model.PageImages[1].SourceUrl" alt="site-image" />
+        }
+    </div>
+    <div><p>@Model.MainPage.IntroB</p></div>
+    <div>
+        @if (Model.PageImages[2].Display)
+        {
+            <img src="@Model.PageImages[2].SourceUrl" alt="site-image" />
+        }
+    </div>
+</div>
 
 @if (User.IsInRole("WizardLord"))
 {
-    <partial name="Admin/_ShowPopUp" />
+    <div>
+        <partial name="Admin/_ShowPopUp" />
+    </div>
 }
-
 
 @if (User.IsInRole("WizardLord"))
 {

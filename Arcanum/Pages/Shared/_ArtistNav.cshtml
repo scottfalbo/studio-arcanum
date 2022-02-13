@@ -1,0 +1,18 @@
+﻿@model IndexModel
+
+<section id="artist-nav-body-container">
+    @foreach (var artist in Model.Artists)
+    {
+        @if (artist.Display)
+        {
+            <div>
+                <div>
+                    <img src="@artist.ProfileImageUri." alt="Photo of @artist.Name" />
+                </div>
+                <div>
+                    <h2>@artist.Name</h2>
+                </div>
+            </div>
+        }
+    }
+</section>

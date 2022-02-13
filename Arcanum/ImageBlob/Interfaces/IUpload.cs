@@ -10,6 +10,7 @@ namespace Arcanum.ImageBlob.Interfaces
     public interface IUpload
     {
         public Task<Image> AddImage(IFormFile file);
+        public Task<Image> UpdateSiteImage(IFormFile file);
         public Task RemoveImage(string fileName);
     }
 }
