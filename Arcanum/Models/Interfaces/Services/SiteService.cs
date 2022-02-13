@@ -212,6 +212,8 @@ namespace Arcanum.Models.Interfaces.Services
             return await _db.ArcanumMain
                 .Include(a => a.RecentImage)
                 .ThenInclude(b => b.Image)
+                .Include(c => c.PageImage)
+                .ThenInclude(d => d.Image)
                 .Where(x => x.Id == -1)
                 .Select(y => new ArcanumMain
                 {
@@ -220,9 +222,7 @@ namespace Arcanum.Models.Interfaces.Services
                     IntroA = y.IntroA,
                     IntroB = y.IntroB,
                     RecentImage = y.RecentImage,
-                    ImageOneSourceUrl = y.ImageOneSourceUrl,
-                    ImageTwoSourceUrl = y.ImageTwoSourceUrl,
-                    ImageThreeSourceUrl = y.ImageThreeSourceUrl
+                    PageImage = y.PageImage
                 }).FirstOrDefaultAsync();
         }
 
@@ -236,6 +236,11 @@ namespace Arcanum.Models.Interfaces.Services
             await _db.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Update the main page image
+        /// </summary>
+        /// <param name="file"> inputted file </param>
+        /// <returns> newly created and uploaded image </returns>
         public async Task<Image> UpdateMainPageImage(IFormFile file)
         {
             Image image = await _upload.UpdateSiteImage(file);
@@ -253,6 +258,22 @@ namespace Arcanum.Models.Interfaces.Services
             return newImage;
         }
 
+        /// <summary>
+        /// Add an image to the main page model with a PageImage join table.
+        /// </summary>
+        /// <param name="arcanumMainId"> page id </param>
+        /// <param name="imageId"> image id </param>
+        public async Task AddImageToMainPage(int arcanumMainId, int imageId, int index)
+        {
+            PageImage pageImage = new PageImage()
+            {
+                ArcanumMainId = arcanumMainId,
+                ImageId = imageId,
+                Order = index
+            };
+            _db.Entry(pageImage).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+        }
 
         /// <summary>
         /// Query the StudioInfo record from the database.

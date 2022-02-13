@@ -24,6 +24,7 @@ namespace Arcanum.Models.Interfaces
         public Task<ArcanumMain> GetMainPage();
         public Task UpdateMainPage(ArcanumMain mainPage);
         public Task<Image> UpdateMainPageImage(IFormFile file);
+        public Task AddImageToMainPage(int arcanumMainId, int imageId, int index);
 
         public Task<StudioInfo> GetStudio();
         public Task UpdateStudioInfo(StudioInfo studioInfo);

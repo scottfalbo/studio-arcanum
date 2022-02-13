@@ -13,9 +13,9 @@
 
 <div>
     <div>
-        @if (Model.PageImages[0].Display)
+        @if (Model.MainPage.PageImage[0].Image.Display)
         {
-            <img src="@Model.PageImages[0].SourceUrl" alt="site-image" />
+            <img src="@Model.MainPage.PageImage[0].Image.SourceUrl" alt="site-image" />
         }
     </div>
     <div><h3>Recent Posts</h3></div>
@@ -26,16 +26,16 @@
 
 <div>
     <div>
-        @if (Model.PageImages[1].Display)
+        @if (Model.MainPage.PageImage[1].Image.Display)
         {
-            <img src="@Model.PageImages[1].SourceUrl" alt="site-image" />
+            <img src="@Model.MainPage.PageImage[1].Image.SourceUrl" alt="site-image" />
         }
     </div>
     <div><p>@Model.MainPage.IntroB</p></div>
     <div>
-        @if (Model.PageImages[2].Display)
+        @if (Model.MainPage.PageImage[2].Image.Display)
         {
-            <img src="@Model.PageImages[2].SourceUrl" alt="site-image" />
+            <img src="@Model.MainPage.PageImage[2].Image.SourceUrl" alt="site-image" />
         }
     </div>
 </div>

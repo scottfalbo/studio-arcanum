@@ -47,7 +47,8 @@ namespace Arcanum.ImageBlob.Interfaces.Services
                 SourceUrl = blob.Uri.ToString(),
                 FileName = filename,
                 ThumbnailUrl = thumb.Uri.ToString(),
-                ThumbFileName = thumbFile
+                ThumbFileName = thumbFile,
+                Display = true
             };
             return image;
         }
@@ -68,7 +69,8 @@ namespace Arcanum.ImageBlob.Interfaces.Services
                 SourceUrl = blob.Uri.ToString(),
                 FileName = filename,
                 ThumbnailUrl = "site-image",
-                ThumbFileName = "site-image"
+                ThumbFileName = "site-image",
+                Display = true
             };
             return image;
         }
@@ -125,25 +127,28 @@ namespace Arcanum.ImageBlob.Interfaces.Services
             using var image = SixLabors.ImageSharp.Image.Load(file.OpenReadStream());
             var stream = new MemoryStream();
 
-            int width = FindWidth(image.Width, image.Height, n);
-            image.Mutate(x => x.Resize(width, n));
-
-            switch (file.ContentType)
+            if (image.Height > n)
             {
-                case "image/jpeg":
-                    image.SaveAsJpeg(stream);
-                    break;
-                case "image/png":
-                    image.SaveAsPng(stream);
-                    break;
-                case "image/bmp":
-                    image.SaveAsBmp(stream);
-                    break;
-                case "image/gif":
-                    image.SaveAsGif(stream);
-                    break;
-                default:
-                    throw new Exception("invalid file type");
+                int width = FindWidth(image.Width, image.Height, n);
+                image.Mutate(x => x.Resize(width, n));
+
+                switch (file.ContentType)
+                {
+                    case "image/jpeg":
+                        image.SaveAsJpeg(stream);
+                        break;
+                    case "image/png":
+                        image.SaveAsPng(stream);
+                        break;
+                    case "image/bmp":
+                        image.SaveAsBmp(stream);
+                        break;
+                    case "image/gif":
+                        image.SaveAsGif(stream);
+                        break;
+                    default:
+                        throw new Exception("invalid file type");
+                }
             }
             stream.Position = 0;
             return stream;
