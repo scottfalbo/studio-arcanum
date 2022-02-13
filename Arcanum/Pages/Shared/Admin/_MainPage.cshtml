@@ -27,7 +27,7 @@
                 <form asp-page-handler="DisplayImageToggle" method="post">
                     <label>
                         Display
-                        <input type="checkbox" name="isDisplay" checked="@Model.MainPage.PageImage[i].Image.Display">
+                        <input type="checkbox" name="isDisplay" value="true" checked="@Model.MainPage.PageImage[i].Image.Display">
                         <input type="hidden" name="imageId" value="@Model.MainPage.PageImage[i].Image.Id" />
                         <input type="submit" value="toggle display" />
                     </label>

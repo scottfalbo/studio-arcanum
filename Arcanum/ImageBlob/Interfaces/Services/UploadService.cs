@@ -127,29 +127,27 @@ namespace Arcanum.ImageBlob.Interfaces.Services
             using var image = SixLabors.ImageSharp.Image.Load(file.OpenReadStream());
             var stream = new MemoryStream();
 
-            if (image.Height > n)
-            {
-                int width = FindWidth(image.Width, image.Height, n);
-                image.Mutate(x => x.Resize(width, n));
+            int width = FindWidth(image.Width, image.Height, n);
+            image.Mutate(x => x.Resize(width, n));
 
-                switch (file.ContentType)
-                {
-                    case "image/jpeg":
-                        image.SaveAsJpeg(stream);
-                        break;
-                    case "image/png":
-                        image.SaveAsPng(stream);
-                        break;
-                    case "image/bmp":
-                        image.SaveAsBmp(stream);
-                        break;
-                    case "image/gif":
-                        image.SaveAsGif(stream);
-                        break;
-                    default:
-                        throw new Exception("invalid file type");
-                }
+            switch (file.ContentType)
+            {
+                case "image/jpeg":
+                    image.SaveAsJpeg(stream);
+                    break;
+                case "image/png":
+                    image.SaveAsPng(stream);
+                    break;
+                case "image/bmp":
+                    image.SaveAsBmp(stream);
+                    break;
+                case "image/gif":
+                    image.SaveAsGif(stream);
+                    break;
+                default:
+                    throw new Exception("invalid file type");
             }
+
             stream.Position = 0;
             return stream;
         }

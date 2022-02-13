@@ -90,19 +90,22 @@ namespace Arcanum.Data
                 {
                     Id = -1,
                     SourceUrl = "https://via.placeholder.com/260x80",
-                    Display = false
+                    Display = false,
+                    AltText = "site-image"
                 },
                 new Image
                 {
                     Id = -2,
                     SourceUrl = "https://via.placeholder.com/260x100",
-                    Display = false
+                    Display = false,
+                    AltText = "site-image"
                 },
                 new Image
                 {
                     Id = -3,
                     SourceUrl = "https://via.placeholder.com/300x300",
-                    Display = false
+                    Display = false,
+                    AltText = "site-image"
                 });
 
             modelBuilder.Entity<PageImage>().HasData(
