@@ -85,6 +85,46 @@ namespace Arcanum.Data
                     IntroB = "here is some more info"
                 });
 
+            modelBuilder.Entity<Image>().HasData(
+                new Image
+                {
+                    Id = -1,
+                    SourceUrl = "https://via.placeholder.com/260x80",
+                    Display = false
+                },
+                new Image
+                {
+                    Id = -2,
+                    SourceUrl = "https://via.placeholder.com/260x100",
+                    Display = false
+                },
+                new Image
+                {
+                    Id = -3,
+                    SourceUrl = "https://via.placeholder.com/300x300",
+                    Display = false
+                });
+
+            modelBuilder.Entity<PageImage>().HasData(
+                new PageImage
+                {
+                    ArcanumMainId = -1,
+                    ImageId = -1,
+                    Order = 0
+                },
+                new PageImage
+                {
+                    ArcanumMainId = -1,
+                    ImageId = -2,
+                    Order = 1
+                },
+                new PageImage
+                {
+                    ArcanumMainId = -1,
+                    ImageId = -3,
+                    Order = 2
+                });
+
 
             modelBuilder.Entity<StudioInfo>().HasData(
                 new StudioInfo

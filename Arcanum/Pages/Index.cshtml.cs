@@ -35,7 +35,8 @@ namespace Arcanum.Pages
         public async Task OnGet(bool isActive = false)
         {
             MainPage = await _site.GetMainPage();
-            MainPage.PageImage = (List<PageImage>)MainPage.PageImage.OrderBy(x => x.Order);
+            IEnumerable<PageImage> pageImages = MainPage.PageImage;
+            MainPage.PageImage = (pageImages.OrderBy(x => x.Order)).ToList();
             Artists = await _site.GetArtists();
             StudioInfo = await _site.GetStudio();
             ActiveAdmin = isActive;
