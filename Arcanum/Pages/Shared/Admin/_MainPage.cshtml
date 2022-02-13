@@ -20,16 +20,16 @@
         </form>
     </section>
     <section>
-        @{ 
-            @*int i = 0;
-            foreach (var pageImage in Model.MainPage.PageImages)
-            {
-                <form asp-page-handler="UpdatePageImage" method="post" enctype="multipart/form-data">
-                    <input type="file" name="file" accept="image/*" class="file-selection-input" />
-                    <input type="hidden" name="index" value="@i"/>
-                    <input type="submit" value="Add Images" />
-                </form>
-            }*@
+        @for (int i = 0; i < 3; i++)
+        {
+            <div>
+                <img src="@Model.PageImages[i]" alt="site-image" />
+            </div>
+            <form asp-page-handler="UpdatePageImage" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" accept="image/*" class="file-selection-input" />
+                <input type="hidden" name="index" value="@i"/>
+                <input type="submit" value="Add Images" />
+            </form>
         }
     </section>
     <section>

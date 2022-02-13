@@ -26,6 +26,7 @@ namespace Arcanum.Pages
 
         [BindProperty]
         public ArcanumMain MainPage { get; set; }
+        public string[] PageImages { get; set; }
         public bool ActiveAdmin { get; set; }
         [BindProperty]
         public IEnumerable<Artist> Artists { get; set; }
@@ -35,6 +36,10 @@ namespace Arcanum.Pages
         public async Task OnGet(bool isActive = false)
         {
             MainPage = await _site.GetMainPage();
+            PageImages = new string[3];
+            PageImages[0] = MainPage.ImageOneSourceUrl;
+            PageImages[1] = MainPage.ImageTwoSourceUrl;
+            PageImages[2] = MainPage.ImageThreeSourceUrl;
             Artists = await _site.GetArtists();
             StudioInfo = await _site.GetStudio();
             ActiveAdmin = isActive;
@@ -53,11 +58,11 @@ namespace Arcanum.Pages
         /// <summary>
         /// Updates the images on the main page.
         /// </summary>
-        public async Task<IActionResult> OnPostUpdatePageImage(IFormFile file, int i)
+        public async Task<IActionResult> OnPostUpdatePageImage(IFormFile file, int index)
         {
             Image image = await _site.UpdateMainPageImage(file);
             ArcanumMain arcanumMain = await _site.GetMainPage();
-            switch (i)
+            switch (index)
             {
                 case 0:
                     arcanumMain.ImageOneSourceUrl = image.SourceUrl;
