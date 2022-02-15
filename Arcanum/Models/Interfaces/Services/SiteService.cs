@@ -251,7 +251,8 @@ namespace Arcanum.Models.Interfaces.Services
                 SourceUrl = image.SourceUrl,
                 ThumbnailUrl = image.ThumbnailUrl,
                 FileName = image.FileName,
-                ThumbFileName = image.ThumbFileName
+                ThumbFileName = image.ThumbFileName,
+                Display = true
             };
             _db.Entry(newImage).State = EntityState.Added;
             await _db.SaveChangesAsync();
@@ -272,6 +273,24 @@ namespace Arcanum.Models.Interfaces.Services
                 Order = index
             };
             _db.Entry(pageImage).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Remove an main page image join table
+        /// </summary>
+        /// <param name="arcanumMainId"> int arcnaumMainId </param>
+        /// <param name="ImageId"> int imageId </param>
+        public async Task RemoveImageFromMainPage(int arcanumMainId, int imageId)
+        {
+            PageImage pageImage = await _db.PageImage
+                .Where(x => x.ArcanumMainId == arcanumMainId && x.ImageId == imageId)
+                .Select(y => new PageImage
+                {
+                    ArcanumMainId = y.ArcanumMainId,
+                    ImageId = y.ImageId
+                }).FirstOrDefaultAsync();
+            _db.Entry(pageImage).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
         }
 

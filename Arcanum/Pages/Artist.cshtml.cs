@@ -115,7 +115,9 @@ namespace Arcanum.Pages
 
         public async Task<IActionResult> OnPostDeleteImage(int imageId, int portfolioId)
         {
-            await _artistAdmin.DeleteImage(imageId, portfolioId);
+            await _artistAdmin.RemoveImageFromPortfolio(portfolioId, imageId);
+            await _artistAdmin.RemoveImageFromRecent(-1, imageId);
+            await _artistAdmin.DeleteImage(imageId);
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
 

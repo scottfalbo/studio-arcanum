@@ -23,7 +23,7 @@ namespace Arcanum.Models.Interfaces
         public Task AddImageToRecent(int arcanumMainId, int imageId);
         public Task RemoveImageFromRecent(int arcanumMainId, int imageId);
         public Task<IEnumerable<RecentImage>> GetRecentImages(int arcanumMainId);
-        public Task DeleteImage(int imageId, int portfolioId);
+        public Task DeleteImage(int imageId);
 
         public Task<Booking> GetArtistBooking(string artistId);
 

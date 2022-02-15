@@ -55,10 +55,12 @@ namespace Arcanum.Pages
         /// <summary>
         /// Updates the images on the main page.
         /// </summary>
-        public async Task<IActionResult> OnPostUpdatePageImage(IFormFile file, int index)
+        public async Task<IActionResult> OnPostUpdatePageImage(IFormFile file, int index, int imageId)
         {
             Image image = await _site.UpdateMainPageImage(file);
             await _site.AddImageToMainPage(-1, image.Id, index);
+            await _site.RemoveImageFromMainPage(-1, imageId);
+            await _artistAdmin.DeleteImage(imageId);
 
             return Redirect("/Index?isActive=true");
         }

@@ -34,7 +34,8 @@
                 </form>
             </div>
             <form asp-page-handler="UpdatePageImage" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" accept="image/*" class="file-selection-input" />
+                <input type="file" name="file" accept="image/*" class="file-selection-input" required/>
+                <input type="hidden" name="imageId" value="@Model.MainPage.PageImage[i].ImageId" />
                 <input type="hidden" name="index" value="@i"/>
                 <input type="submit" value="Add Images" />
             </form>
