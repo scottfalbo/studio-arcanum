@@ -23,17 +23,19 @@
         @for (int i = 0; i < 3; i++)
         {
             <div>
-                <img src="@Model.PageImages[i].SourceUrl" alt="site-image" />
+                <img src="@Model.MainPage.PageImage[i].Image.SourceUrl" alt="site-image" />
                 <form asp-page-handler="DisplayImageToggle" method="post">
                     <label>
                         Display
-                        <input type="checkbox" name="isDisplay" checked="@Model.PageImages[i].Display">
-                        <input type="hidden" name="imageId" value="@Model.PageImages.[i].Id" />
+                        <input type="checkbox" name="isDisplay" value="true" checked="@Model.MainPage.PageImage[i].Image.Display">
+                        <input type="hidden" name="imageId" value="@Model.MainPage.PageImage[i].Image.Id" />
+                        <input type="submit" value="toggle display" />
                     </label>
                 </form>
             </div>
             <form asp-page-handler="UpdatePageImage" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" accept="image/*" class="file-selection-input" />
+                <input type="file" name="file" accept="image/*" class="file-selection-input" required/>
+                <input type="hidden" name="imageId" value="@Model.MainPage.PageImage[i].ImageId" />
                 <input type="hidden" name="index" value="@i"/>
                 <input type="submit" value="Add Images" />
             </form>

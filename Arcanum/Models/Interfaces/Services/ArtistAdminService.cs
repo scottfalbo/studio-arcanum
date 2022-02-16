@@ -65,7 +65,7 @@ namespace Arcanum.Models.Interfaces.Services
             foreach (PortfolioImage image in images)
             {
                 await RemoveImageFromPortfolio(portfolioId, image.Image.Id);
-                await DeleteImage(image.Image.Id, portfolioId);
+                await DeleteImage(image.Image.Id);
             }
             await RemovePortfolioFromArtist(portfolioId, artistId);
             Portfolio portfolio = await _db.Portfolio.FindAsync(portfolioId);
@@ -308,10 +308,8 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="imageId"> int image id </param>
         /// <param name="portfolioId"> int portfolio id </param>
         /// <returns></returns>
-        public async Task DeleteImage(int imageId, int portfolioId)
+        public async Task DeleteImage(int imageId)
         {
-            await RemoveImageFromPortfolio(portfolioId, imageId);
-            await RemoveImageFromRecent(-1, imageId);
             Image image = await _db.Image.FindAsync(imageId);
             await _upload.RemoveImage(image.FileName);
             _db.Entry(image).State = EntityState.Deleted;

@@ -14,6 +14,7 @@ namespace Arcanum.Data
     public class ArcanumDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<ArcanumMain> ArcanumMain { get; set; }
+        public DbSet<PageImage> PageImage { get; set; }
         public DbSet<Artist> Artist { get; set; }
         public DbSet<RecentImage> RecentImage { get; set; }
         public DbSet<ArtistBooking> ArtistBooking { get; set; }
@@ -44,6 +45,7 @@ namespace Arcanum.Data
             modelBuilder.Entity<ArtistPortfolio>().HasKey(x => new { x.ArtistId, x.PortfolioId });
             modelBuilder.Entity<PortfolioImage>().HasKey(x => new { x.PortfolioId, x.ImageId });
             modelBuilder.Entity<StudioImage>().HasKey(x => new { x.StudioInfoId, x.ImageId });
+            modelBuilder.Entity<PageImage>().HasKey(x => new { x.ArcanumMainId, x.ImageId });
 
             SeedRole(modelBuilder, "WizardLord", "read", "create", "update", "delete");
             SeedRole(modelBuilder, "ArtistAdmin", "read", "create", "update", "delete");
@@ -81,6 +83,49 @@ namespace Arcanum.Data
                     SiteTitle = "Arcanum",
                     IntroA = "hello world",
                     IntroB = "here is some more info"
+                });
+
+            modelBuilder.Entity<Image>().HasData(
+                new Image
+                {
+                    Id = -1,
+                    SourceUrl = "https://via.placeholder.com/260x80",
+                    Display = false,
+                    AltText = "site-image"
+                },
+                new Image
+                {
+                    Id = -2,
+                    SourceUrl = "https://via.placeholder.com/260x100",
+                    Display = false,
+                    AltText = "site-image"
+                },
+                new Image
+                {
+                    Id = -3,
+                    SourceUrl = "https://via.placeholder.com/300x300",
+                    Display = false,
+                    AltText = "site-image"
+                });
+
+            modelBuilder.Entity<PageImage>().HasData(
+                new PageImage
+                {
+                    ArcanumMainId = -1,
+                    ImageId = -1,
+                    Order = 0
+                },
+                new PageImage
+                {
+                    ArcanumMainId = -1,
+                    ImageId = -2,
+                    Order = 1
+                },
+                new PageImage
+                {
+                    ArcanumMainId = -1,
+                    ImageId = -3,
+                    Order = 2
                 });
 
 

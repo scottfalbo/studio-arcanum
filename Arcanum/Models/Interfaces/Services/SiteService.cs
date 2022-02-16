@@ -212,6 +212,8 @@ namespace Arcanum.Models.Interfaces.Services
             return await _db.ArcanumMain
                 .Include(a => a.RecentImage)
                 .ThenInclude(b => b.Image)
+                .Include(c => c.PageImage)
+                .ThenInclude(d => d.Image)
                 .Where(x => x.Id == -1)
                 .Select(y => new ArcanumMain
                 {
@@ -220,9 +222,7 @@ namespace Arcanum.Models.Interfaces.Services
                     IntroA = y.IntroA,
                     IntroB = y.IntroB,
                     RecentImage = y.RecentImage,
-                    ImageOneSourceUrl = y.ImageOneSourceUrl,
-                    ImageTwoSourceUrl = y.ImageTwoSourceUrl,
-                    ImageThreeSourceUrl = y.ImageThreeSourceUrl
+                    PageImage = y.PageImage
                 }).FirstOrDefaultAsync();
         }
 
@@ -236,6 +236,11 @@ namespace Arcanum.Models.Interfaces.Services
             await _db.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Update the main page image
+        /// </summary>
+        /// <param name="file"> inputted file </param>
+        /// <returns> newly created and uploaded image </returns>
         public async Task<Image> UpdateMainPageImage(IFormFile file)
         {
             Image image = await _upload.UpdateSiteImage(file);
@@ -246,13 +251,48 @@ namespace Arcanum.Models.Interfaces.Services
                 SourceUrl = image.SourceUrl,
                 ThumbnailUrl = image.ThumbnailUrl,
                 FileName = image.FileName,
-                ThumbFileName = image.ThumbFileName
+                ThumbFileName = image.ThumbFileName,
+                Display = true
             };
             _db.Entry(newImage).State = EntityState.Added;
             await _db.SaveChangesAsync();
             return newImage;
         }
 
+        /// <summary>
+        /// Add an image to the main page model with a PageImage join table.
+        /// </summary>
+        /// <param name="arcanumMainId"> page id </param>
+        /// <param name="imageId"> image id </param>
+        public async Task AddImageToMainPage(int arcanumMainId, int imageId, int index)
+        {
+            PageImage pageImage = new PageImage()
+            {
+                ArcanumMainId = arcanumMainId,
+                ImageId = imageId,
+                Order = index
+            };
+            _db.Entry(pageImage).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Remove an main page image join table
+        /// </summary>
+        /// <param name="arcanumMainId"> int arcnaumMainId </param>
+        /// <param name="ImageId"> int imageId </param>
+        public async Task RemoveImageFromMainPage(int arcanumMainId, int imageId)
+        {
+            PageImage pageImage = await _db.PageImage
+                .Where(x => x.ArcanumMainId == arcanumMainId && x.ImageId == imageId)
+                .Select(y => new PageImage
+                {
+                    ArcanumMainId = y.ArcanumMainId,
+                    ImageId = y.ImageId
+                }).FirstOrDefaultAsync();
+            _db.Entry(pageImage).State = EntityState.Deleted;
+            await _db.SaveChangesAsync();
+        }
 
         /// <summary>
         /// Query the StudioInfo record from the database.

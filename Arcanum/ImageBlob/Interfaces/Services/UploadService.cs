@@ -47,7 +47,8 @@ namespace Arcanum.ImageBlob.Interfaces.Services
                 SourceUrl = blob.Uri.ToString(),
                 FileName = filename,
                 ThumbnailUrl = thumb.Uri.ToString(),
-                ThumbFileName = thumbFile
+                ThumbFileName = thumbFile,
+                Display = true
             };
             return image;
         }
@@ -59,6 +60,7 @@ namespace Arcanum.ImageBlob.Interfaces.Services
         /// <returns> new Image </returns>
         public async Task<Models.Image> UpdateSiteImage(IFormFile file)
         {
+            await RemoveImage(file.FileName);
             Stream stream = ResizeImage(file, 300);
             string filename = AugmentFileName(file.FileName);
             BlobClient blob = await UploadImage(stream, filename, file.ContentType);
@@ -68,7 +70,8 @@ namespace Arcanum.ImageBlob.Interfaces.Services
                 SourceUrl = blob.Uri.ToString(),
                 FileName = filename,
                 ThumbnailUrl = "site-image",
-                ThumbFileName = "site-image"
+                ThumbFileName = "site-image",
+                Display = true
             };
             return image;
         }
@@ -145,6 +148,7 @@ namespace Arcanum.ImageBlob.Interfaces.Services
                 default:
                     throw new Exception("invalid file type");
             }
+
             stream.Position = 0;
             return stream;
         }
