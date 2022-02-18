@@ -45,7 +45,23 @@
             </form>
         </section>
         <section>
-            edit images
+            @foreach (var studioImage in Model.StudioInfo.StudioImages)
+            {
+            <div>
+                <img src="@studioImage.Image.ThumbnailUrl" />
+                <i class="delete-confirmation-button">X</i>
+                <div class="delete-confirmation-container hide-me">
+                    <div>
+                        <form asp-page-handler="DeleteImage" method="post">
+                            <input type="hidden" name="imageId" value="@studioImage.Image.Id" />
+                            <input type="hidden" asp-for="@Model.StudioInfo.Id" value="@Model.StudioInfo.Id" />
+                            <input type="submit" value="confirm" />
+                            <i class="delete-confirmation-cancel">cancel</i>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            }
         </section>
     </div>
 </div>

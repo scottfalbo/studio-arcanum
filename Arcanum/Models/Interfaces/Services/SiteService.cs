@@ -243,7 +243,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// <returns> newly created and uploaded image </returns>
         public async Task<Image> UpdateMainPageImage(IFormFile file)
         {
-            Image image = await _upload.UpdateSiteImage(file);
+            Image image = await _upload.AddImage(file);
             Image newImage = new Image()
             {
                 Title = "site-image",
