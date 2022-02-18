@@ -14,13 +14,13 @@ namespace Arcanum.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private readonly ISite _site;
+        private readonly ISite _siteAdmin;
         private readonly IArtistAdmin _artistAdmin;
 
         public IndexModel(ILogger<IndexModel> logger, ISite siteAdmin, IArtistAdmin artistAdmin)
         {
             _logger = logger;
-            _site = siteAdmin;
+            _siteAdmin = siteAdmin;
             _artistAdmin = artistAdmin;
         }
 
@@ -34,11 +34,11 @@ namespace Arcanum.Pages
 
         public async Task OnGet(bool isActive = false)
         {
-            MainPage = await _site.GetMainPage();
+            MainPage = await _siteAdmin.GetMainPage();
             IEnumerable<PageImage> pageImages = MainPage.PageImage;
             MainPage.PageImage = (pageImages.OrderBy(x => x.Order)).ToList();
-            Artists = await _site.GetArtists();
-            StudioInfo = await _site.GetStudio();
+            Artists = await _siteAdmin.GetArtists();
+            StudioInfo = await _siteAdmin.GetStudio();
             ActiveAdmin = isActive;
         }
 
@@ -47,7 +47,7 @@ namespace Arcanum.Pages
         /// </summary>
         public async Task<IActionResult> OnPostUpdate()
         {
-            await _site.UpdateMainPage(MainPage);
+            await _siteAdmin.UpdateMainPage(MainPage);
 
             return Redirect("/Index?isActive=true");
         }
@@ -57,9 +57,9 @@ namespace Arcanum.Pages
         /// </summary>
         public async Task<IActionResult> OnPostUpdatePageImage(IFormFile file, int index, int imageId)
         {
-            Image image = await _site.UpdateMainPageImage(file);
-            await _site.AddImageToMainPage(-1, image.Id, index);
-            await _site.RemoveImageFromMainPage(-1, imageId);
+            Image image = await _siteAdmin.UpdateMainPageImage(file);
+            await _siteAdmin.AddImageToMainPage(-1, image.Id, index);
+            await _siteAdmin.RemoveImageFromMainPage(-1, imageId);
             await _artistAdmin.DeleteImage(imageId);
 
             return Redirect("/Index?isActive=true");

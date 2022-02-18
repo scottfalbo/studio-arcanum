@@ -4,56 +4,58 @@
     ViewData["Title"] = Model.MainPage.SiteTitle;
 }
 
-<div>
-    <div><p>@Model.MainPage.IntroA</p></div>
-    <div>
-        <partial name="_ArtistNav" />
+<div id="index-container">
+    <div class="container-one">
+        <div><p>@Model.MainPage.IntroA</p></div>
+        <div>
+            <partial name="_ArtistNav" />
+        </div>
     </div>
-</div>
 
-<div>
-    <div>
-        @if (Model.MainPage.PageImage[0].Image.Display)
-        {
-            <img src="@Model.MainPage.PageImage[0].Image.SourceUrl" alt="site-image" />
-        }
+    <div class="container-two">
+        <div>
+            @if (Model.MainPage.PageImage[0].Image.Display)
+            {
+                <img src="@Model.MainPage.PageImage[0].Image.SourceUrl" alt="site-image" />
+            }
+        </div>
+        <div><h3>Recent Posts</h3></div>
+        <div>
+            <partial name="_RecentImageGallery" />
+        </div>
     </div>
-    <div><h3>Recent Posts</h3></div>
-    <div>
-        <partial name="_RecentImageGallery" />
-    </div>
-</div>
 
-<div>
-    <div>
-        @if (Model.MainPage.PageImage[1].Image.Display)
-        {
-            <img src="@Model.MainPage.PageImage[1].Image.SourceUrl" alt="site-image" />
-        }
-    </div>
-    <div><p>@Model.MainPage.IntroB</p></div>
-    <div>
-        @if (Model.MainPage.PageImage[2].Image.Display)
-        {
-            <img src="@Model.MainPage.PageImage[2].Image.SourceUrl" alt="site-image" />
-        }
+    <div class="container-three">
+        <div>
+            @if (Model.MainPage.PageImage[1].Image.Display)
+            {
+                <img src="@Model.MainPage.PageImage[1].Image.SourceUrl" alt="site-image" />
+            }
+        </div>
+        <div><p>@Model.MainPage.IntroB</p></div>
+        <div>
+            @if (Model.MainPage.PageImage[2].Image.Display)
+            {
+                <img src="@Model.MainPage.PageImage[2].Image.SourceUrl" alt="site-image" />
+            }
+        </div>
     </div>
 </div>
 
 @if (User.IsInRole("WizardLord"))
 {
     <div>
-        <partial name="Admin/_ShowPopUp" />
+        <i class="show-popup">admin</i>
     </div>
 }
 
 @if (User.IsInRole("WizardLord"))
 {
-    <div class="fullscreen admin-outer mainpage-admin @(Model.ActiveAdmin ? "" : "hide-me")">
+    <div class="admin-outer mainpage-admin @(Model.ActiveAdmin ? "" : "hide-me")">
         <div class="admin-inner">
             <partial name="Admin/_MainPage" />
         </div>
-        <partial name="Admin/_ClosePopUp" />
+        <i class="button close-outer-admin">close</i>
     </div>
 }
 

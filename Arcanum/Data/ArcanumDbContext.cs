@@ -21,6 +21,7 @@ namespace Arcanum.Data
         public DbSet<ArtistPortfolio> ArtistPortfolio { get; set; }
         public DbSet<Image> Image { get; set; }
         public DbSet<StudioInfo> StudioInfo { get; set; }
+        public DbSet<Address> Address { get; set; }
         public DbSet<StudioImage> StudioImage { get; set; }
         public DbSet<Booking> Booking { get; set; }
         public DbSet<Portfolio> Portfolio { get; set; }
@@ -133,11 +134,21 @@ namespace Arcanum.Data
                 new StudioInfo
                 {
                     Id = -1,
+                    Email = "arcanumseattle@gmail.com",
                     Instagram = "@studioarcanum",
                     Intro = "here are some words",
-                    Address = "some where",
                     Policies = "be nice",
                     Aftercare = " be smart"
+                });
+
+            modelBuilder.Entity<Address>().HasData(
+                new Address
+                {
+                    AddressId = -1,
+                    Street = "4333 Fremont Ave N #6",
+                    City = "Seattle",
+                    State = "Wa",
+                    ZipCode = 98103
                 });
 
             modelBuilder.Entity<Artist>().HasData(

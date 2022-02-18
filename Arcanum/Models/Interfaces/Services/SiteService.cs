@@ -243,7 +243,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// <returns> newly created and uploaded image </returns>
         public async Task<Image> UpdateMainPageImage(IFormFile file)
         {
-            Image image = await _upload.UpdateSiteImage(file);
+            Image image = await _upload.AddImage(file);
             Image newImage = new Image()
             {
                 Title = "site-image",
@@ -304,10 +304,12 @@ namespace Arcanum.Models.Interfaces.Services
                 .Where(x => x.Id == -1)
                 .Include(a => a.StudioImages)
                 .ThenInclude(b => b.Image)
+                .Include(c => c.Address)
                 .Select(y => new StudioInfo
                 {
                     Id = y.Id,
                     Instagram = y.Instagram,
+                    Email = y.Email,
                     Address = y.Address,
                     Intro = y.Intro,
                     Policies = y.Policies,
@@ -324,6 +326,39 @@ namespace Arcanum.Models.Interfaces.Services
         {
             _db.Entry(studioInfo).State = EntityState.Modified;
             await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Update studio address record.
+        /// </summary>
+        /// <param name="address"> updated address object </param>
+        public async Task UpdateStudioAddress(Address address)
+        {
+            _db.Entry(address).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public async Task<Image> AddStudioImages(IFormFile file)
+        {
+            Image image = await _upload.AddImage(file);
+            Image newImage = new Image()
+            {
+                Title = "studio image",
+                ArtistId = "site-image",
+                SourceUrl = image.SourceUrl,
+                ThumbnailUrl = image.ThumbnailUrl,
+                FileName = image.FileName,
+                ThumbFileName = image.ThumbFileName,
+                Display = true
+            };
+            _db.Entry(newImage).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+            return newImage;
         }
 
         /// <summary>

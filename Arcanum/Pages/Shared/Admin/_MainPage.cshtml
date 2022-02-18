@@ -45,11 +45,17 @@
         @foreach (var recentImage in Model.MainPage.RecentImage)
         {
             <img src="@recentImage.Image.ThumbnailUrl" />
-            <form asp-page-handler="DeleteRecentImage" method="post">
-                <input type="hidden" name="imageId" value="@recentImage.Image.Id" />
-                <input type="hidden" name="arcanumMainId" value="@recentImage.ArcanumMainId" />
-                <input type="submit" value="✖" />
-            </form>
-        }
-    </section>
+            <i class="delete-confirmation-button">X</i>
+            <div class="delete-confirmation-container hide-me">
+                <div>
+                    <form asp-page-handler="DeleteRecentImage" method="post">
+                        <input type="hidden" name="imageId" value="@recentImage.Image.Id" />
+                        <input type="hidden" name="arcanumMainId" value="@recentImage.ArcanumMainId" />
+                        <input type="submit" value="confirm" />
+                        <i class="delete-confirmation-cancel">cancel</i>
+                    </form>
+                </div>
+            </div>
+         }
+        </section>
 </div>

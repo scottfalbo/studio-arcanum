@@ -4,29 +4,55 @@
     ViewData["Title"] = "The Studio";
 }
 
-<div>@Model.StudioInfo.Instagram</div>
-<div>@Model.StudioInfo.Intro</div>
-<div>@Model.StudioInfo.Address</div>
-<div>@Model.StudioInfo.Policies</div>
-<div>@Model.StudioInfo.Aftercare</div>
+<div id="studio-container">
+    <div class="container-one">
+        <figure>
+            <img />
+        </figure>
+        <div>
+            <address>
+                <p>@Model.StudioInfo.Address.Street</p>
+                <p>
+                    @Model.StudioInfo.Address.City, @Model.StudioInfo.Address.State
+                    @Model.StudioInfo.Address.ZipCode
+                </p>
+            </address>
+            <p>@Model.StudioInfo.Email</p>
+        </div>
+        <div>
+            <i>instagram</i>
+            <i>policies</i>
+            <i>aftercare</i>
+            <i>location</i>
+        </div>
+    </div>
 
-@foreach (var image in Model.StudioInfo.StudioImages)
-{
-    <img src="@image.Image.ThumbnailUrl" />
-}
+    <div class="container-two">
+        <p>@Model.StudioInfo.Intro</p>
+    </div>
+
+    <div class="container-three">
+        @foreach (var image in Model.StudioInfo.StudioImages)
+        {
+            <img src="@image.Image.ThumbnailUrl" />
+        }
+    </div>
+</div>
+<div id="studio-policies">@Model.StudioInfo.Policies</div>
+<div id="studio-aftercare">@Model.StudioInfo.Aftercare</div>
 
 
 @if (User.IsInRole("WizardLord"))
 {
-    <partial name="Admin/_ShowPopUp" />
+    <i class="show-popup">admin</i>
 }
 
 @if (User.IsInRole("WizardLord"))
 {
-    <div class="fullscreen admin-outer studio-page-admin @(Model.ActiveAdmin ? "" : "hide-me")">
+    <div class="admin-outer studio-page-admin @(Model.ActiveAdmin ? "" : "hide-me")">
         <div class="admin-inner">
             <partial name="Admin/_StudioPage" />
         </div>
-        <partial name="Admin/_ClosePopUp" />
+        <i class="button close-outer-admin">close</i>
     </div>
 }
