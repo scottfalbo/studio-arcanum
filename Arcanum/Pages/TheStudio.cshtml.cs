@@ -31,6 +31,7 @@ namespace Arcanum.Pages
         public async Task<IActionResult> OnPostUpdate()
         {
             await _siteAdmin.UpdateStudioInfo(StudioInfo);
+            await _siteAdmin.UpdateStudioAddress(StudioInfo.Address);
 
             return Redirect("/TheStudio?isActive=true");
         }

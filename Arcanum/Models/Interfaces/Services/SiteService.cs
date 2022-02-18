@@ -304,10 +304,12 @@ namespace Arcanum.Models.Interfaces.Services
                 .Where(x => x.Id == -1)
                 .Include(a => a.StudioImages)
                 .ThenInclude(b => b.Image)
+                .Include(c => c.Address)
                 .Select(y => new StudioInfo
                 {
                     Id = y.Id,
                     Instagram = y.Instagram,
+                    Email = y.Email,
                     Address = y.Address,
                     Intro = y.Intro,
                     Policies = y.Policies,
@@ -323,6 +325,16 @@ namespace Arcanum.Models.Interfaces.Services
         public async Task UpdateStudioInfo(StudioInfo studioInfo)
         {
             _db.Entry(studioInfo).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Update studio address record.
+        /// </summary>
+        /// <param name="address"> updated address object </param>
+        public async Task UpdateStudioAddress(Address address)
+        {
+            _db.Entry(address).State = EntityState.Modified;
             await _db.SaveChangesAsync();
         }
 

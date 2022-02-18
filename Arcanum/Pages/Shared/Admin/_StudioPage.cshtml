@@ -5,12 +5,20 @@
         <section>
             <form asp-page-handler="Update" method="post">
                 <label>
-                    Intro
-                    <textarea type="text" cols="45" rows="3" asp-for="@Model.StudioInfo.Intro" class="form-control" placeholder="@Model.StudioInfo.Intro"></textarea>
+                    Email
+                    <input type="text" asp-for="@Model.StudioInfo.Email" placeholder="@Model.StudioInfo.Email" class="form-control"/>
                 </label>
                 <label>
                     Address
-                    <textarea type="text" cols="45" rows="3" asp-for="@Model.StudioInfo.Address" class="form-control" placeholder="@Model.StudioInfo.Address"></textarea>
+                    <input type="text" asp-for="@Model.StudioInfo.Address.Street" placeholder="@Model.StudioInfo.Address.Street" class="form-control" />
+                    <input type="text" asp-for="@Model.StudioInfo.Address.City" placeholder="@Model.StudioInfo.Address.City" class="form-control" />
+                    <input type="text" asp-for="@Model.StudioInfo.Address.State" placeholder="@Model.StudioInfo.Address.State" class="form-control" />
+                    <input type="text" asp-for="@Model.StudioInfo.Address.ZipCode" placeholder="@Model.StudioInfo.Address.ZipCode" class="form-control" />
+                    <input type="hidden" asp-for="@Model.StudioInfo.Address.AddressId" value="@Model.StudioInfo.Address.AddressId" />
+                </label>
+                <label>
+                    Intro
+                    <textarea type="text" cols="45" rows="3" asp-for="@Model.StudioInfo.Intro" class="form-control" placeholder="@Model.StudioInfo.Intro"></textarea>
                 </label>
                 <label>
                     Policies

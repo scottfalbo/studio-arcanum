@@ -10,8 +10,14 @@
             <img />
         </figure>
         <div>
-            <address>@Model.StudioInfo.Address</address>
-            <p>contact</p>
+            <address>
+                <p>@Model.StudioInfo.Address.Street</p>
+                <p>
+                    @Model.StudioInfo.Address.City, @Model.StudioInfo.Address.State
+                    @Model.StudioInfo.Address.ZipCode
+                </p>
+            </address>
+            <p>@Model.StudioInfo.Email</p>
         </div>
         <div>
             <i>instagram</i>
@@ -26,25 +32,19 @@
     </div>
 
     <div class="container-three">
-
-
+        @foreach (var image in Model.StudioInfo.StudioImages)
+        {
+            <img src="@image.Image.ThumbnailUrl" />
+        }
     </div>
-    <div>@Model.StudioInfo.Instagram</div>
-    <div></div>
-    <div></div>
-    <div>@Model.StudioInfo.Policies</div>
-    <div>@Model.StudioInfo.Aftercare</div>
-
-    @foreach (var image in Model.StudioInfo.StudioImages)
-    {
-        <img src="@image.Image.ThumbnailUrl" />
-    }
 </div>
+<div id="studio-policies">@Model.StudioInfo.Policies</div>
+<div id="studio-aftercare">@Model.StudioInfo.Aftercare</div>
 
 
 @if (User.IsInRole("WizardLord"))
 {
-<i class="show-popup">admin</i>
+    <i class="show-popup">admin</i>
 }
 
 @if (User.IsInRole("WizardLord"))
