@@ -6,24 +6,39 @@
 
 @if (Model.Artist != null)
 {
-    <div><img src="@Model.Artist.ProfileImageUri" /></div>
+<div id="artist-container">
+    <div class="container-one">
+        <div>
+            <figure>
+                <figcaption>@Model.Artist.Name</figcaption>
+                <img src="@Model.Artist.ProfileImageUri" />
+            </figure>
+        </div>
+        <div>
+            <i>Booking</i>
+            <i>Instagram</i>
+        </div>
+    </div>
 
-    <div>@Model.Artist.Name</div>
-    <div>@Model.Artist.Intro</div>
-    <div>@Model.Artist.Instagram</div>
+    <div class="container-two">
+        <p>@Model.Artist.Intro</p>
+    </div>
 
-    @foreach (var portfolio in Model.Artist.ArtistPortfolios)
-    {
-        if (portfolio.Portfolio.Display)
+    <div class="container-three">
+        @foreach (var portfolio in Model.Artist.ArtistPortfolios)
         {
-            <h2>@portfolio.Portfolio.Title</h2>
-            <p>@portfolio.Portfolio.Intro</p>
-            @foreach (var image in portfolio.Portfolio.PortfolioImage)
+            if (portfolio.Portfolio.Display)
             {
-                <img src="@image.Image.ThumbnailUrl" />
+                <h2>@portfolio.Portfolio.Title</h2>
+                <p>@portfolio.Portfolio.Intro</p>
+                @foreach (var image in portfolio.Portfolio.PortfolioImage)
+                {
+                    <img src="@image.Image.ThumbnailUrl" />
+                }
             }
         }
-    }
+    </div>
+</div>
 
     <div>
         <a asp-area="" asp-page="Booking" asp-route-artistId="@Model.Artist.Id">Booking</a>
