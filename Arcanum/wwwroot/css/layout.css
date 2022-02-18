@@ -1,0 +1,7 @@
+.admin-outer {
+    z-index: 10;
+}
+
+.admin-inner {
+    z-index: 15;
+}

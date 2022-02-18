@@ -22,7 +22,7 @@
 
     @if (User.IsInRole("WizardLord") || (User.IsInRole("ArtistAdmin") && Model.Artist.Id == Model.UserId))
     {
-        <div class="fullscreen admin-outer booking-page-admin @(Model.ActiveAdmin ? "" : "hide-me")">
+        <div class="admin-outer booking-page-admin @(Model.ActiveAdmin ? "" : "hide-me")">
             <div class="admin-inner">
                 <partial name="Admin/_ArtistBooking" />
             </div>

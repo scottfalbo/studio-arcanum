@@ -31,19 +31,19 @@
 
     @if ((User.IsInRole("ArtistAdmin") || User.IsInRole("WizardLord")) && Model.Artist.Id == Model.UserId)
     {
-        <partial name="Admin/_ShowPopUp" />
+        <i class="show-popup">admin</i>
     }
 
 
 
     @if ((User.IsInRole("ArtistAdmin") || User.IsInRole("WizardLord")) && Model.Artist.Id == Model.UserId)
     {
-        <div class="fullscreen admin-outer artist-admin @(Model.ActiveAdmin ? "" : "hide-me")">
+        <div class="admin-outer artist-admin @(Model.ActiveAdmin ? "" : "hide-me")">
             <div class="admin-inner">
                 <partial name="Admin/_ArtistPage" />
                 <partial name="Admin/_ArtistPortfolio" />
             </div>
-            <partial name="Admin/_ClosePopUp" />
+            <i class="button close-outer-admin">close</i>
         </div>
     }
 }
@@ -54,6 +54,4 @@ else
         @await Component.InvokeAsync("ArtistNav")
     </ul>
 }
-
-<partial name="_LoadingBar" />
 

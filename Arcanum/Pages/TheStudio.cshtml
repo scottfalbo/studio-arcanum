@@ -23,7 +23,7 @@
 
 @if (User.IsInRole("WizardLord"))
 {
-    <div class="fullscreen admin-outer studio-page-admin @(Model.ActiveAdmin ? "" : "hide-me")">
+    <div class="admin-outer studio-page-admin @(Model.ActiveAdmin ? "" : "hide-me")">
         <div class="admin-inner">
             <partial name="Admin/_StudioPage" />
         </div>
