@@ -1,7 +1,7 @@
 ﻿@model Arcanum.Pages.TheStudioModel
 
 <div id="studioPage-admin" class="page-admin">
-    <section>
+    <div>
         <section>
             <form asp-page-handler="Update" method="post">
                 <label>
@@ -33,5 +33,19 @@
                 <input type="submit" value="update" />
             </form>
         </section>
-    </section>
+    </div>
+    <div>
+        <section>
+            <form asp-page-handler="AddImages" method="post" enctype="multipart/form-data">
+                <label>
+                    <input name="files" type="file" multiple="multiple" accept="image/*" class="file-selection-input" required />
+                    <input type="hidden" asp-for="@Model.StudioInfo.Id" value="@Model.StudioInfo.Id" />
+                    <input type="submit" value="Add Images" class="loader site-button" />
+                </label>
+            </form>
+        </section>
+        <section>
+            edit images
+        </section>
+    </div>
 </div>

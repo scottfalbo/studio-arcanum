@@ -30,6 +30,7 @@ namespace Arcanum.Models.Interfaces
         public Task<StudioInfo> GetStudio();
         public Task UpdateStudioInfo(StudioInfo studioInfo);
         public Task UpdateStudioAddress(Address address);
+        public Task<Image> AddStudioImages(IFormFile file);
         public Task<IEnumerable<Image>> GetStudioImages(int studioId);
         public Task AddImageToStudio(int studioId, int imageId);
         public Task RemoveImageFromStudio(int studioId, int imageId);

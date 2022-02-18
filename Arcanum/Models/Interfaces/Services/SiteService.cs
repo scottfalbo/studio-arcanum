@@ -339,6 +339,29 @@ namespace Arcanum.Models.Interfaces.Services
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public async Task<Image> AddStudioImages(IFormFile file)
+        {
+            Image image = await _upload.AddImage(file);
+            Image newImage = new Image()
+            {
+                Title = "studio image",
+                ArtistId = "site-image",
+                SourceUrl = image.SourceUrl,
+                ThumbnailUrl = image.ThumbnailUrl,
+                FileName = image.FileName,
+                ThumbFileName = image.ThumbFileName,
+                Display = true
+            };
+            _db.Entry(newImage).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+            return newImage;
+        }
+
+        /// <summary>
         /// Get a list of all studio images by join table.
         /// </summary>
         /// <param name="studioId"> int studioId </param>
