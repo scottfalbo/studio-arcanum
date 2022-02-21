@@ -1,11 +1,9 @@
 ﻿@page
 @model Arcanum.Pages.ArtistModel
-@{
-    ViewData["Title"] = Model.Artist.Name;
-}
 
 @if (Model.Artist != null)
 {
+ViewData["Title"] = Model.Artist.Name;
 <div id="artist-container">
     <div class="container-one">
         <div>

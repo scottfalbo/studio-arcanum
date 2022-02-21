@@ -4,6 +4,7 @@
 $(function() {
     $('.show-popup').click(function() {
         $('.admin-outer').removeClass('hide-me');
+        $('.fullscreen-fade').removeClass('hide-me');
     });
 });
 

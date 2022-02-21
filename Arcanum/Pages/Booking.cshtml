@@ -11,6 +11,9 @@
         <div class="container-one">
             <h1>Booking for @Model.Artist.Name</h1>
             <p>@Model.Booking.BookingInfo</p>
+            <a asp-page="Artist" asp-route-artistId="@Model.Artist.Id">
+                <i class="site-button">Back to Gallery</i>
+            </a>
         </div>
 
         <div class="container-two">
