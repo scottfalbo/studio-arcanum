@@ -49,6 +49,21 @@ a.navbar-brand {
       left: 0;
       top: 0;
       width: 100%;
-      height: 100%;
+      height: 100vh;
       background-color: rgba(0, 0, 0, 0.5)
+  }
+
+  .admin-outer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      width: 90%;
+      margin: 10px auto;
+      max-width: 500px;
+      height: min-content;
+      max-height: 95vh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      text-align: justify;
   }
