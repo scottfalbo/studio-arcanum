@@ -1,5 +1,6 @@
 ﻿using Arcanum.Data;
 using Arcanum.ImageBlob.Interfaces;
+using Arcanum.Spells;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -28,19 +29,40 @@ namespace Arcanum.Models.Interfaces.Services
         /// <returns> new Portfolio object </returns>
         public async Task<Portfolio> CreatePortfolio(string title)
         {
+            var portfolios = await GetPortfolios();
+            var order = portfolios.Count();
+
             Portfolio newPortfolio = new Portfolio()
             {
                 Title = title,
                 Intro = "new portfolio",
-                Order = 0,
+                Order = order + 1,
                 Display = false
             };
-            newPortfolio = AssignAccordianIds(newPortfolio);
+            newPortfolio = BootStrapAccordionIds.PortfolioAccordionIds(newPortfolio);
             _db.Entry(newPortfolio).State = EntityState.Added;
             await _db.SaveChangesAsync();
             return newPortfolio;
-            //order
-            //accordian tags
+        }
+
+        public async Task<List<Portfolio>> GetPortfolios()
+        {
+            return await _db.Portfolio
+                .Include(a => a.PortfolioImage)
+                .ThenInclude(b => b.Image)
+                .Select(x => new Portfolio
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Intro = x.Intro,
+                    Display = x.Display,
+                    Order = x.Order,
+                    AccordionId = x.AccordionId,
+                    CollapseId = x.CollapseId,
+                    AdminAccordionId = x.AdminAccordionId,
+                    AdminCollapseId = x.AdminCollapseId,
+                    PortfolioImage = x.PortfolioImage
+                }).ToListAsync();    
         }
 
         /// <summary>
@@ -50,7 +72,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="portfolio"> Portfolio object </param>
         public async Task UpdatePortfolio(Portfolio portfolio)
         {
-            portfolio = AssignAccordianIds(portfolio);
+            portfolio = BootStrapAccordionIds.PortfolioAccordionIds(portfolio);
             _db.Entry(portfolio).State = EntityState.Modified;
             await _db.SaveChangesAsync();
         }
@@ -73,6 +95,7 @@ namespace Arcanum.Models.Interfaces.Services
             Portfolio portfolio = await _db.Portfolio.FindAsync(portfolioId);
             _db.Entry(portfolio).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
+            // reorder
         }
 
         /// <summary>
@@ -125,23 +148,6 @@ namespace Arcanum.Models.Interfaces.Services
                     ImageId = x.ImageId,
                     Image = x.Image
                 }).ToListAsync();
-        }
-
-        /// <summary>
-        /// Helper method to assign some unique names for use with Bootstrap accordion menues.
-        /// </summary>
-        /// <param name="portfolio"> Portfolio object </param>
-        /// <returns> Portfolio object w/accordion ids </returns>
-        private Portfolio AssignAccordianIds(Portfolio portfolio)
-        {
-            string str = Regex.Replace(portfolio.Title, @"\s+", String.Empty).ToLower();
-
-            portfolio.AccordionId = str;
-            portfolio.CollapseId = $"{str}{portfolio.Id}";
-            portfolio.AdminAccordionId = $"{str}admin";
-            portfolio.AdminCollapseId = $"{str}{portfolio.Id}admin";
-
-            return portfolio;
         }
 
         /// <summary>
@@ -382,6 +388,23 @@ namespace Arcanum.Models.Interfaces.Services
                 }
                 _db.Entry(image).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
+            }
+        }
+
+        /// <summary>
+        /// Re-order portfolios when one is deleted.
+        /// </summary>
+        /// <param name="n"> portfolio removed </param>
+        private async Task ReOrderPortfolios(int n)
+        {
+            IEnumerable<Portfolio> portfolios = await GetPortfolios();
+            foreach (Portfolio portfolio in portfolios)
+            {
+                if (portfolio.Order > n)
+                {
+                    portfolio.Order--;
+                }
+                await UpdatePortfolio(portfolio);
             }
         }
     }

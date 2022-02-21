@@ -1,5 +1,6 @@
 ﻿using Arcanum.Data;
 using Arcanum.ImageBlob.Interfaces;
+using Arcanum.Spells;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -39,14 +40,14 @@ namespace Arcanum.Models.Interfaces.Services
                 Display = false,
                 Order = order + 1
             };
+
+            newArtist = BootStrapAccordionIds.ArtistAccordionIds(newArtist);
             _db.Entry(newArtist).State = EntityState.Added;
             await _db.SaveChangesAsync();
 
             Booking booking = await CreateBooking();
             await AddBookingToArtist(newArtist.Id, booking.Id);
             return newArtist;
-
-            //accordian ids
         }
 
         /// <summary>
@@ -115,6 +116,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="artist"> Artist object </param>
         public async Task UpdateArtist(Artist artist)
         {
+            artist = BootStrapAccordionIds.ArtistAccordionIds(artist);
             _db.Entry(artist).State = EntityState.Modified;
             await _db.SaveChangesAsync();
         }
