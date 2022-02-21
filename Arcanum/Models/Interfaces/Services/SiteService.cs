@@ -45,6 +45,8 @@ namespace Arcanum.Models.Interfaces.Services
             Booking booking = await CreateBooking();
             await AddBookingToArtist(newArtist.Id, booking.Id);
             return newArtist;
+
+            //accordian ids
         }
 
         /// <summary>

@@ -39,6 +39,8 @@ namespace Arcanum.Models.Interfaces.Services
             _db.Entry(newPortfolio).State = EntityState.Added;
             await _db.SaveChangesAsync();
             return newPortfolio;
+            //order
+            //accordian tags
         }
 
         /// <summary>
