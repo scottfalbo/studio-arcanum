@@ -16,7 +16,7 @@
                 <textarea type="text" cols="45" rows="5" asp-for="@Model.MainPage.IntroB" class="form-control" placeholder="@Model.MainPage.IntroB"></textarea>
             </label>
             <input type="hidden" asp-for="@Model.MainPage.Id" value="@Model.MainPage.Id" />
-            <input type="submit" value="update" />
+            <input type="submit" value="update" class="loader site-button"/>
         </form>
     </section>
     <section>
@@ -29,7 +29,7 @@
                         Display
                         <input type="checkbox" name="isDisplay" value="true" checked="@Model.MainPage.PageImage[i].Image.Display">
                         <input type="hidden" name="imageId" value="@Model.MainPage.PageImage[i].Image.Id" />
-                        <input type="submit" value="toggle display" />
+                        <input type="submit" value="toggle display" class="loader site-button"/>
                     </label>
                 </form>
             </div>
@@ -37,7 +37,7 @@
                 <input type="file" name="file" accept="image/*" class="file-selection-input" required/>
                 <input type="hidden" name="imageId" value="@Model.MainPage.PageImage[i].ImageId" />
                 <input type="hidden" name="index" value="@i"/>
-                <input type="submit" value="Add Images" />
+                <input type="submit" value="Add Images" class="loader site-button"/>
             </form>
         }
     </section>
@@ -51,7 +51,7 @@
                     <form asp-page-handler="DeleteRecentImage" method="post">
                         <input type="hidden" name="imageId" value="@recentImage.Image.Id" />
                         <input type="hidden" name="arcanumMainId" value="@recentImage.ArcanumMainId" />
-                        <input type="submit" value="confirm" />
+                        <input type="submit" value="confirm" class="loader site-button"/>
                         <i class="delete-confirmation-cancel">cancel</i>
                     </form>
                 </div>

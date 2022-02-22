@@ -30,7 +30,7 @@
                 </label>
                 <input type="text" asp-for="@Model.StudioInfo.Instagram" value="@Model.StudioInfo.Instagram" placeholder="@Model.StudioInfo.Instagram" />
                 <input type="hidden" asp-for="@Model.StudioInfo.Id" value="@Model.StudioInfo.Id" />
-                <input type="submit" value="update" />
+                <input type="submit" value="update" class="loader site-button"/>
             </form>
         </section>
     </div>
@@ -55,7 +55,7 @@
                         <form asp-page-handler="DeleteImage" method="post">
                             <input type="hidden" name="imageId" value="@studioImage.Image.Id" />
                             <input type="hidden" asp-for="@Model.StudioInfo.Id" value="@Model.StudioInfo.Id" />
-                            <input type="submit" value="confirm" />
+                            <input type="submit" value="confirm" class="loader site-button"/>
                             <i class="delete-confirmation-cancel">cancel</i>
                         </form>
                     </div>

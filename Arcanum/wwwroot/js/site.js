@@ -30,3 +30,10 @@ $(function() {
         $('.delete-confirmation-container').addClass('hide-me');
     });
 });
+
+// Loading bar display
+$(function() {
+    $('.loader').click(function() {
+        $('.loading-bar-container').removeClass('hide-me');
+    });
+});

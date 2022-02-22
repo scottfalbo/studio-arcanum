@@ -33,24 +33,31 @@ namespace Arcanum.ImageBlob.Interfaces.Services
         /// <returns> new Image object </returns>
         public async Task<Models.Image> AddImage(IFormFile file)
         {
-            Stream stream = ResizeImage(file, 1900);
-            string filename = AugmentFileName(file.FileName);
-            BlobClient blob = await UploadImage(stream, filename, file.ContentType);
-
-            string thumbFile = $"{filename}_thumb";
-
-            Stream thumbStream = ResizeImage(file, 100);
-            BlobClient thumb = await UploadImage(thumbStream, thumbFile, file.ContentType);
-
-            Models.Image image = new Models.Image()
+            try
             {
-                SourceUrl = blob.Uri.ToString(),
-                FileName = filename,
-                ThumbnailUrl = thumb.Uri.ToString(),
-                ThumbFileName = thumbFile,
-                Display = true
-            };
-            return image;
+                Stream stream = ResizeImage(file, 1900);
+                string filename = AugmentFileName(file.FileName);
+                BlobClient blob = await UploadImage(stream, filename, file.ContentType);
+
+                string thumbFile = $"{filename}_thumb";
+
+                Stream thumbStream = ResizeImage(file, 100);
+                BlobClient thumb = await UploadImage(thumbStream, thumbFile, file.ContentType);
+
+                Models.Image image = new Models.Image()
+                {
+                    SourceUrl = blob.Uri.ToString(),
+                    FileName = filename,
+                    ThumbnailUrl = thumb.Uri.ToString(),
+                    ThumbFileName = thumbFile,
+                    Display = true
+                };
+                return image;
+            }
+            catch
+            {
+                throw new Exception("womp womp");
+            }
         }
 
         /// <summary>

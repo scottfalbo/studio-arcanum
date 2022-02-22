@@ -44,7 +44,7 @@
 
 @if (User.IsInRole("WizardLord"))
 {
-        <i class="show-popup">admin</i>
+    <i class="show-popup">admin</i>
 }
 
 @if (User.IsInRole("WizardLord"))
@@ -58,3 +58,4 @@
     </div>
 }
 
+<div class="fullscreen-fade @(Model.ActiveAdmin ? "" : "hide-me")"></div>
