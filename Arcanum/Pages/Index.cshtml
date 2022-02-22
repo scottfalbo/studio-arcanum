@@ -44,9 +44,7 @@
 
 @if (User.IsInRole("WizardLord"))
 {
-    <div>
-        <i class="show-popup">admin</i>
-    </div>
+    <i class="show-popup">admin</i>
 }
 
 @if (User.IsInRole("WizardLord"))
@@ -55,7 +53,9 @@
         <div class="admin-inner">
             <partial name="Admin/_MainPage" />
         </div>
-        <i class="button close-outer-admin">close</i>
+        <i class="site-button close-outer-admin">close</i>
+        <i class="x-close-button close-outer-admin">X</i>
     </div>
 }
 
+<div class="fullscreen-fade @(Model.ActiveAdmin ? "" : "hide-me")"></div>

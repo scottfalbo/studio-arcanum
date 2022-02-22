@@ -50,7 +50,10 @@ namespace Arcanum.Pages
                 UserId = user.Id;
             }
             else
+            {
                 UserId = "";
+            }
+
             Portfolio = new Portfolio();
             PasswordUpdateState = updateState;
             ActiveAdmin = isActive;

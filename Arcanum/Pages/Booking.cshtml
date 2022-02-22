@@ -7,17 +7,25 @@
 
 @if (Model.Booking != null)
 {
-    <h1>Booking</h1>
+    <div class="booking-container">
+        <div class="container-one">
+            <h1>Booking for @Model.Artist.Name</h1>
+            <p>@Model.Booking.BookingInfo</p>
+            <a asp-page="Artist" asp-route-artistId="@Model.Artist.Id">
+                <i class="site-button">Back to Gallery</i>
+            </a>
+        </div>
 
-    <div>Booking for @Model.Artist.Name</div>
-
-    <div>@Model.Booking.BookingInfo.</div>
-    <div>@Model.Booking.BookingEmail.</div>
-    <div>@Model.Artist.Instagram</div>
+        <div class="container-two">
+            <h2>Contact Form</h2>
+            @Model.Booking.FormPlaceHolder
+            @Model.Booking.BookingEmail
+        </div>
+    </div>
 
     @if (User.IsInRole("WizardLord") || (User.IsInRole("ArtistAdmin") && Model.Artist.Id == Model.UserId))
     {
-        <partial name="Admin/_ShowPopUp" />
+        <i class="show-popup">admin</i>
     }
 
     @if (User.IsInRole("WizardLord") || (User.IsInRole("ArtistAdmin") && Model.Artist.Id == Model.UserId))
@@ -26,7 +34,8 @@
             <div class="admin-inner">
                 <partial name="Admin/_ArtistBooking" />
             </div>
-            <partial name="Admin/_ClosePopUp" />
+            <i class="site-button close-outer-admin">close</i>
+            <i class="x-close-button close-outer-admin">X</i>
         </div>
     }
 }
@@ -36,3 +45,5 @@ else
         @await Component.InvokeAsync("ArtistNav")
     </ul>
 }
+
+<div class="fullscreen-fade @(Model.ActiveAdmin ? "" : "hide-me")"></div>

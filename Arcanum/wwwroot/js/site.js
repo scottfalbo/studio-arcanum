@@ -4,6 +4,7 @@
 $(function() {
     $('.show-popup').click(function() {
         $('.admin-outer').removeClass('hide-me');
+        $('.fullscreen-fade').removeClass('hide-me');
     });
 });
 
@@ -27,5 +28,12 @@ $(function() {
 $(function() {
     $('.delete-confirmation-cancel').click(function() {
         $('.delete-confirmation-container').addClass('hide-me');
+    });
+});
+
+// Loading bar display
+$(function() {
+    $('.loader').click(function() {
+        $('.loading-bar-container').removeClass('hide-me');
     });
 });

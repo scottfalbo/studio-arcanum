@@ -16,6 +16,15 @@ namespace Arcanum.Models
         public string ProfileImageFileName { get; set; }
         public int Order { get; set; }
         public bool Display { get; set; }
+
+        /// <summary>
+        /// unique class names for the bootstrap accordion
+        /// </summary>
+        public string AccordionId { get; set; }
+        public string CollapseId { get; set; }
+        public string AdminAccordionId { get; set; }
+        public string AdminCollapseId { get; set; }
+
         public ArtistBooking ArtistBooking { get; set; }
         public List<ArtistPortfolio> ArtistPortfolios { get; set; }
     }
