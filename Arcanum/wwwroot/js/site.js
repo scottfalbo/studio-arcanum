@@ -31,6 +31,21 @@ $(function() {
     });
 });
 
+// Update image info popup open.
+$(function() {
+    $('.update-image-info-button').click(function() {
+        $(this).siblings('.update-image-info-container')
+            .removeClass('hide-me');
+    });
+});
+
+// Update image info popup close.
+$(function() {
+    $('.update-image-info-cancel').click(function() {
+        $('.update-image-info-container').addClass('hide-me');
+    });
+});
+
 // Loading bar display
 $(function() {
     $('.loader').click(function() {

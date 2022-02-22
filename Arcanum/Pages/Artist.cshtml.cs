@@ -116,6 +116,18 @@ namespace Arcanum.Pages
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
 
+        public async Task<IActionResult> OnPostUpdateImageInfo(string title, string altText, int imageId)
+        {
+            Image image = await _artistAdmin.GetImage(imageId);
+            if (title != "")
+                image.Title = title;
+            if (altText != "")
+                image.AltText = altText;
+            await _artistAdmin.UpdateImage(image);
+
+            return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
+        }
+
         public async Task<IActionResult> OnPostDeleteImage(int imageId, int portfolioId)
         {
             await _artistAdmin.RemoveImageFromPortfolio(portfolioId, imageId);

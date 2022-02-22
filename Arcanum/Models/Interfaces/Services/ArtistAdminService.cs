@@ -166,7 +166,8 @@ namespace Arcanum.Models.Interfaces.Services
             Image image = await _upload.AddImage(file);
             Image newImage = new Image()
             {
-                Title = "untitled",
+                Title = $"Artwork by {artist.Name}",
+                AltText = $"Artwork by {artist.Name}",
                 ArtistId = artistId,
                 SourceUrl = image.SourceUrl,
                 ThumbnailUrl = image.ThumbnailUrl,

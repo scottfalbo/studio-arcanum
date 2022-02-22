@@ -73,6 +73,19 @@
                                 </form>
                             </div>
                         </div>
+                        <i class="update-image-info-button">ooo</i>
+                        <div class="update-image-info-container hide-me">
+                            <div>
+                                <form asp-page-handler="UpdateImageInfo" method="post">
+                                    <input type="text" name="title" placeholder="@image.Image.Title" />
+                                    <input type="text" name="altText" placeholder="@image.Image.AltText" />
+                                    <input type="hidden" name="imageId" value="@image.ImageId" />
+                                    <input type="hidden" asp-for="@Model.Artist.Id" value="@Model.Artist.Id" />
+                                    <input type="submit" value="update" class="site-button loader" />
+                                    <i class="update-image-info-cancel">cancel</i>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                     }
                 </section>
