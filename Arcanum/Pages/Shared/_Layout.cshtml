@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - @await Component.InvokeAsync("SiteTitle")</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    @*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>*@
 </head>
 <body>
     <header>
@@ -67,6 +67,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/registrationValidator.js" asp-append-version="true"></script>
+    <script src="~/js/orderArranger.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

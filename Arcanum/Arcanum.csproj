@@ -10,6 +10,8 @@
     <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
     <PackageReference Include="Azure.Storage.Files.Shares" Version="12.8.0" />
     <PackageReference Include="Azure.Storage.Queues" Version="12.8.0" />
+    <PackageReference Include="jQuery" Version="3.6.0" />
+    <PackageReference Include="jQuery.UI.Combined" Version="1.13.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.19" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.19" />
