@@ -40,8 +40,11 @@ namespace Arcanum.Models.Interfaces.Services
                 ImageCount = 0,
                 Display = false
             };
-            newPortfolio = BootStrapAccordionIds.PortfolioAccordionIds(newPortfolio);
+
             _db.Entry(newPortfolio).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+            newPortfolio = BootStrapAccordionIds.PortfolioAccordionIds(newPortfolio);
+            _db.Entry(newPortfolio).State = EntityState.Modified;
             await _db.SaveChangesAsync();
             return newPortfolio;
         }

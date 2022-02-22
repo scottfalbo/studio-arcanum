@@ -41,8 +41,10 @@ namespace Arcanum.Models.Interfaces.Services
                 Order = order + 1
             };
 
-            newArtist = BootStrapAccordionIds.ArtistAccordionIds(newArtist);
             _db.Entry(newArtist).State = EntityState.Added;
+            await _db.SaveChangesAsync();
+            newArtist = BootStrapAccordionIds.ArtistAccordionIds(newArtist);
+            _db.Entry(newArtist).State = EntityState.Modified;
             await _db.SaveChangesAsync();
 
             Booking booking = await CreateBooking();
