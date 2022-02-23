@@ -153,6 +153,15 @@ namespace Arcanum.Pages
             }
             return new JsonResult(imageOrder);
         }
+
+        public async Task<IActionResult> OnPostUpdatePortfolioOrder([FromBody] List<ImageOrder> portfolioOrder)
+        {
+            foreach (var portfolio in portfolioOrder)
+            {
+                await _artistAdmin.UpdatePortfolioOrder(portfolio.Id, portfolio.Order);
+            }
+            return new JsonResult(portfolioOrder);
+        }
     }
 
     public class ImageOrder

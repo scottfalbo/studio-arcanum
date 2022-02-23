@@ -77,6 +77,20 @@ namespace Arcanum.Models.Interfaces.Services
             await _db.SaveChangesAsync();
         }
 
+        public async Task UpdatePortfolioOrder(int portfolioId, int order)
+        {
+            var portfolio = await _db.ArtistPortfolio
+                .Where(x => x.PortfolioId == portfolioId)
+                .Select(y => new ArtistPortfolio
+                {
+                    ArtistId = y.ArtistId,
+                    PortfolioId = y.PortfolioId,
+                    Order = order
+                }).FirstOrDefaultAsync();
+            _db.Entry(portfolio).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
+
         /// <summary>
         /// Delete the portfolio record.
         /// Remove the ArtistPortfolio and associated PortfolioImage join tables.

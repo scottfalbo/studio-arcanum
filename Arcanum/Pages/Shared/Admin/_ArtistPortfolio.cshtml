@@ -99,9 +99,14 @@
                     </div>
                 </section>
             </div>
+            @Html.Hidden($"portfolio-id-{portfolio.Portfolio.Id}", portfolio.Portfolio.Id, new { @class = "portfolio-id" })
+            @Html.Hidden($"portfolio-order-{portfolio.Order}", portfolio.Order, new { @class = "portfolio-order" })
         </li>
         }
     </ul>
+    <div>
+        <button id="update-portfolio-order" class="site-button loader">Update Order</button>
+    </div>
     <section>
         <form asp-page-handler="AddPortfolio" method="post">
             <label>
