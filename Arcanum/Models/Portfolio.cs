@@ -11,7 +11,6 @@ namespace Arcanum.Models
         public string Title { get; set; }
         public string Intro { get; set; }
         public bool Display { get; set; }
-        public int Order { get; set; }
         public int ImageCount { get; set; }
 
         /// <summary>

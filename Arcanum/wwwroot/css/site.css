@@ -7,11 +7,3 @@ body {
     background-color: rgb(74, 100, 100);
     color: rgb(235, 242, 245);
 }
-
-.temp-boxes {
-    width: 60px;
-    height: 60px;
-    background-color: #fff;
-    border: 1px solid #000;
-    color: #000;
-}

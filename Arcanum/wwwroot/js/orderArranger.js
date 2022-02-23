@@ -1,14 +1,14 @@
 'use strict';
 
 $(function() {
-    $('#sortable').sortable();
-    $('#sortable').disableSelection();
-    $('#save-view-preferences').click(saveOrder);
+    $('#sortable-portfolio-images').sortable();
+    $('#sortable-portfolio-images').disableSelection();
+    $('#update-portfolio-image-order').click(savePortfolioImageOrder);
 });
 
-function saveOrder() {
+function savePortfolioImageOrder() {
     let imageOrder = new Array();
-    $('#sortable li').each(function(i) {
+    $('#sortable-portfolio-images li').each(function(i) {
         let image = new Object();
         image.Id = $(this).find($('.image-id')).val();
         image.Order = $(this).find($('.image-order')).val();

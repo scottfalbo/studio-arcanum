@@ -3,9 +3,10 @@
 @Html.AntiForgeryToken()
 
 <div id="artistPortfolio-admin" class="page-admin">
-    <section>
+    <ul id="sortable-artist-portfolios">
         @foreach (var portfolio in Model.Artist.ArtistPortfolios)
         {
+        <li>
             <div>
                 <form asp-page-handler="UpdatePortfolio" method="post">
                     <label>
@@ -57,12 +58,11 @@
                         </label>
                     </form>
                 </section>
-                <section id="modify-view-elements">
-                    <ul id="sortable">
+                <section>
+                    <ul id="sortable-portfolio-images">
                         @foreach (var image in portfolio.Portfolio.PortfolioImage)
                         {
                             <li>
-                                <span id="sort-updown"></span>
                                 <img src="@image.Image.ThumbnailUrl" />
                                 <i class="delete-confirmation-button">X</i>
                                 <div class="delete-confirmation-container hide-me">
@@ -94,13 +94,14 @@
                             </li>
                         }
                     </ul>
-                    <div id="modify-view-command">
-                        <button id="save-view-preferences" class="site-button loader">Update Order</button>
+                    <div>
+                        <button id="update-portfolio-image-order" class="site-button loader">Update Order</button>
                     </div>
                 </section>
             </div>
+        </li>
         }
-    </section>
+    </ul>
     <section>
         <form asp-page-handler="AddPortfolio" method="post">
             <label>

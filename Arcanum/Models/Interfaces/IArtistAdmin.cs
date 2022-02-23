@@ -14,6 +14,7 @@ namespace Arcanum.Models.Interfaces
         public Task AddPortfolioToArtist(string artistId, int portfolioId);
         public Task DeletePortfolio(int portfolioId, string artistId);
         public Task RemovePortfolioFromArtist(int portfolioId, string artistId);
+        public Task<List<ArtistPortfolio>> GetArtistPortfolios(string artistId);
         public Task<IEnumerable<PortfolioImage>> GetPortfolioImages(int id);
 
         public Task<Image> CreateImage(IFormFile file, string artistId);

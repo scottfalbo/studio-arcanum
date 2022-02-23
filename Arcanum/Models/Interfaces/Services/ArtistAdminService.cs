@@ -29,14 +29,10 @@ namespace Arcanum.Models.Interfaces.Services
         /// <returns> new Portfolio object </returns>
         public async Task<Portfolio> CreatePortfolio(string title)
         {
-            var portfolios = await GetPortfolios();
-            var order = portfolios.Count();
-
             Portfolio newPortfolio = new Portfolio()
             {
                 Title = title,
                 Intro = "new portfolio",
-                Order = order + 1,
                 ImageCount = 0,
                 Display = false
             };
@@ -60,7 +56,6 @@ namespace Arcanum.Models.Interfaces.Services
                     Title = x.Title,
                     Intro = x.Intro,
                     Display = x.Display,
-                    Order = x.Order,
                     ImageCount = x.ImageCount,
                     AccordionId = x.AccordionId,
                     CollapseId = x.CollapseId,
@@ -100,7 +95,6 @@ namespace Arcanum.Models.Interfaces.Services
             Portfolio portfolio = await _db.Portfolio.FindAsync(portfolioId);
             _db.Entry(portfolio).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
-            await ReOrderPortfolios(portfolio.Order);
         }
 
         /// <summary>
@@ -110,10 +104,14 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="portfolioId"> int portfolioId </param>
         public async Task AddPortfolioToArtist(string artistId, int portfolioId)
         {
+            var portoflios = await GetArtistPortfolios(artistId);
+            int order = portoflios.Count();
+
             ArtistPortfolio artistPortfolio = new ArtistPortfolio()
             {
                 ArtistId = artistId,
-                PortfolioId = portfolioId
+                PortfolioId = portfolioId,
+                Order = order + 1
             };
             _db.Entry(artistPortfolio).State = EntityState.Added;
             await _db.SaveChangesAsync();
@@ -130,11 +128,25 @@ namespace Arcanum.Models.Interfaces.Services
                 .Where(x => x.PortfolioId == portfolioId && x.ArtistId == artistId)
                 .Select(y => new ArtistPortfolio
                 {
-                    ArtistId = artistId,
-                    PortfolioId = portfolioId
+                    ArtistId = y.ArtistId,
+                    PortfolioId = y.PortfolioId,
+                    Order = y.Order
                 }).FirstOrDefaultAsync();
             _db.Entry(artistPortfolio).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
+            await ReOrderPortfolios(artistId, artistPortfolio.Order);
+        }
+
+        public async Task<List<ArtistPortfolio>> GetArtistPortfolios(string artistId)
+        {
+            return await _db.ArtistPortfolio
+                .Where(x => x.ArtistId == artistId)
+                .Select(y => new ArtistPortfolio
+                {
+                    ArtistId = y.ArtistId,
+                    PortfolioId = y.PortfolioId,
+                    Order = y.Order
+                }).ToListAsync();
         }
 
         /// <summary>
@@ -425,9 +437,9 @@ namespace Arcanum.Models.Interfaces.Services
                 if (image.Order > n)
                 {
                     image.Order--;
+                    _db.Entry(image).State = EntityState.Modified;
+                    await _db.SaveChangesAsync();
                 }
-                _db.Entry(image).State = EntityState.Modified;
-                await _db.SaveChangesAsync();
             }
         }
 
@@ -435,16 +447,17 @@ namespace Arcanum.Models.Interfaces.Services
         /// Re-order portfolios when one is deleted.
         /// </summary>
         /// <param name="n"> portfolio removed </param>
-        private async Task ReOrderPortfolios(int n)
+        private async Task ReOrderPortfolios(string artistId, int n)
         {
-            IEnumerable<Portfolio> portfolios = await GetPortfolios();
-            foreach (Portfolio portfolio in portfolios)
+            var portfolios = await GetArtistPortfolios(artistId);
+            foreach (var portfolio in portfolios)
             {
                 if (portfolio.Order > n)
                 {
                     portfolio.Order--;
+                    _db.Entry(portfolio).State = EntityState.Modified;
+                    await _db.SaveChangesAsync();
                 }
-                await UpdatePortfolio(portfolio);
             }
         }
     }
