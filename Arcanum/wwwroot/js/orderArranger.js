@@ -11,17 +11,15 @@ function saveOrder() {
     let itemsOrder = new Array();
     $('#sortable li').each(function(i) {
         let item = new Object();
-        item.Id = $(this).find($('.item-id')).val();
-        item.IsEnabled = $(this).find($('.enabled-flag'))
-            .attr('checked') == 'checked' ? true : false;
-        item.Description = $(this).find($('.item-description')).val();
+        item.Id = $(this).find($('.image-id')).val();
+        item.Order = $(this).find($('.image-order')).val();
         item.Order = i;
         itemsOrder.push(item);
     });
     let data = JSON.stringify(itemsOrder);
     $.ajax({
         type: 'POST',
-        url: '/MovingImagesTest?handler=MoveItems',
+        url: '/Artist?handler=UpdateImageOrder',
         data: data,
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',

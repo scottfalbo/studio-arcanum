@@ -10,7 +10,6 @@ namespace Arcanum.Pages
 {
     public class MovingImagesTestModel : PageModel
     {
-
         public Parent Things;
 
         public void OnGet()
@@ -38,7 +37,8 @@ namespace Arcanum.Pages
             Things = new Parent();
             Things.Items = new List<Child>();
             Things.Items = itemsOrder;
-            return Redirect("MovingImageTest");
+            // update db here
+            return new JsonResult(Things.Items);
         }
 
         private string GetLetter(int i) =>

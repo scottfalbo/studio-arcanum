@@ -142,7 +142,20 @@ namespace Arcanum.Pages
             PasswordUpdateState updateState = response.Succeeded ? PasswordUpdateState.Success : PasswordUpdateState.Failed;
             return Redirect($"Artist?artistId={userId}&isActive=true&updateState={updateState}");
         }
+
+        public async Task<IActionResult> OnPostUpdateImageOrder([FromBody] List<ImageOrder> imageOrder)
+        {
+
+            return new JsonResult(imageOrder);
+        }
     }
+
+    public class ImageOrder
+    {
+        public int Id { get; set; }
+        public int Order { get; set; }
+    }
+
     public enum PasswordUpdateState
     {
         Inital,
