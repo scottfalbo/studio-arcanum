@@ -214,6 +214,25 @@ namespace Arcanum.Models.Interfaces.Services
         }
 
         /// <summary>
+        /// Updates the order on portfolio iamge composite table.
+        /// </summary>
+        /// <param name="imageId"> image id </param>
+        /// <param name="order"> new order </param>
+        public async Task UpdateImageOrder(int imageId, int order)
+        {
+            PortfolioImage image = await _db.PortfolioImage
+                .Where(x => x.ImageId == imageId)
+                .Select(y => new PortfolioImage
+                {
+                    ImageId = y.ImageId,
+                    PortfolioId = y.PortfolioId,
+                    Order = order
+                }).FirstOrDefaultAsync();
+            _db.Entry(image).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
         /// Add an image to a portfolio with a PortfolioImage join table record.
         /// </summary>
         /// <param name="portfolioId"> int portfolio id </param>

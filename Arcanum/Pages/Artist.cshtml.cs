@@ -6,6 +6,7 @@ using Arcanum.Auth.Models;
 using Arcanum.Auth.Models.Interfaces;
 using Arcanum.Models;
 using Arcanum.Models.Interfaces;
+using Arcanum.Spells;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +55,7 @@ namespace Arcanum.Pages
                 UserId = "";
             }
 
+            Artist = OrderSorter.SortPortfolioImages(Artist);
             Portfolio = new Portfolio();
             PasswordUpdateState = updateState;
             ActiveAdmin = isActive;
@@ -145,7 +147,10 @@ namespace Arcanum.Pages
 
         public async Task<IActionResult> OnPostUpdateImageOrder([FromBody] List<ImageOrder> imageOrder)
         {
-
+            foreach(var image in imageOrder)
+            {
+                await _artistAdmin.UpdateImageOrder(image.Id, image.Order);
+            }
             return new JsonResult(imageOrder);
         }
     }

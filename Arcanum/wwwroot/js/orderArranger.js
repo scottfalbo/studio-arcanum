@@ -7,16 +7,15 @@ $(function() {
 });
 
 function saveOrder() {
-    console.log('hello');
-    let itemsOrder = new Array();
+    let imageOrder = new Array();
     $('#sortable li').each(function(i) {
-        let item = new Object();
-        item.Id = $(this).find($('.image-id')).val();
-        item.Order = $(this).find($('.image-order')).val();
-        item.Order = i;
-        itemsOrder.push(item);
+        let image = new Object();
+        image.Id = $(this).find($('.image-id')).val();
+        image.Order = $(this).find($('.image-order')).val();
+        image.Order = i;
+        imageOrder.push(image);
     });
-    let data = JSON.stringify(itemsOrder);
+    let data = JSON.stringify(imageOrder);
     $.ajax({
         type: 'POST',
         url: '/Artist?handler=UpdateImageOrder',
@@ -26,6 +25,7 @@ function saveOrder() {
         headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
         success: function() {
             console.log('success');
+            $('.loading-bar-container').addClass('hide-me');
         }
     });
 }
