@@ -3,62 +3,71 @@
 
 <section>
     <h1>Artist Admin</h1>
-    @foreach (var artist in Model.Artists)
-    {
-        <h2>@artist.Name</h2>
-        <div>
-            <form asp-page-handler="ToggleArtistDisplay" method="post">
-                <label>
-                    <input type="checkbox" name="display" value="true" checked="@artist.Display" />
-                    <input type="hidden" name="artistId" value="@artist.Id" />
-                    <input type="submit" value="update" class="loader site-button"/>
-                </label>
-            </form>
-        </div>
-        <section>
-            <h2>User Roles</h2>
-            @foreach (var user in Model.Users)
-            {
-                @if (artist.Id == user.Id)
+    <ul id="sortable-artists">
+        @foreach (var artist in Model.Artists)
+        {
+        <li>
+            <h2>@artist.Name</h2>
+            <div>
+                <form asp-page-handler="ToggleArtistDisplay" method="post">
+                    <label>
+                        <input type="checkbox" name="display" value="true" checked="@artist.Display" />
+                        <input type="hidden" name="artistId" value="@artist.Id" />
+                        <input type="submit" value="update" class="loader site-button" />
+                    </label>
+                </form>
+            </div>
+            <section>
+                <h2>User Roles</h2>
+                @foreach (var user in Model.Users)
                 {
-                    <div>
-                        <form asp-page-handler="UpdateUserRoles" method="post">
-                            <ul>
-                                @{
-                                    foreach (var role in Model.Roles)
-                                    {
-                                        <li>
-                                            <label>
-                                                <span>@role.Name</span>
-                                                <input type="hidden" name="userId" value="@user.Id" />
-                                                <input type="checkbox" name="isChecked" value="@role.Name" checked="@(user.Roles.Contains(role.Name) ? true : false)" />
-                                            </label>
-                                        </li>
+                    @if (artist.Id == user.Id)
+                    {
+                        <div>
+                            <form asp-page-handler="UpdateUserRoles" method="post">
+                                <ul>
+                                    @{
+                                        foreach (var role in Model.Roles)
+                                        {
+                                            <li>
+                                                <label>
+                                                    <span>@role.Name</span>
+                                                    <input type="hidden" name="userId" value="@user.Id" />
+                                                    <input type="checkbox" name="isChecked" value="@role.Name" checked="@(user.Roles.Contains(role.Name) ? true : false)" />
+                                                </label>
+                                            </li>
+                                        }
                                     }
-                                }
-                            </ul>
-                            <input type="submit" value="update" class="loader site-button"/>
-                        </form>
-                        @{
-                            var roles = await wizard.GetUserRoles(user.Id);
-                            if (!roles.Contains("WizardLord"))
-                            {
-                                <i class="delete-confirmation-button">X</i>
-                                <div class="delete-confirmation-container hide-me">
-                                    <div>
-                                        <p>Remove @user.UserName</p>
-                                        <form asp-page-handler="DeleteUser" method="post">
-                                            <input type="hidden" name="userId" value="@user.Id" />
-                                            <input type="submit" value="confirm" class="loader site-button"/>
-                                            <i class="delete-confirmation-cancel">cancel</i>
-                                        </form>
+                                </ul>
+                                <input type="submit" value="update" class="loader site-button" />
+                            </form>
+                            @{
+                                var roles = await wizard.GetUserRoles(user.Id);
+                                if (!roles.Contains("WizardLord"))
+                                {
+                                    <i class="delete-confirmation-button">X</i>
+                                    <div class="delete-confirmation-container hide-me">
+                                        <div>
+                                            <p>Remove @user.UserName</p>
+                                            <form asp-page-handler="DeleteUser" method="post">
+                                                <input type="hidden" name="userId" value="@user.Id" />
+                                                <input type="submit" value="confirm" class="loader site-button" />
+                                                <i class="delete-confirmation-cancel">cancel</i>
+                                            </form>
+                                        </div>
                                     </div>
-                                </div>
+                                }
                             }
-                        }
-                    </div>
+                        </div>
+                    }
                 }
-            }
-        </section>
-    }
+            </section>
+            @Html.Hidden($"artist-id-{artist.Id}", artist.Id, new { @class = "artist-id" })
+            @Html.Hidden($"artist-order-{artist.Order}", artist.Order, new { @class = "artist-order" })
+        </li>
+        }
+    </ul>
+    <div>
+        <button id="update-artists-order" class="site-button loader">Update Order</button>
+    </div>
 </section>

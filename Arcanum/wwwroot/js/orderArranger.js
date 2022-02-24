@@ -59,3 +59,33 @@ function savePortfolioImageOrder() {
         }
     });
 }
+
+// Re order Artists
+$(function() {
+    $('#sortable-artists').sortable();
+    $('#sortable-artists').disableSelection();
+    $('#update-artists-order').click(saveArtistOrder);
+});
+function saveArtistOrder() {
+    let artistOrder = new Array();
+    $('#sortable-artists > li').each(function(i) {
+        let artist = new Object();
+        artist.ArtistId = $(this).find($('.artist-id')).val();
+        artist.Order = $(this).find($('.artist-order')).val();
+        artist.Order = i;
+        artistOrder.push(artist);
+    });
+    let data = JSON.stringify(artistOrder);
+    $.ajax({
+        type: 'POST',
+        url: '/Admin/SecretLair?handler=UpdateArtistOrder',
+        data: data,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+        success: function() {
+            console.log('success');
+            $('.loading-bar-container').addClass('hide-me');
+        }
+    });
+}

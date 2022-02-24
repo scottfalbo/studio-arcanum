@@ -146,7 +146,7 @@ namespace Arcanum.Pages
             return Redirect($"Artist?artistId={userId}&isActive=true&updateState={updateState}");
         }
 
-        public async Task<IActionResult> OnPostUpdateImageOrder([FromBody] List<ImageOrder> imageOrder)
+        public async Task<IActionResult> OnPostUpdateImageOrder([FromBody] List<OrderSorter> imageOrder)
         {
             foreach(var image in imageOrder)
             {
@@ -155,7 +155,7 @@ namespace Arcanum.Pages
             return new JsonResult(imageOrder);
         }
 
-        public async Task<IActionResult> OnPostUpdatePortfolioOrder([FromBody] List<ImageOrder> portfolioOrder)
+        public async Task<IActionResult> OnPostUpdatePortfolioOrder([FromBody] List<OrderSorter> portfolioOrder)
         {
             foreach (var portfolio in portfolioOrder)
             {
@@ -163,12 +163,6 @@ namespace Arcanum.Pages
             }
             return new JsonResult(portfolioOrder);
         }
-    }
-
-    public class ImageOrder
-    {
-        public int Id { get; set; }
-        public int Order { get; set; }
     }
 
     public enum PasswordUpdateState

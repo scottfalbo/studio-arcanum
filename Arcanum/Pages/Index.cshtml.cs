@@ -38,6 +38,7 @@ namespace Arcanum.Pages
             IEnumerable<PageImage> pageImages = MainPage.PageImage;
             MainPage.PageImage = (pageImages.OrderBy(x => x.Order)).ToList();
             Artists = await _siteAdmin.GetArtists();
+            Artists = Artists.OrderBy(x => x.Order);
             StudioInfo = await _siteAdmin.GetStudio();
             ActiveAdmin = isActive;
         }
