@@ -27,5 +27,22 @@ namespace Arcanum.Models
 
         public ArtistBooking ArtistBooking { get; set; }
         public List<ArtistPortfolio> ArtistPortfolios { get; set; }
+
+        public void SortPortfolioImages()
+        {
+            for (int i = 0; i < ArtistPortfolios.Count; i++)
+            {
+                var images = ArtistPortfolios[i].Portfolio.PortfolioImage
+                    .OrderBy(x => x.Order).ToList();
+                ArtistPortfolios[i].Portfolio.PortfolioImage = images;
+            }
+        }
+
+        public void SortArtistPortfolios()
+        {
+            var portfolios = ArtistPortfolios
+                .OrderBy(x => x.Order).ToList();
+            ArtistPortfolios = portfolios;
+        }
     }
 }

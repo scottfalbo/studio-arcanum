@@ -6,6 +6,7 @@ using Arcanum.Auth.Models;
 using Arcanum.Auth.Models.Interfaces;
 using Arcanum.Models;
 using Arcanum.Models.Interfaces;
+using Arcanum.Spells;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +55,8 @@ namespace Arcanum.Pages
                 UserId = "";
             }
 
+            Artist.SortPortfolioImages();
+            Artist.SortArtistPortfolios();
             Portfolio = new Portfolio();
             PasswordUpdateState = updateState;
             ActiveAdmin = isActive;
@@ -142,7 +145,26 @@ namespace Arcanum.Pages
             PasswordUpdateState updateState = response.Succeeded ? PasswordUpdateState.Success : PasswordUpdateState.Failed;
             return Redirect($"Artist?artistId={userId}&isActive=true&updateState={updateState}");
         }
+
+        public async Task<IActionResult> OnPostUpdateImageOrder([FromBody] List<OrderSorter> imageOrder)
+        {
+            foreach(var image in imageOrder)
+            {
+                await _artistAdmin.UpdateImageOrder(image.Id, image.Order);
+            }
+            return new JsonResult(imageOrder);
+        }
+
+        public async Task<IActionResult> OnPostUpdatePortfolioOrder([FromBody] List<OrderSorter> portfolioOrder)
+        {
+            foreach (var portfolio in portfolioOrder)
+            {
+                await _artistAdmin.UpdatePortfolioOrder(portfolio.Id, portfolio.Order);
+            }
+            return new JsonResult(portfolioOrder);
+        }
     }
+
     public enum PasswordUpdateState
     {
         Inital,

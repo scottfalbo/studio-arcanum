@@ -6,6 +6,7 @@ using Arcanum.Auth.Models;
 using Arcanum.Data;
 using Arcanum.Models;
 using Arcanum.Models.Interfaces;
+using Arcanum.Spells;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -68,6 +69,18 @@ namespace Arcanum.Pages.Admin
         {
             await _wizard.DeleteRegistrationAccessCode(code);
             return Redirect("/Admin/SecretLair");
+        }
+
+        public async Task<IActionResult> OnPostUpdateArtistOrder([FromBody] List<OrderSorter> artistOrder)
+        {
+            foreach(var artist in artistOrder)
+            {
+                var updateArtist = await _siteAdmin.GetArtist(artist.ArtistId);
+                updateArtist.Order = artist.Order;
+                await _siteAdmin.UpdateArtist(updateArtist);
+            }
+
+            return new JsonResult(artistOrder);
         }
     }
 }

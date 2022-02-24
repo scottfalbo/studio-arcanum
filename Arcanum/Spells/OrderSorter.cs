@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Arcanum.Models
+namespace Arcanum.Spells
 {
-    public class ArtistPortfolio
+    public class OrderSorter
     {
+        public int Id { get; set; }
         public string ArtistId { get; set; }
-        public int PortfolioId { get; set; }
         public int Order { get; set; }
-        public Artist Artist { get; set; }
-        public Portfolio Portfolio { get; set; }
     }
 }
