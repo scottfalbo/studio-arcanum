@@ -55,7 +55,8 @@ namespace Arcanum.Pages
                 UserId = "";
             }
 
-            Artist = OrderSorter.SortPortfolioImages(Artist);
+            Artist.SortPortfolioImages();
+            Artist.SortArtistPortfolios();
             Portfolio = new Portfolio();
             PasswordUpdateState = updateState;
             ActiveAdmin = isActive;
