@@ -13,13 +13,11 @@ namespace Arcanum.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
         private readonly ISite _siteAdmin;
         private readonly IArtistAdmin _artistAdmin;
 
-        public IndexModel(ILogger<IndexModel> logger, ISite siteAdmin, IArtistAdmin artistAdmin)
+        public IndexModel(ISite siteAdmin, IArtistAdmin artistAdmin)
         {
-            _logger = logger;
             _siteAdmin = siteAdmin;
             _artistAdmin = artistAdmin;
         }
