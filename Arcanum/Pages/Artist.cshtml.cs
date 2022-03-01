@@ -146,7 +146,7 @@ namespace Arcanum.Pages
             return Redirect($"Artist?artistId={userId}&isActive=true&updateState={updateState}");
         }
 
-        public async Task<IActionResult> OnPostUpdateImageOrder([FromBody] List<OrderSorter> imageOrder)
+        public async Task<IActionResult> OnPostUpdatePortfolioImageOrder([FromBody] List<OrderSorter> imageOrder)
         {
             foreach(var image in imageOrder)
             {

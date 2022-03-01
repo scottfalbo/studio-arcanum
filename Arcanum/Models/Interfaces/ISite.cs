@@ -34,6 +34,6 @@ namespace Arcanum.Models.Interfaces
         public Task<IEnumerable<StudioImage>> GetStudioImages(int studioId);
         public Task AddImageToStudio(int studioId, int imageId);
         public Task RemoveImageFromStudio(int studioId, int imageId);
-        public Task UpdateStudioImageOrder(int studioId, int order);
+        public Task UpdateStudioImageOrder(int ImageId, int order);
     }
 }

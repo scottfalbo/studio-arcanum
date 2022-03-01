@@ -425,10 +425,10 @@ namespace Arcanum.Models.Interfaces.Services
             await StudioImageCounter(-1, false);
         }
 
-        public async Task UpdateStudioImageOrder(int studioId, int order)
+        public async Task UpdateStudioImageOrder(int imageId, int order)
         {
             StudioImage image = await _db.StudioImage
-                .Where(x => x.StudioInfoId == studioId)
+                .Where(x => x.ImageId == imageId)
                 .Select(y => new StudioImage
                 {
                     ImageId = y.ImageId,

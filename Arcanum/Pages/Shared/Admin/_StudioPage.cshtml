@@ -44,10 +44,10 @@
                 </label>
             </form>
         </section>
-        <section>
+        <ul id="sortable-studio-image">
             @foreach (var studioImage in Model.StudioInfo.StudioImages)
             {
-            <div>
+            <li>
                 <img src="@studioImage.Image.ThumbnailUrl" />
                 <i class="delete-confirmation-button">X</i>
                 <div class="delete-confirmation-container hide-me">
@@ -55,13 +55,18 @@
                         <form asp-page-handler="DeleteImage" method="post">
                             <input type="hidden" name="imageId" value="@studioImage.Image.Id" />
                             <input type="hidden" asp-for="@Model.StudioInfo.Id" value="@Model.StudioInfo.Id" />
-                            <input type="submit" value="confirm" class="loader site-button"/>
+                            <input type="submit" value="confirm" class="loader site-button" />
                             <i class="delete-confirmation-cancel">cancel</i>
                         </form>
                     </div>
                 </div>
-            </div>
+                @Html.Hidden($"studio-image-id-{studioImage.Image.Id}", studioImage.Image.Id, new { @class = "studio-image-id" })
+                @Html.Hidden($"studio-image-order-{studioImage.Order}", studioImage.Order, new { @class = "studio-image-order" })
+            </li>
             }
-        </section>
+        </ul>
+        <div>
+            <button class="site-button loader update-order" data-button="studio-image">Update Order</button>
+        </div>
     </div>
 </div>

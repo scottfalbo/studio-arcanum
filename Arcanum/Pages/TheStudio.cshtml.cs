@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Arcanum.Models;
 using Arcanum.Models.Interfaces;
+using Arcanum.Spells;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -57,6 +58,15 @@ namespace Arcanum.Pages
             await _artistAdmin.DeleteImage(imageId);
 
             return Redirect("/TheStudio?isActive=true");
+        }
+
+        public async Task<IActionResult> OnPostUpdateStudioImageOrder([FromBody] List<OrderSorter> imageOrder)
+        {
+            foreach (var image in imageOrder)
+            {
+                await _siteAdmin.UpdateStudioImageOrder(image.Id, image.Order);
+            }
+            return new JsonResult(imageOrder);
         }
     }
 }

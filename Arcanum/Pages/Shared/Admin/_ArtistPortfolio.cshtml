@@ -3,7 +3,7 @@
 @Html.AntiForgeryToken()
 
 <div id="artistPortfolio-admin" class="page-admin">
-    <ul id="sortable-artist-portfolios">
+    <ul id="sortable-portfolio">
         @foreach (var portfolio in Model.Artist.ArtistPortfolios)
         {
         <li>
@@ -59,7 +59,7 @@
                     </form>
                 </section>
                 <section>
-                    <ul id="sortable-portfolio-images">
+                    <ul id="sortable-portfolio-image">
                         @foreach (var image in portfolio.Portfolio.PortfolioImage)
                         {
                             <li>
@@ -89,13 +89,13 @@
                                         </form>
                                     </div>
                                 </div>
-                                @Html.Hidden($"image-id-{image.Image.Id}", image.Image.Id, new { @class = "image-id" })
-                                @Html.Hidden($"image-order-{image.Order}", image.Order, new { @class = "image-order" })
+                                @Html.Hidden($"portfolio-image-id-{image.Image.Id}", image.Image.Id, new { @class = "portfolio-image-id" })
+                                @Html.Hidden($"portfolio-image-order-{image.Order}", image.Order, new { @class = "portfolio-image-order" })
                             </li>
                         }
                     </ul>
                     <div>
-                        <button id="update-portfolio-image-order" class="site-button loader">Update Order</button>
+                        <button class="site-button loader update-order" data-button="portfolio-image">Update Order</button>
                     </div>
                 </section>
             </div>
@@ -105,7 +105,7 @@
         }
     </ul>
     <div>
-        <button id="update-portfolio-order" class="site-button loader">Update Order</button>
+        <button class="site-button loader update-order" data-button="portfolio">Update Order</button>
     </div>
     <section>
         <form asp-page-handler="AddPortfolio" method="post">
