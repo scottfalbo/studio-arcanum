@@ -447,7 +447,7 @@ namespace Arcanum.Models.Interfaces.Services
         private async Task StudioImageCounter(int studioId, bool increment)
         {
             StudioInfo studio = await _db.StudioInfo.FindAsync(studioId);
-            studio.ImageCount = increment ? studio.ImageCount++ : studio.ImageCount--;
+            studio.ImageCount = increment ? studio.ImageCount + 1 : studio.ImageCount - 1;
             _db.Entry(studio).State = EntityState.Modified;
             await _db.SaveChangesAsync();
         }

@@ -307,7 +307,7 @@ namespace Arcanum.Models.Interfaces.Services
         private async Task PortfolioImageCounter(int portfolioId, bool increment)
         {
             Portfolio portfolio = await _db.Portfolio.FindAsync(portfolioId);
-            portfolio.ImageCount = increment ? portfolio.ImageCount++ : portfolio.ImageCount--;
+            portfolio.ImageCount = increment ? portfolio.ImageCount + 1 : portfolio.ImageCount - 1;
             _db.Entry(portfolio).State = EntityState.Modified;
             await _db.SaveChangesAsync();
         }

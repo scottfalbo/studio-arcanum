@@ -8,7 +8,7 @@ $(function() {
 });
 function savePortfolioImageOrder() {
     let imageOrder = new Array();
-    $('#sortable-portfolio-images li').each(function(i) {
+    $('#sortable-portfolio-images > li').each(function(i) {
         let image = new Object();
         image.Id = $(this).find($('.image-id')).val();
         image.Order = $(this).find($('.image-order')).val();
@@ -34,11 +34,11 @@ function savePortfolioImageOrder() {
 $(function() {
     $('#sortable-artist-portfolios').sortable();
     $('#sortable-artist-portfolios').disableSelection();
-    $('#update-portfolio-order').click(savePortfolioImageOrder);
+    $('#update-portfolio-order').click(savePortfolioOrder);
 });
-function savePortfolioImageOrder() {
+function savePortfolioOrder() {
     let portfolioOrder = new Array();
-    $('#sortable-artist-portfolios li').each(function(i) {
+    $('#sortable-artist-portfolios > li').each(function(i) {
         let portfolio = new Object();
         portfolio.Id = $(this).find($('.portfolio-id')).val();
         portfolio.Order = $(this).find($('.portfolio-order')).val();

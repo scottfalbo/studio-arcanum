@@ -16,5 +16,15 @@ namespace Arcanum.Models
         public string Aftercare { get; set; }
         public int ImageCount { get; set; }
         public List<StudioImage> StudioImages { get; set; }
+
+        public void SortstudioImages()
+        {
+            for (int i = 0; i < StudioImages.Count; i++)
+            {
+                var images = StudioImages
+                    .OrderBy(x => x.Order).ToList();
+                StudioImages = images;
+            }
+        }
     }
 }

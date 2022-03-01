@@ -28,6 +28,7 @@ namespace Arcanum.Pages
         public async Task OnGet(bool isActive = false)
         {
             StudioInfo = await _siteAdmin.GetStudio();
+            StudioInfo.SortstudioImages();
             ActiveAdmin = isActive;
         }
 
