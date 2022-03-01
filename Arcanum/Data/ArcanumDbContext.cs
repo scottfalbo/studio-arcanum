@@ -138,7 +138,8 @@ namespace Arcanum.Data
                     Instagram = "@studioarcanum",
                     Intro = "here are some words",
                     Policies = "be nice",
-                    Aftercare = " be smart"
+                    Aftercare = " be smart",
+                    ImageCount = 0
                 });
 
             modelBuilder.Entity<Address>().HasData(

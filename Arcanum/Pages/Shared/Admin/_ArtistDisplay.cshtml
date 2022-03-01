@@ -3,7 +3,7 @@
 
 <section>
     <h1>Artist Admin</h1>
-    <ul id="sortable-artists">
+    <ul id="sortable-artist">
         @foreach (var artist in Model.Artists)
         {
         <li>
@@ -68,6 +68,6 @@
         }
     </ul>
     <div>
-        <button id="update-artists-order" class="site-button loader">Update Order</button>
+        <button class="site-button loader update-order" data-button="artist">Update Order</button>
     </div>
 </section>

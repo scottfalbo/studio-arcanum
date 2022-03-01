@@ -320,6 +320,7 @@ namespace Arcanum.Models.Interfaces.Services
                     Intro = y.Intro,
                     Policies = y.Policies,
                     Aftercare = y.Aftercare,
+                    ImageCount = y.ImageCount,
                     StudioImages = y.StudioImages
                 }).FirstOrDefaultAsync();
         }
@@ -372,20 +373,15 @@ namespace Arcanum.Models.Interfaces.Services
         /// </summary>
         /// <param name="studioId"> int studioId </param>
         /// <returns> IEnumerable of images </returns>
-        public async Task<IEnumerable<Image>> GetStudioImages(int studioId)
+        public async Task<IEnumerable<StudioImage>> GetStudioImages(int studioId)
         {
             return await _db.StudioImage
                 .Where(a => a.StudioInfoId == studioId)
-                .Include(b => b.Image)
-                .Select(x => new Image
+                .Select(x => new StudioImage
                 {
-                    Id = x.Image.Id,
-                    Title = x.Image.Title,
-                    AltText = x.Image.AltText,
-                    SourceUrl = x.Image.SourceUrl,
-                    ThumbnailUrl = x.Image.ThumbnailUrl,
-                    FileName = x.Image.FileName,
-                    ThumbFileName = x.Image.ThumbFileName
+                    StudioInfoId = x.StudioInfoId,
+                    ImageId = x.ImageId,
+                    Order = x.Order
                 }).ToListAsync();
         }
 
@@ -396,16 +392,16 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="imageId"> int image id </param>
         public async Task AddImageToStudio(int studioId, int imageId)
         {
-            var images = await GetStudioImages(studioId);
-            int order = images.Count();
+            var studio = await GetStudio();
             StudioImage studioImage = new StudioImage()
             {
                 StudioInfoId = studioId,
                 ImageId = imageId,
-                Order = order + 1
+                Order = studio.ImageCount + 1
             };
             _db.Entry(studioImage).State = EntityState.Added;
             await _db.SaveChangesAsync();
+            await StudioImageCounter(-1, true);
         }
 
         /// <summary>
@@ -420,11 +416,40 @@ namespace Arcanum.Models.Interfaces.Services
                 .Select(y => new StudioImage
                 {
                     StudioInfoId = y.StudioInfoId,
-                    ImageId = y.ImageId
+                    ImageId = y.ImageId,
+                    Order = y.Order
                 }).FirstOrDefaultAsync();
             _db.Entry(studioImage).State = EntityState.Deleted;
             await _db.SaveChangesAsync();
-            //TODO: reorder
+            await ReOrderStudioImages(-1, studioImage.Order);
+            await StudioImageCounter(-1, false);
+        }
+
+        public async Task UpdateStudioImageOrder(int imageId, int order)
+        {
+            StudioImage image = await _db.StudioImage
+                .Where(x => x.ImageId == imageId)
+                .Select(y => new StudioImage
+                {
+                    ImageId = y.ImageId,
+                    StudioInfoId = y.StudioInfoId,
+                    Order = order
+                }).FirstOrDefaultAsync();
+            _db.Entry(image).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Increment or decrement the studio image counter.
+        /// </summary>
+        /// <param name="studioId"> studio id </param>
+        /// <param name="increment"> bool +/- </param>
+        private async Task StudioImageCounter(int studioId, bool increment)
+        {
+            StudioInfo studio = await _db.StudioInfo.FindAsync(studioId);
+            studio.ImageCount = increment ? studio.ImageCount + 1 : studio.ImageCount - 1;
+            _db.Entry(studio).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
         }
 
         /// <summary>
@@ -441,6 +466,25 @@ namespace Arcanum.Models.Interfaces.Services
                     artist.Order--;
                 }
                 await UpdateArtist(artist);
+            }
+        }
+
+        /// <summary>
+        /// Reorder studio images when one is removed.
+        /// </summary>
+        /// <param name="studioId"> studio id </param>
+        /// <param name="n"> order # removed </param>
+        private async Task ReOrderStudioImages(int studioId, int n)
+        {
+            IEnumerable<StudioImage> images = await GetStudioImages(studioId);
+            foreach (StudioImage image in images)
+            {
+                if (image.Order > n)
+                {
+                    image.Order--;
+                    _db.Entry(image).State = EntityState.Modified;
+                    await _db.SaveChangesAsync();
+                }
             }
         }
     }
