@@ -7,6 +7,8 @@ using Arcanum.Auth.Models;
 using Arcanum.Auth.Models.Interfaces;
 using Arcanum.Models;
 using Arcanum.Models.Interfaces;
+using Arcanum.Spells;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -14,13 +16,15 @@ namespace Arcanum.Pages
 {
     public class RegisterModel : PageModel
     {
+        public UserManager<ApplicationUser> _userManager;
         public IUserService _userService;
         public ISite _siteAdmin;
         public IArtistAdmin _artistAdmin;
         public IWizardLord _wizard;
 
-        public RegisterModel(IUserService userService, ISite siteAdmin, IArtistAdmin artistAdmin, IWizardLord wizard)
+        public RegisterModel(UserManager<ApplicationUser> userManager, IUserService userService, ISite siteAdmin, IArtistAdmin artistAdmin, IWizardLord wizard)
         {
+            _userManager = userManager;
             _userService = userService;
             _siteAdmin = siteAdmin;
             _artistAdmin = artistAdmin;
@@ -32,9 +36,11 @@ namespace Arcanum.Pages
 
         [BindProperty]
         public string ValidCode { get; set; }
+        public List<string> Users { get; set; }
 
         public async Task OnGet()
         {
+            Users = MinorSpells.ConvertUsers(_userManager.Users);
             AccessCodes = await _wizard.GetRegistrationAccessCodes();
             PageState = PageState.Inital;
             ValidCode = string.Empty;
