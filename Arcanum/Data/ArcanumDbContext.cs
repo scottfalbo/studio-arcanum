@@ -82,8 +82,8 @@ namespace Arcanum.Data
                 {
                     Id = -1,
                     SiteTitle = "Arcanum",
-                    HomePageMessage = "I'm a pop up",
-                    ShowHomePageMessage = false,
+                    MainPageMessage = "I'm a pop up",
+                    ShowMainPageMessage = false,
                     IntroA = "hello world",
                     IntroB = "here is some more info"
                 });

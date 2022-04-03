@@ -1,5 +1,5 @@
 ﻿@page
-@model IndexModel
+@model Arcanum.Pages.IndexModel
 @{
     ViewData["Title"] = Model.MainPage.SiteTitle;
 }
@@ -58,4 +58,4 @@
     </div>
 }
 
-<div class="fullscreen-fade @(Model.ActiveAdmin ? "" : "hide-me")"></div>
+<div class="fullscreen-fade @(Model.ActiveAdmin || Model.MainPage.ShowMainPageMessage ? "" : "hide-me")"></div>

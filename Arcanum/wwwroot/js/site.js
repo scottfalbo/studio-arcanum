@@ -52,3 +52,11 @@ $(function() {
         $('.loading-bar-container').removeClass('hide-me');
     });
 });
+
+// Main page optional pop up window
+$(function() {
+    $('.close-main-page-popup').click(function() {
+        $('.main-page-popup').addClass('hide-me');
+        $('.fullscreen-fade').addClass('hide-me');
+    });   
+})
