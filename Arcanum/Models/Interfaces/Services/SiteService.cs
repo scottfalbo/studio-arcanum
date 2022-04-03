@@ -226,7 +226,7 @@ namespace Arcanum.Models.Interfaces.Services
                     Id = y.Id,
                     SiteTitle = y.SiteTitle,
                     MainPageMessage = y.MainPageMessage,
-                    ShowMainPageMessage = y.ShowMainPageMessage,
+                    ShowHomePageMessage = y.ShowHomePageMessage,
                     IntroA = y.IntroA,
                     IntroB = y.IntroB,
                     RecentImage = y.RecentImage,

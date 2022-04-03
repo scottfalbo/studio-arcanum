@@ -58,4 +58,15 @@
     </div>
 }
 
-<div class="fullscreen-fade @(Model.ActiveAdmin || Model.MainPage.ShowMainPageMessage ? "" : "hide-me")"></div>
+@if (Model.MainPage.ShowHomePageMessage)
+{
+    <div class="main-page-popup @(Model.MainPage.ShowHomePageMessage ? "" : "hide-me")">
+        <div>
+            <partial name="_HomePagePopUp" />
+        </div>
+        <i class="site-button close-main-page-popup">close</i>
+        <i class="x-close-button close-main-page-popup">X</i>
+    </div>    
+}
+
+<div class="fullscreen-fade @(Model.ActiveAdmin || Model.MainPage.ShowHomePageMessage ? "" : "hide-me")"></div>

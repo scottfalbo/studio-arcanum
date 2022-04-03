@@ -15,6 +15,16 @@
                 Intro B
                 <textarea type="text" cols="45" rows="5" asp-for="@Model.MainPage.IntroB" class="form-control" placeholder="@Model.MainPage.IntroB"></textarea>
             </label>
+            <div>
+                <label>
+                    Main Page Popup Message
+                    <textarea type="text" cols="45" rows="5" asp-for="@Model.MainPage.MainPageMessage" class="form-control" placeholder="@Model.MainPage.MainPageMessage"></textarea>
+                </label>
+                <label>
+                    Display
+                    <input type="checkbox" asp-for="@Model.MainPage.ShowHomePageMessage" value="true" checked="@Model.MainPage.ShowHomePageMessage" />
+                </label>
+            </div>
             <input type="hidden" asp-for="@Model.MainPage.Id" value="@Model.MainPage.Id" />
             <input type="submit" value="update" class="loader site-button"/>
         </form>
