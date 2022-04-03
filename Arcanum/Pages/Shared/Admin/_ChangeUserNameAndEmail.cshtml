@@ -1,0 +1,18 @@
+﻿@using Arcanum.Pages
+@model Arcanum.Pages.ArtistModel
+
+<h2>Update User Name</h2>
+<form asp-page-handler="UpdateUserName" method="post">
+    <input type="text" name="newUserName" placeholder="@User.Identity.Name" />
+    <input type="hidden" name="userId" value="@Model.Artist.Id" />
+    <input type="submit" value="update user name" class="conditional-submit fade-me loader site-button"/>
+</form>
+
+@if (Model.UserNameUpdateState == UserNameUpdateState.Success)
+{
+    <p>user name successfully updated</p>
+}
+else if (Model.UserNameUpdateState == UserNameUpdateState.Failed)
+{
+    <p>something went wrong</p>
+}

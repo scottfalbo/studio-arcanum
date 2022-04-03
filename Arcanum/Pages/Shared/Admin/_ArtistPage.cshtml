@@ -19,12 +19,17 @@
             <input type="hidden" asp-for="@Model.Artist.Id" value="@Model.Artist.Id" />
             <input type="hidden" asp-for="@Model.Artist.Order" value="@Model.Artist.Order" />
             <input type="hidden" asp-for="@Model.Artist.Display" value="@Model.Artist.Display" />
-            <input type="hidden" asp-for="@Model.Artist.Email" value="@Model.Artist.Email" />
+            <input type="hidden" asp-for="@Model.Artist.Email" name="email" value="@Model.Artist.Email" />
             <input type="hidden" asp-for="@Model.Artist.ProfileImageUri" value="@Model.Artist.ProfileImageUri" />
             <input type="hidden" asp-for="@Model.Artist.ProfileImageFileName" value="@Model.Artist.ProfileImageFileName" />
             <input type="hidden" asp-for="@Model.UserId" value="@Model.UserId"/>
             <input type="submit" value="update" class="loader site-button"/>
         </form>
     </section>
-    <partial name="Admin/_ChangePassword" />
+    <div>
+        <partial name="Admin/_ChangePassword" />
+    </div>
+    <div>
+        <partial name="Admin/_ChangeUserNameAndEmail" />
+    </div>
 </div>

@@ -37,18 +37,30 @@ namespace Arcanum.Pages
         public Portfolio Portfolio { get; set; }
         [BindProperty]
         public PasswordUpdateState PasswordUpdateState { get; set; }
+        [BindProperty]
+        public UserNameUpdateState UserNameUpdateState { get; set; }
         public bool ActiveAdmin { get; set; }
 
-        public async Task OnGet(string artistId, bool isActive = false, PasswordUpdateState updateState = PasswordUpdateState.Inital)
+        public async Task OnGet(string artistId, bool isActive = false, 
+            PasswordUpdateState updatePasswordState = PasswordUpdateState.Inital,
+            UserNameUpdateState updateUserNameState = UserNameUpdateState.Inital)
         {
             if (artistId != null)
                 Artist = await _siteAdmin.GetArtist(artistId);
 
             if (User.IsInRole("ArtistAdmin") || User.IsInRole("WizardLord"))
             {
-                var userName = User.Identity.Name;
-                var user = await _userManager.FindByNameAsync(userName);
-                UserId = user.Id;
+                if (artistId == string.Empty)
+                {
+                    var userName = User.Identity.Name;
+                    var user = await _userManager.FindByNameAsync(userName);
+                    UserId = user.Id;
+                }
+                else
+                {
+                    UserId = artistId;
+                }
+
             }
             else
             {
@@ -58,16 +70,18 @@ namespace Arcanum.Pages
             Artist.SortPortfolioImages();
             Artist.SortArtistPortfolios();
             Portfolio = new Portfolio();
-            PasswordUpdateState = updateState;
+            PasswordUpdateState = updatePasswordState;
+            UserNameUpdateState = updateUserNameState;
             ActiveAdmin = isActive;
         }
 
         /// <summary>
         /// Method to update the general page data
         /// </summary>
-        public async Task<IActionResult> OnPostUpdate()
+        public async Task<IActionResult> OnPostUpdate(string email)
         {
             await _siteAdmin.UpdateArtist(Artist);
+
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
 
@@ -79,6 +93,7 @@ namespace Arcanum.Pages
         {
             Portfolio.Intro = intro;
             await _artistAdmin.UpdatePortfolio(Portfolio);
+
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
 
@@ -90,6 +105,7 @@ namespace Arcanum.Pages
         {
             Portfolio newPortfolio = await _artistAdmin.CreatePortfolio(title);
             await _artistAdmin.AddPortfolioToArtist(Artist.Id, newPortfolio.Id);
+
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
 
@@ -99,6 +115,7 @@ namespace Arcanum.Pages
         public async Task<IActionResult> OnPostDeletePortfolio()
         {
             await _artistAdmin.DeletePortfolio(Portfolio.Id, Artist.Id);
+
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
 
@@ -116,6 +133,7 @@ namespace Arcanum.Pages
                 await _artistAdmin.AddImageToPortfolio(Portfolio.Id, image.Id);
                 await _artistAdmin.AddImageToRecent(-1, image.Id);
             }
+
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
 
@@ -136,14 +154,24 @@ namespace Arcanum.Pages
             await _artistAdmin.RemoveImageFromPortfolio(portfolioId, imageId);
             await _artistAdmin.RemoveImageFromRecent(-1, imageId);
             await _artistAdmin.DeleteImage(imageId);
+
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
 
         public async Task<IActionResult> OnPostUpdateArtistPassword(string userId, string currentPassword, string newPassword)
         {
             var response = await _userService.UpdatePassword(userId, currentPassword, newPassword);
-            PasswordUpdateState updateState = response.Succeeded ? PasswordUpdateState.Success : PasswordUpdateState.Failed;
-            return Redirect($"Artist?artistId={userId}&isActive=true&updateState={updateState}");
+            PasswordUpdateState updatePasswordState = response.Succeeded ? PasswordUpdateState.Success : PasswordUpdateState.Failed;
+
+            return Redirect($"Artist?artistId={userId}&isActive=true&updatePasswordState={updatePasswordState}");
+        }
+
+        public async Task<IActionResult> OnPostUpdateUserName(string userId, string newUserName)
+        {
+            var response = await _userService.UpdateUserName(userId, newUserName);
+            var updateUserNameState = response.Succeeded ? UserNameUpdateState.Success : UserNameUpdateState.Failed;
+
+            return Redirect($"Artist?artistId={userId}&isActive=true&updateUserNameState={updateUserNameState}");
         }
 
         public async Task<IActionResult> OnPostUpdatePortfolioImageOrder([FromBody] List<OrderSorter> imageOrder)
@@ -166,6 +194,19 @@ namespace Arcanum.Pages
     }
 
     public enum PasswordUpdateState
+    {
+        Inital,
+        Success,
+        Failed
+    }
+
+    public enum UserNameUpdateState
+    {
+        Inital,
+        Success,
+        Failed
+    }
+    public enum UserEmailUpdateState
     {
         Inital,
         Success,

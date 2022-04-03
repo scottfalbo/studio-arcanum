@@ -2,14 +2,6 @@
 @using Arcanum.Pages
 @model Arcanum.Pages.RegisterModel
 
-@{
-}
-
-<script>
-    console.log("hello");
-
-</script>
-
 @if (Model.PageState == PageState.Inital || Model.PageState == PageState.NotValid)
 {
     <h2>Please enter your access code</h2>
@@ -39,6 +31,6 @@
             <i class="peek-password-validator password-peek-icon">ooo</i>
         <p class="password-valid-status">X</p>
         <input type="hidden" asp-for="@Model.ValidCode" value="@Model.ValidCode" />
-        <div><input type="submit" value="Create Account" class="conditional-submit fade-me"/></div>
+        <div><input type="submit" value="Create Account" class="conditional-submit fade-me loader site-button"/></div>
     </form>
 }

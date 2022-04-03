@@ -89,6 +89,19 @@ namespace Arcanum.Auth.Models.Interfaces.Services
             var user = await _userManager.FindByIdAsync(userId);
             return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
         }
+
+        public async Task<IdentityResult> UpdateUserName(string userId, string newName)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserName = newName;
+            return await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<IdentityResult> UpdateUserEmail(string userId, string newEmail)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            return await _userManager.SetEmailAsync(user, newEmail);
+        }
     }
 }
 

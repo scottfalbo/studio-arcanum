@@ -12,6 +12,8 @@ namespace Arcanum.Auth.Models.Interfaces
         Task<ApplicationUserDto> Register(RegisterUser data, ModelStateDictionary modelState);
         Task<ApplicationUserDto> Authenticate(string userName, string password);
         Task<IdentityResult> UpdatePassword(string userId, string currentPassword, string newPassword);
+        Task<IdentityResult> UpdateUserName(string userId, string newName);
+        Task<IdentityResult> UpdateUserEmail(string userId, string newEmail);
 
     }
 }
