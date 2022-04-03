@@ -9,6 +9,8 @@ namespace Arcanum.Models
     {
         public int Id { get; set; }
         public string SiteTitle { get; set; }
+        public string HomePageMessage { get; set; }
+        public bool ShowHomePageMessage { get; set; }
         public string IntroA { get; set; }
         public string IntroB { get; set; }
         public List<PageImage> PageImage { get; set; }
