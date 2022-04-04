@@ -37,13 +37,18 @@ namespace Arcanum.Pages
         [BindProperty]
         public string ValidCode { get; set; }
         public List<string> Users { get; set; }
+        [BindProperty]
+        public bool IsRegistrationSuccess { get; set; }
+        public string[] RegistrationErrorMessage { get; set; }
 
-        public async Task OnGet()
+        public async Task OnGet(bool isRegistrationSuccess = true, PageState pageState = PageState.Inital, string errors = "", string validationCode = "")
         {
+            IsRegistrationSuccess = isRegistrationSuccess;
+            RegistrationErrorMessage = errors.Split(", ");
             Users = MinorSpells.ConvertUsers(_userManager.Users);
             AccessCodes = await _wizard.GetRegistrationAccessCodes();
-            PageState = PageState.Inital;
-            ValidCode = string.Empty;
+            PageState = pageState;
+            ValidCode = validationCode;
         }
 
         public async Task<IActionResult> OnPostRegister(string username, string password, string email)
@@ -55,14 +60,23 @@ namespace Arcanum.Pages
                 Password = password,
                 Email = email
             };
-            
+
             ApplicationUserDto user = await _userService.Register(newUser, this.ModelState);
-            Artist artist = await _siteAdmin.CreateArtist(NewArtist(user));
-            if (artist != null)
+
+            if (user.IsSuccessfullyRegistered)
             {
-                await _wizard.DeleteRegistrationAccessCode(ValidCode);
+                Artist artist = await _siteAdmin.CreateArtist(NewArtist(user));
+                if (artist != null)
+                {
+                    await _wizard.DeleteRegistrationAccessCode(ValidCode);
+                }
+                return Redirect("/Login");
             }
-            return Redirect("/Login");
+            else
+            {
+                return Redirect($"/Register?isRegistrationSuccess={false}&pageState={PageState.Confirmed}&errors={user.RegistrationErrors}&validationCode={ValidCode}");
+            }
+
         }
 
         public async Task OnPostValidateAccessCode(string code)
@@ -76,6 +90,7 @@ namespace Arcanum.Pages
             {
                 PageState = PageState.Confirmed;
                 ValidCode = code;
+                IsRegistrationSuccess = true;
             }
             Redirect("/Registration");
         }

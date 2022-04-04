@@ -71,10 +71,24 @@ namespace Arcanum.Auth.Models.Interfaces.Services
                     Id = user.Id,
                     UserName = user.UserName,
                     Email = user.Email,
-                    Roles = new List<string>() { "ArtistAdmin" }
+                    Roles = new List<string>() { "ArtistAdmin" },
+                    IsSuccessfullyRegistered = true,
+                    RegistrationErrors = "none"
                 };
             }
-            return null;
+            else
+            {
+                var errors = new List<string>();
+                foreach (var error in result.Errors)
+                {
+                    errors.Add(error.Description);
+                }
+                return new ApplicationUserDto
+                {
+                    IsSuccessfullyRegistered = false,
+                    RegistrationErrors = string.Join(", ", errors)
+                };
+            }
         }
 
         /// <summary>

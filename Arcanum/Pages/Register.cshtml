@@ -43,4 +43,12 @@
         <input type="hidden" asp-for="@Model.ValidCode" value="@Model.ValidCode" />
         <div><input type="submit" value="Create Account" class="conditional-submit fade-me loader site-button"/></div>
     </form>
+    @if (Model.IsRegistrationSuccess == false)
+    {
+        <p>Registration failed, Reason:</p>
+        @foreach (var errors in @Model.RegistrationErrorMessage)
+        {
+            <p>@errors</p>
+        }
+    }
 }
