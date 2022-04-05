@@ -1,7 +1,9 @@
 'use strict';
 
+let users = [];
 let emailIsValidFormat = false;
 let passwordIsMatch = false;
+let userNameIsValid = false;
 
 // Validation to ensure that the user enters the same password
 // in both fields during account creation.
@@ -24,6 +26,22 @@ function validatePassword() {
         passwordIsMatch = false;
     }
     validateAllInputs();
+}
+
+$(function () {
+    $('.username-input').keyup(validateUserName);
+});
+
+function validateUserName() {
+    let userNameInput = $('.username-input').val();
+    if (userNameInput.length < 3) {
+        $('.username-validator').text('X');
+        userNameIsValid = false;
+    }
+    else {
+        $('.username-validator').text('O');
+        userNameIsValid = true;
+    }
 }
 
 // Validates that the inputted email is a proper email format.
@@ -52,7 +70,7 @@ function checkFormat(email) {
 // If both the email and password pass validation the register button is activated.
 function validateAllInputs() {
     skipEmailValidation();
-    if (passwordIsMatch === true && emailIsValidFormat === true) {
+    if (passwordIsMatch === true && emailIsValidFormat === true && userNameIsValid) {
         $('.conditional-submit').removeClass('fade-me');
     }
     else {
