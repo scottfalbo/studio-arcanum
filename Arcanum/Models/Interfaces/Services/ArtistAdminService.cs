@@ -22,6 +22,17 @@ namespace Arcanum.Models.Interfaces.Services
             _upload = upload;
         }
 
+        public async Task UpdateProfileImage(IFormFile file, string artistId)
+        {
+            Artist artist = await GetArtist(artistId);
+            Image image = await _upload.UpdateProfilePhoto(file);
+
+            artist.ProfileImageUri = image.SourceUrl;
+            artist.ProfileImageFileName = image.FileName;
+            _db.Entry(artist).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
+        }
+
         /// <summary>
         /// Create a new portfolio object and enter a record into the database.
         /// </summary>

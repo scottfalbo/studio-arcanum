@@ -2,7 +2,13 @@
 
 <div id="artistPage-admin" class="page-admin">
     <section>
-        profile image admin
+        <form asp-page-handler="UpdateProfilePhoto" method="post" enctype="multipart/form-data">
+            <label>
+                <input name="file" type="file" accept="image/*" class="file-selection-input" required />
+                <input type="hidden" asp-for="@Model.Artist.Id" value="@Model.Artist.Id" />
+                <input type="submit" value="Update Image" class="loader site-button" />
+            </label>
+        </form>
     </section>
     <section>
         <form asp-page-handler="Update" method="post">

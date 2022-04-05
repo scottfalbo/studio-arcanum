@@ -83,6 +83,21 @@ namespace Arcanum.ImageBlob.Interfaces.Services
             return image;
         }
 
+        public async Task<Models.Image> UpdateProfilePhoto(IFormFile file)
+        {
+            await RemoveImage(file.FileName);
+            Stream stream = ResizeImage(file, 400);
+            string filename = AugmentFileName(file.FileName);
+            BlobClient blob = await UploadImage(stream, filename, file.ContentType);
+
+            Models.Image image = new Models.Image()
+            {
+                SourceUrl = blob.Uri.ToString(),
+                FileName = filename,
+            };
+            return image;
+        }
+
         /// <summary>
         /// Uploads the image to azure blob storage
         /// </summary>
@@ -103,7 +118,7 @@ namespace Arcanum.ImageBlob.Interfaces.Services
                 await blob.UploadAsync(stream, options);
             return blob;
         }
-      
+
         /// <summary>
         /// Helper method that adds the time and date to the end of the filename to ensure it is unique.
         /// </summary>

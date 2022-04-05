@@ -20,10 +20,6 @@
 
 @if (Model.PageState == PageState.Confirmed)
 {
-    <script>
-        users = @Model.Users;
-    </script>
-
     <h2>Registration Form</h2>
 
     <form asp-page-handler="Register" method="post">

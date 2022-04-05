@@ -11,6 +11,7 @@ namespace Arcanum.ImageBlob.Interfaces
     {
         public Task<Image> AddImage(IFormFile file);
         public Task<Image> UpdateSiteImage(IFormFile file);
+        public Task<Image> UpdateProfilePhoto(IFormFile file);
         public Task RemoveImage(string fileName);
     }
 }

@@ -85,6 +85,13 @@ namespace Arcanum.Pages
             return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
         }
 
+        public async Task<IActionResult> OnPostUpdateProfilePhoto(IFormFile file)
+        {
+            await _artistAdmin.UpdateProfileImage(file, Artist.Id);
+
+            return Redirect($"Artist?artistId={Artist.Id}&isActive=true");
+        }
+
         /// <summary>
         /// Update the general portfolio fields.
         /// </summary>
