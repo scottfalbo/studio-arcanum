@@ -6,7 +6,7 @@
     if (artist.Display || (User.IsInRole("ArtistAdmin") && Model.UserId == artist.Id))
     {
         <li>
-            <a class="nav-link text-dark" asp-area="" asp-page="/Artist" asp-route-artistId="@artist.Id">@artist.Name, @artist.Order</a>
+            <a class="nav-link text-dark" asp-area="" asp-page="/Artist" asp-route-artistId="@artist.Id">@artist.Name</a>
         </li>
     }
 }
