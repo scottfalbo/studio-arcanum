@@ -1,6 +1,5 @@
 'use strict';
 
-let users = [];
 let emailIsValidFormat = false;
 let passwordIsMatch = false;
 let userNameIsValid = false;
