@@ -41,3 +41,19 @@
     height: 80px;
     background-color: rgb(245, 2, 2);
 }
+
+/* -------------------- MainPage Grid ------------------------ */
+/* Mobile: 320-480 */
+@media screen and (max-width: 480px) {
+
+}
+
+/* Tablet: 481-768 */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+
+}
+
+/* Desktop: 769+ */
+@media screen and (min-width: 769px) {
+    
+}
