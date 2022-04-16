@@ -42,14 +42,14 @@
         <a asp-area="" asp-page="Booking" asp-route-artistId="@Model.Artist.Id">Booking</a>
     </div>
 
-    @if ((User.IsInRole("ArtistAdmin") || User.IsInRole("WizardLord")) && Model.Artist.Id == Model.UserId)
+    @if (User.IsInRole("WizardLord") || (User.IsInRole("ArtistAdmin") && Model.Artist.Id == Model.UserId))
     {
         <i class="show-popup">admin</i>
     }
 
 
 
-    @if ((User.IsInRole("ArtistAdmin") || User.IsInRole("WizardLord")) && Model.Artist.Id == Model.UserId)
+    @if (User.IsInRole("WizardLord") || (User.IsInRole("ArtistAdmin") && Model.Artist.Id == Model.UserId))
     {
         <div class="admin-outer artist-admin @(Model.ActiveAdmin ? "" : "hide-me")">
             <div class="admin-inner">
