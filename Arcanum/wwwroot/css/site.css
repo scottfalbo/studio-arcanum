@@ -2,8 +2,3 @@
 @import url(base.css);
 @import url(layout.css);
 @import url(modules.css);
-
-body {
-    background-color: rgb(74, 100, 100);
-    color: rgb(235, 242, 245);
-}

@@ -1,3 +1,7 @@
+#index-container {
+    background-color: rgb(45, 53, 49);
+}
+
 /* Mobile: 320-480 */
 @media screen and (max-width: 480px) {
 

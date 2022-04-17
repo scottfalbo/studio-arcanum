@@ -1,0 +1,33 @@
+#artist-nav-body-container {
+    width: 100%;
+    height: min-content;
+    padding: 5px;
+}
+
+.artist-nav-button {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-template-rows: min-content;
+    margin: 10px auto;
+}
+
+.artist-nav-button div:first-child {
+    grid-column: 1/2;
+    grid-row: 1/2;
+}
+
+.artist-nav-button div:last-child {
+    grid-column: 2/3;
+    grid-row: 1/2;
+}
+
+.artist-nav-image {
+    height: 60px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+.artist-nav-button h2 {
+    font-size: 2em;
+}

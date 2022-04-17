@@ -1,3 +1,11 @@
+@import url("modules/mainpage.css");
+@import url("modules/artist-nav.css");
+
+body {
+    background-color: #000;
+    color: #fff;
+}
+
 .admin-outer, .main-page-popup {
     position: fixed;
     top: 0;

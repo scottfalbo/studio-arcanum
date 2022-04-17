@@ -1,16 +1,5 @@
-#index-container {
-    display: grid;
-}
-
-#index-container > .container-one {
-    display: grid;
-}
-
-#index-container > .container-two {
-    display: grid;
-}
-
-#index-container > .container-three {
+#index-container, .container-one,
+.container-three, .container-three {
     display: grid;
 }
 
