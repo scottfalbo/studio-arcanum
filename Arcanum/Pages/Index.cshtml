@@ -7,7 +7,10 @@
 <div id="index-container">
     <div class="container-one">
         <div>
-            <img src="	https://via.placeholder.com/300x20">
+            @if (Model.MainPage.PageImage[0].Image.Display)
+            {
+                <img src="@Model.MainPage.PageImage[0].Image.SourceUrl" alt="site-image" />
+            }
         </div>
         <div><p>@Model.MainPage.IntroA</p></div>
         <div>
@@ -17,7 +20,7 @@
 
     <div class="container-two">
         <div>
-            @if (Model.MainPage.PageImage[0].Image.Display)
+            @if (Model.MainPage.PageImage[1].Image.Display)
             {
                 <img src="@Model.MainPage.PageImage[0].Image.SourceUrl" alt="site-image" />
             }
@@ -29,12 +32,6 @@
     </div>
 
     <div class="container-three">
-        <div>
-            @if (Model.MainPage.PageImage[1].Image.Display)
-            {
-                <img src="@Model.MainPage.PageImage[1].Image.SourceUrl" alt="site-image" />
-            }
-        </div>
         <div><p>@Model.MainPage.IntroB</p></div>
         <div>
             @if (Model.MainPage.PageImage[2].Image.Display)
