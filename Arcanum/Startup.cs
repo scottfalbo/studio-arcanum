@@ -69,7 +69,7 @@ namespace Arcanum
 
             services.AddAzureClients(builder =>
             {
-                builder.AddBlobServiceClient(_config["StorageBlob:ConnectionStringsblob"], preferMsi: true);
+                builder.AddBlobServiceClient(_config["StorageBlob:ConnectionStrings:blob"], preferMsi: true);
                 builder.AddQueueServiceClient(_config["StorageBlob:ConnectionString:queue"], preferMsi: true);
             });
         }

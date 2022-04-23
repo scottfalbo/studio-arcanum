@@ -106,7 +106,8 @@ namespace Arcanum.ImageBlob.Interfaces.Services
         private async Task<BlobClient> UploadImage(Stream stream, string filename, string contentType)
         {
             BlobContainerClient container = new BlobContainerClient(_config["StorageBlob:ConnectionString"], "images");
-            await container.CreateIfNotExistsAsync();
+            if (container == null)
+                await container.CreateIfNotExistsAsync();
             BlobClient blob = container.GetBlobClient(filename);
 
             BlobUploadOptions options = new BlobUploadOptions()
@@ -114,8 +115,7 @@ namespace Arcanum.ImageBlob.Interfaces.Services
                 HttpHeaders = new BlobHttpHeaders() { ContentType = contentType }
             };
 
-            if (!blob.Exists())
-                await blob.UploadAsync(stream, options);
+            await blob.UploadAsync(stream, options);
             return blob;
         }
 
