@@ -2,7 +2,7 @@
 @import url("modules/artist-nav.css");
 
 body {
-    background-color: #000;
+    background-color: rgb(0, 0, 0);
     color: #fff;
 }
 
@@ -19,6 +19,10 @@ body {
     overflow-x: hidden;
     overflow-y: auto;
     text-align: justify;
+}
+
+.container {
+    padding: 0 10px;
 }
 
 .main-page-popup{
