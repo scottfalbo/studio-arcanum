@@ -49,13 +49,13 @@ namespace Arcanum
 
             services.AddAuthentication();
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("create", policy => policy.RequireClaim("permissions", "create"));
-                options.AddPolicy("read", policy => policy.RequireClaim("permissions", "read"));
-                options.AddPolicy("update", policy => policy.RequireClaim("permissions", "update"));
-                options.AddPolicy("delete", policy => policy.RequireClaim("permissions", "delete"));
-            });
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("create", policy => policy.RequireClaim("permissions", "create"));
+            //    options.AddPolicy("read", policy => policy.RequireClaim("permissions", "read"));
+            //    options.AddPolicy("update", policy => policy.RequireClaim("permissions", "update"));
+            //    options.AddPolicy("delete", policy => policy.RequireClaim("permissions", "delete"));
+            //});
 
             services.AddTransient<IUserService, IdentityUserService>();
             services.AddTransient<IArtistAdmin, ArtistAdminService>();
@@ -69,7 +69,7 @@ namespace Arcanum
 
             services.AddAzureClients(builder =>
             {
-                builder.AddBlobServiceClient(_config["StorageBlob:ConnectionStrings:blob"], preferMsi: true);
+                builder.AddBlobServiceClient(_config["StorageBlob:ConnectionString:blob"], preferMsi: true);
                 builder.AddQueueServiceClient(_config["StorageBlob:ConnectionString:queue"], preferMsi: true);
             });
         }

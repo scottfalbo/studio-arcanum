@@ -25,6 +25,9 @@ namespace Arcanum.Models.Interfaces.Services
         public async Task UpdateProfileImage(IFormFile file, string artistId)
         {
             Artist artist = await GetArtist(artistId);
+
+            await _upload.RemoveImage(artist.ProfileImageFileName);
+
             Image image = await _upload.UpdateProfilePhoto(file);
 
             artist.ProfileImageUri = image.SourceUrl;

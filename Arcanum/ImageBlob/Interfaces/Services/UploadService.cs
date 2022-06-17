@@ -105,9 +105,10 @@ namespace Arcanum.ImageBlob.Interfaces.Services
         /// <returns> new BlobClient object </returns>
         private async Task<BlobClient> UploadImage(Stream stream, string filename, string contentType)
         {
-            BlobContainerClient container = new BlobContainerClient(_config["StorageBlob:ConnectionString"], "images");
+            BlobContainerClient container = new BlobContainerClient(_config["StorageBlob:ConnectionString"], "arcanum-images");
             if (container == null)
                 await container.CreateIfNotExistsAsync();
+
             BlobClient blob = container.GetBlobClient(filename);
 
             BlobUploadOptions options = new BlobUploadOptions()
@@ -195,7 +196,7 @@ namespace Arcanum.ImageBlob.Interfaces.Services
         /// <param name="fileName"> blob filename </param>
         public async Task RemoveImage(string fileName)
         {
-            BlobContainerClient container = new BlobContainerClient(_config["StorageBlob:ConnectionString"], "images");
+            BlobContainerClient container = new BlobContainerClient(_config["StorageBlob:ConnectionString"], "arcanum-images");
             BlobClient blob = container.GetBlobClient(fileName);
             await blob.DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots, null, default);
             blob = container.GetBlobClient($"{fileName}_thumb");

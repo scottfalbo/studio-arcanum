@@ -52,9 +52,12 @@ namespace Arcanum.Data
             SeedRole(modelBuilder, "ArtistAdmin", "read", "create", "update", "delete");
             SeedRole(modelBuilder, "Guest", "read");
 
-            string id = _config["SuperAdmin:UserId"];
-            string adminName = _config["SuperAdmin:UserName"];
-            string adminPass = _config["SuperAdmin:Password"];
+            //string id = _config["SuperAdmin:UserId"];
+            //string adminName = _config["SuperAdmin:UserName"];
+            //string adminPass = _config["SuperAdmin:Password"];
+            string id = "123-im-an-id";
+            string adminName = "Spaceghost";
+            string adminPass = "Pass!23";
             PasswordHasher<ApplicationUser> hasher = new PasswordHasher<ApplicationUser>();
 
             modelBuilder.Entity<ApplicationUser>().HasData(
