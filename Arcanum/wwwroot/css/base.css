@@ -51,3 +51,24 @@ a.navbar-brand {
       height: 100vh;
       background-color: rgba(0, 0, 0, 0.5)
   }
+
+  .format-paragraph
+  {
+      text-align: left;
+      line-height: 1.2em;
+      padding: 8px;
+  }
+
+  .close-gallery {
+    position: fixed;
+    z-index: 10;
+    right: 0;
+    top: 0;
+    margin: 10px;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #fff;
+    border-radius: 15px;
+    text-align: center;
+    line-height: 29px;
+  }

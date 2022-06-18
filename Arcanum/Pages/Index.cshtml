@@ -6,23 +6,23 @@
 
 <div id="index-container">
     <div class="container-one">
-        <div>
+        <div class="mainpage-image-container">
             @if (Model.MainPage.PageImage[0].Image.Display)
             {
-                <img src="@Model.MainPage.PageImage[0].Image.SourceUrl" alt="site-image" />
+                <img src="@Model.MainPage.PageImage[0].Image.SourceUrl" alt="site-image" class="mainpage-image"/>
             }
         </div>
-        <div><p>@Model.MainPage.IntroA</p></div>
+        <div><p class="format-paragraph">@Model.MainPage.IntroA</p></div>
         <div>
             <partial name="_ArtistNav" />
         </div>
     </div>
 
     <div class="container-two">
-        <div>
+        <div class="mainpage-image-container">
             @if (Model.MainPage.PageImage[1].Image.Display)
             {
-                <img src="@Model.MainPage.PageImage[0].Image.SourceUrl" alt="site-image" />
+                <img src="@Model.MainPage.PageImage[1].Image.SourceUrl" alt="site-image" class="mainpage-image"/>
             }
         </div>
         <div><h3>Recent Posts</h3></div>
@@ -32,11 +32,11 @@
     </div>
 
     <div class="container-three">
-        <div><p>@Model.MainPage.IntroB</p></div>
-        <div>
+        <div><p class="format-paragraph">@Model.MainPage.IntroB</p></div>
+        <div class="mainpage-image-container">
             @if (Model.MainPage.PageImage[2].Image.Display)
             {
-                <img src="@Model.MainPage.PageImage[2].Image.SourceUrl" alt="site-image" />
+                <img src="@Model.MainPage.PageImage[2].Image.SourceUrl" alt="site-image" class="mainpage-image"/>
             }
         </div>
     </div>

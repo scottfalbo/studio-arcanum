@@ -60,3 +60,10 @@ $(function() {
         $('.fullscreen-fade').addClass('hide-me');
     });   
 })
+
+// Gallery Close Button
+$(function() {
+    $('.close-gallery').click(function() {
+        $('.fullscreen-fade').addClass('hide-me');
+    });
+});
