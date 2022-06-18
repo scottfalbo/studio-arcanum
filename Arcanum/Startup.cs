@@ -6,7 +6,10 @@ using Arcanum.ImageBlob.Interfaces;
 using Arcanum.ImageBlob.Interfaces.Services;
 using Arcanum.Models.Interfaces;
 using Arcanum.Models.Interfaces.Services;
+using Azure.Core;
 using Azure.Core.Extensions;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Azure.Storage.Blobs;
 using Azure.Storage.Queues;
 using Microsoft.AspNetCore.Builder;
@@ -69,8 +72,8 @@ namespace Arcanum
 
             services.AddAzureClients(builder =>
             {
-                builder.AddBlobServiceClient(_config["StorageBlob:ConnectionString:blob"], preferMsi: true);
-                builder.AddQueueServiceClient(_config["StorageBlob:ConnectionString:queue"], preferMsi: true);
+                builder.AddBlobServiceClient(_config["StorageBlob:ConnectionString"], preferMsi: true);
+                //builder.AddQueueServiceClient(_config["StorageBlob:ConnectionString:queue"], preferMsi: true);
             });
         }
 
@@ -89,6 +92,22 @@ namespace Arcanum
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            SecretClientOptions options = new SecretClientOptions()
+            {
+                Retry =
+                {
+                    Delay= TimeSpan.FromSeconds(2),
+                    MaxDelay = TimeSpan.FromSeconds(16),
+                    MaxRetries = 5,
+                    Mode = RetryMode.Exponential
+                 }
+            };
+            var client = new SecretClient(new Uri(_config["KeyVaultUri"]), new DefaultAzureCredential(), options);
+
+            //KeyVaultSecret secret = client.GetSecret("<mySecret>");
+
+            //string secretValue = secret.Value;
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
