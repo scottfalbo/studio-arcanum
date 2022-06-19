@@ -3,8 +3,12 @@
 @import url("modules/registration-login.css");
 
 body {
-    background-color: rgb(0, 0, 0);
+    background-color: rgb(22, 22, 22);
     color: #fff;
+}
+
+header {
+    background-color: rgb(0, 0, 0);
 }
 
 .admin-outer, .main-page-popup {

@@ -72,3 +72,15 @@ a.navbar-brand {
     text-align: center;
     line-height: 29px;
   }
+
+  .site-button {
+      cursor: pointer;
+      background-color: rgb(24, 24, 24);
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      width: 200px;
+      height: 60px;
+      border: 1px solid #fff;
+      border-radius: 10px;
+  }
