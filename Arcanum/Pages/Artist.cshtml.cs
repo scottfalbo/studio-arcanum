@@ -50,18 +50,9 @@ namespace Arcanum.Pages
 
             if (User.IsInRole("ArtistAdmin") || User.IsInRole("WizardLord"))
             {
-                //if (artistId == string.Empty)
-                //{
-                    var userName = User.Identity.Name;
-                    var user = await _userManager.FindByNameAsync(userName);
-                    UserId = user.Id;
-                //}
-                //else
-                //{
-                //    // bad logic
-                //    UserId = artistId;
-                //}
-
+                var userName = User.Identity.Name;
+                var user = await _userManager.FindByNameAsync(userName);
+                UserId = user.Id;
             }
             else
             {

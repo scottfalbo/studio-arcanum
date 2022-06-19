@@ -1,18 +1,22 @@
 ﻿@model Arcanum.Pages.IndexModel
 
-<section id="artist-nav-body-container">
+<ul id="artist-nav-body-container">
     @foreach (var artist in Model.Artists)
     {
         @if (artist.Display)
         {
-            <div>
-                <div>
-                    <img src="@artist.ProfileImageUri." alt="Photo of @artist.Name" />
-                </div>
-                <div>
-                    <h2>@artist.Name</h2>
-                </div>
-            </div>
+            <li>
+                <a asp-page="/Artist" asp-route-artistId="@artist.Id">
+                    <div class="artist-nav-button">
+                        <div>
+                            <div class="artist-nav-image" style="background-image: url(@artist.ProfileImageUri)"></div>
+                        </div>
+                        <div>
+                            <h2>@artist.FirstName</h2>
+                        </div>
+                    </div>
+                </a>
+            </li>
         }
     }
-</section>
+</ul>

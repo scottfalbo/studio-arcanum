@@ -48,162 +48,163 @@ namespace Arcanum.Data
             modelBuilder.Entity<StudioImage>().HasKey(x => new { x.StudioInfoId, x.ImageId });
             modelBuilder.Entity<PageImage>().HasKey(x => new { x.ArcanumMainId, x.ImageId });
 
-            SeedRole(modelBuilder, "WizardLord", "read", "create", "update", "delete");
-            SeedRole(modelBuilder, "ArtistAdmin", "read", "create", "update", "delete");
-            SeedRole(modelBuilder, "Guest", "read");
+            //SeedRole(modelBuilder, "WizardLord", "read", "create", "update", "delete");
+            //SeedRole(modelBuilder, "ArtistAdmin", "read", "create", "update", "delete");
+            //SeedRole(modelBuilder, "Guest", "read");
 
-            string id = _config["SuperAdmin:UserId"];
             string adminName = _config["SuperAdmin:UserName"];
             string adminPass = _config["SuperAdmin:Password"];
+            string id = Guid.NewGuid().ToString();
+
             PasswordHasher<ApplicationUser> hasher = new PasswordHasher<ApplicationUser>();
 
-            modelBuilder.Entity<ApplicationUser>().HasData(
-                new ApplicationUser
-                {
-                    Id = id,
-                    UserName = adminName,
-                    NormalizedUserName = adminName.ToUpper(),
-                    Email = "scottfalboart@gmail.com",
-                    NormalizedEmail = "scottfalboart@gmail.com",
-                    EmailConfirmed = true,
-                    PasswordHash = hasher.HashPassword(null, adminPass),
-                    SecurityStamp =  string.Empty
-                });
+        //    modelBuilder.Entity<ApplicationUser>().HasData(
+        //        new ApplicationUser
+        //        {
+        //            Id = id,
+        //            UserName = adminName,
+        //            NormalizedUserName = adminName.ToUpper(),
+        //            Email = "scottfalboart@gmail.com",
+        //            NormalizedEmail = "scottfalboart@gmail.com",
+        //            EmailConfirmed = true,
+        //            PasswordHash = hasher.HashPassword(null, adminPass),
+        //            SecurityStamp =  string.Empty
+        //        });
 
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
-                new IdentityUserRole<string>
-                { 
-                    RoleId = "wizardlord",
-                    UserId = id
-                });
+        //    modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+        //        new IdentityUserRole<string>
+        //        { 
+        //            RoleId = "wizardlord",
+        //            UserId = id
+        //        });
 
-            modelBuilder.Entity<ArcanumMain>().HasData(
-                new ArcanumMain
-                {
-                    Id = -1,
-                    SiteTitle = "Arcanum",
-                    MainPageMessage = "I'm a pop up",
-                    ShowHomePageMessage = false,
-                    IntroA = "hello world",
-                    IntroB = "here is some more info"
-                });
+        //    modelBuilder.Entity<ArcanumMain>().HasData(
+        //        new ArcanumMain
+        //        {
+        //            Id = -1,
+        //            SiteTitle = "Arcanum",
+        //            MainPageMessage = "I'm a pop up",
+        //            ShowHomePageMessage = false,
+        //            IntroA = "hello world",
+        //            IntroB = "here is some more info"
+        //        });
 
-            modelBuilder.Entity<Image>().HasData(
-                new Image
-                {
-                    Id = -1,
-                    SourceUrl = "https://via.placeholder.com/260x80",
-                    Display = false,
-                    AltText = "site-image"
-                },
-                new Image
-                {
-                    Id = -2,
-                    SourceUrl = "https://via.placeholder.com/260x100",
-                    Display = false,
-                    AltText = "site-image"
-                },
-                new Image
-                {
-                    Id = -3,
-                    SourceUrl = "https://via.placeholder.com/300x300",
-                    Display = false,
-                    AltText = "site-image"
-                });
+        //    modelBuilder.Entity<Image>().HasData(
+        //        new Image
+        //        {
+        //            Id = -1,
+        //            SourceUrl = "https://via.placeholder.com/260x80",
+        //            Display = false,
+        //            AltText = "site-image"
+        //        },
+        //        new Image
+        //        {
+        //            Id = -2,
+        //            SourceUrl = "https://via.placeholder.com/260x100",
+        //            Display = false,
+        //            AltText = "site-image"
+        //        },
+        //        new Image
+        //        {
+        //            Id = -3,
+        //            SourceUrl = "https://via.placeholder.com/300x300",
+        //            Display = false,
+        //            AltText = "site-image"
+        //        });
 
-            modelBuilder.Entity<PageImage>().HasData(
-                new PageImage
-                {
-                    ArcanumMainId = -1,
-                    ImageId = -1,
-                    Order = 0
-                },
-                new PageImage
-                {
-                    ArcanumMainId = -1,
-                    ImageId = -2,
-                    Order = 1
-                },
-                new PageImage
-                {
-                    ArcanumMainId = -1,
-                    ImageId = -3,
-                    Order = 2
-                });
+        //    modelBuilder.Entity<PageImage>().HasData(
+        //        new PageImage
+        //        {
+        //            ArcanumMainId = -1,
+        //            ImageId = -1,
+        //            Order = 0
+        //        },
+        //        new PageImage
+        //        {
+        //            ArcanumMainId = -1,
+        //            ImageId = -2,
+        //            Order = 1
+        //        },
+        //        new PageImage
+        //        {
+        //            ArcanumMainId = -1,
+        //            ImageId = -3,
+        //            Order = 2
+        //        });
 
 
-            modelBuilder.Entity<StudioInfo>().HasData(
-                new StudioInfo
-                {
-                    Id = -1,
-                    Email = "arcanumseattle@gmail.com",
-                    Instagram = "@studioarcanum",
-                    Intro = "here are some words",
-                    Policies = "be nice",
-                    Aftercare = " be smart",
-                    ImageCount = 0
-                });
+        //    modelBuilder.Entity<StudioInfo>().HasData(
+        //        new StudioInfo
+        //        {
+        //            Id = -1,
+        //            Email = "arcanumseattle@gmail.com",
+        //            Instagram = "@studioarcanum",
+        //            Intro = "here are some words",
+        //            Policies = "be nice",
+        //            Aftercare = " be smart",
+        //            ImageCount = 0
+        //        });
 
-            modelBuilder.Entity<Address>().HasData(
-                new Address
-                {
-                    AddressId = -1,
-                    Street = "4333 Fremont Ave N #6",
-                    City = "Seattle",
-                    State = "Wa",
-                    ZipCode = 98103
-                });
+        //    modelBuilder.Entity<Address>().HasData(
+        //        new Address
+        //        {
+        //            AddressId = -1,
+        //            Street = "4333 Fremont Ave N #6",
+        //            City = "Seattle",
+        //            State = "Wa",
+        //            ZipCode = 98103
+        //        });
 
-            modelBuilder.Entity<Artist>().HasData(
-                new Artist
-                {
-                    Id = id,
-                    Name = adminName,
-                    Email = "scottfalboart@gmail.com",
-                    Intro = "I do tattoos",
-                    Instagram = "@scottfalboart",
-                    ProfileImageUri = "https://via.placeholder.com/200x300",
-                    Order = 1,
-                    Display = true
-                });
+        //    modelBuilder.Entity<Artist>().HasData(
+        //        new Artist
+        //        {
+        //            Id = id,
+        //            Name = adminName,
+        //            Email = "scottfalboart@gmail.com",
+        //            Intro = "I do tattoos",
+        //            Instagram = "@scottfalboart",
+        //            ProfileImageUri = "https://via.placeholder.com/200x300",
+        //            Order = 1,
+        //            Display = true
+        //        });
 
-            modelBuilder.Entity<Booking>().HasData(
-                new Booking
-                {
-                    Id = -1,
-                    BookingInfo = "booking info",
-                    BookingEmail = "scottfalboart@gmail.com"
-                });
+        //    modelBuilder.Entity<Booking>().HasData(
+        //        new Booking
+        //        {
+        //            Id = -1,
+        //            BookingInfo = "booking info",
+        //            BookingEmail = "scottfalboart@gmail.com"
+        //        });
 
-            modelBuilder.Entity<ArtistBooking>().HasData(
-                new ArtistBooking
-                {
-                    ArtistId = id,
-                    BookingId = -1
-                });
-        }
+        //    modelBuilder.Entity<ArtistBooking>().HasData(
+        //        new ArtistBooking
+        //        {
+        //            ArtistId = id,
+        //            BookingId = -1
+        //        });
+        //}
 
-        private int id = 1;
-        private void SeedRole(ModelBuilder modelBuilder, string roleName, params string[] permissions)
-        {
-            var role = new IdentityRole
-            {
-                Id = roleName.ToLower(),
-                Name = roleName,
-                NormalizedName = roleName.ToUpper(),
-                ConcurrencyStamp = Guid.Empty.ToString()
-            };
-            modelBuilder.Entity<IdentityRole>().HasData(role);
+        //private int id = 1;
+        //private void SeedRole(ModelBuilder modelBuilder, string roleName, params string[] permissions)
+        //{
+        //    var role = new IdentityRole
+        //    {
+        //        Id = roleName.ToLower(),
+        //        Name = roleName,
+        //        NormalizedName = roleName.ToUpper(),
+        //        ConcurrencyStamp = Guid.Empty.ToString()
+        //    };
+        //    modelBuilder.Entity<IdentityRole>().HasData(role);
 
-            var roleClaims = permissions.Select(permission =>
-               new IdentityRoleClaim<string>
-               {
-                   Id = id++,
-                   RoleId = role.Id,
-                   ClaimType = "permissions",
-                   ClaimValue = permission
-               });
-            modelBuilder.Entity<IdentityRoleClaim<string>>().HasData(roleClaims);
+        //    var roleClaims = permissions.Select(permission =>
+        //       new IdentityRoleClaim<string>
+        //       {
+        //           Id = id++,
+        //           RoleId = role.Id,
+        //           ClaimType = "permissions",
+        //           ClaimValue = permission
+        //       });
+        //    modelBuilder.Entity<IdentityRoleClaim<string>>().HasData(roleClaims);
         }
     }
 }

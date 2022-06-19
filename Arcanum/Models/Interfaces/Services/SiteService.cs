@@ -35,6 +35,7 @@ namespace Arcanum.Models.Interfaces.Services
             {
                 Id = artist.Id,
                 Name = artist.Name,
+                FirstName = MinorSpells.GetFirstName(artist.Name),
                 Email = artist.Email,
                 ProfileImageUri = "https://via.placeholder.com/200x300",
                 Display = false,
@@ -71,6 +72,7 @@ namespace Arcanum.Models.Interfaces.Services
                 {
                     Id = g.Id,
                     Name = g.Name,
+                    FirstName = g.FirstName,
                     Email = g.Email,
                     Intro = g.Intro,
                     Instagram = g.Instagram,
@@ -100,6 +102,7 @@ namespace Arcanum.Models.Interfaces.Services
                 {
                     Id = g.Id,
                     Name = g.Name,
+                    FirstName = g.FirstName,
                     Email = g.Email,
                     Intro = g.Intro,
                     Instagram = g.Instagram,
@@ -118,6 +121,7 @@ namespace Arcanum.Models.Interfaces.Services
         /// <param name="artist"> Artist object </param>
         public async Task UpdateArtist(Artist artist)
         {
+            artist.FirstName = MinorSpells.GetFirstName(artist.Name);
             artist = BootStrapAccordionIds.ArtistAccordionIds(artist);
             _db.Entry(artist).State = EntityState.Modified;
             await _db.SaveChangesAsync();

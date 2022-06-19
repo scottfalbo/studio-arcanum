@@ -15,5 +15,11 @@ namespace Arcanum.Spells
             }
             return users;
         }
+
+        public static string GetFirstName(string name)
+        {
+            var splitName = name.Split(" ");
+            return splitName[0];
+        }
     }
 }

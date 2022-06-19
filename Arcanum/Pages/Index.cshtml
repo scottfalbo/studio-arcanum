@@ -6,17 +6,23 @@
 
 <div id="index-container">
     <div class="container-one">
-        <div><p>@Model.MainPage.IntroA</p></div>
+        <div class="mainpage-image-container">
+            @if (Model.MainPage.PageImage[0].Image.Display)
+            {
+                <img src="@Model.MainPage.PageImage[0].Image.SourceUrl" alt="site-image" class="mainpage-image"/>
+            }
+        </div>
+        <div><p class="format-paragraph">@Model.MainPage.IntroA</p></div>
         <div>
             <partial name="_ArtistNav" />
         </div>
     </div>
 
     <div class="container-two">
-        <div>
-            @if (Model.MainPage.PageImage[0].Image.Display)
+        <div class="mainpage-image-container">
+            @if (Model.MainPage.PageImage[1].Image.Display)
             {
-                <img src="@Model.MainPage.PageImage[0].Image.SourceUrl" alt="site-image" />
+                <img src="@Model.MainPage.PageImage[1].Image.SourceUrl" alt="site-image" class="mainpage-image"/>
             }
         </div>
         <div><h3>Recent Posts</h3></div>
@@ -26,17 +32,11 @@
     </div>
 
     <div class="container-three">
-        <div>
-            @if (Model.MainPage.PageImage[1].Image.Display)
-            {
-                <img src="@Model.MainPage.PageImage[1].Image.SourceUrl" alt="site-image" />
-            }
-        </div>
-        <div><p>@Model.MainPage.IntroB</p></div>
-        <div>
+        <div><p class="format-paragraph">@Model.MainPage.IntroB</p></div>
+        <div class="mainpage-image-container">
             @if (Model.MainPage.PageImage[2].Image.Display)
             {
-                <img src="@Model.MainPage.PageImage[2].Image.SourceUrl" alt="site-image" />
+                <img src="@Model.MainPage.PageImage[2].Image.SourceUrl" alt="site-image" class="mainpage-image"/>
             }
         </div>
     </div>
@@ -70,44 +70,3 @@
 }
 
 <div class="fullscreen-fade @(Model.ActiveAdmin || Model.MainPage.ShowHomePageMessage ? "" : "hide-me")"></div>
-
-@*<section id="soon hide-me">
-    <div>
-        <h1>Studio Arcanum</h1>
-        <h2>Seattle, <span>WA</span></h2>
-        <p>
-            Thanks for visiting Studio Arcanum.  Our new website is currently under construction. <br />
-            In the mean time you can find the studio as well as artist portfolios on Instagram.
-        </p>
-
-        <a href="https://www.instagram.com/studioarcanum/" target="_blank">
-            <p>Studio Arcanum</p>
-            <br />
-        </a>
-        <a href="https://www.instagram.com/adammillertattoos/" target="_blank">
-            <p>Adam Miller</p>
-        </a>
-        <a href="https://www.instagram.com/stephhanlontattoo/" target="_blank">
-            <p>Steph Hanlon</p>
-        </a>
-        <a href="https://www.instagram.com/nicoleroartattoos/" target="_blank">
-            <p>Nicole Roar</p>
-        </a>
-        <a href="https://www.instagram.com/connellytaittattoo/" target="_blank">
-            <p>Connelly Tait</p>
-        </a>
-        <a href="https://www.instagram.com/scottfalboart/" target="_blank">
-            <p>Scott Falbo</p>
-        </a>
-
-        <address>
-            4333 Fremont Ave N. #6
-        </address>
-
-        <div>
-            <a href="mailto: arcanumseattle@gmail.com">
-                <p id="soon-email">arcanumseattle@gmail.com</p>
-            </a>
-        </div>
-    </div>
-</section>*@

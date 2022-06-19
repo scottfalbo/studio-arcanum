@@ -1,0 +1,183 @@
+#index-container, .container-one,
+.container-three, .container-three {
+    display: grid;
+}
+
+/* Mobile: 320-480 */
+@media screen and (max-width: 480px) {
+    #index-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(3, min-content);
+    }
+    
+    #index-container > .container-one {
+        grid-column: 1/2;
+        grid-row: 1/2;
+        grid-template-columns: 1fr;
+        grid-template-rows: 20px, min-content, min-content;
+    }
+
+    #index-container > .container-two {
+        grid-column: 1/2;
+        grid-row: 2/3;
+        grid-template-columns: 1fr;
+        grid-template-rows: min-content, 30px, min-content;
+    }
+
+    #index-container > .container-three {
+        grid-column: 1/2;
+        grid-row: 3/4;
+        grid-template-columns: 1fr;
+        grid-template-rows: min-content, min-content;
+    }
+}
+
+/* Tablet: 481-991 */
+@media screen and (min-width: 481px) and (max-width: 991px)
+{
+    #index-container {
+        grid-template-columns: 40%, 60%;
+        grid-template-rows: repeat(2, min-content);
+    }
+    
+    #index-container > .container-one {
+        grid-column: 1/2;
+        grid-row: 1/2;
+        grid-template-columns: 1fr;
+        grid-template-rows: 20px, min-content, min-content;
+    }
+
+    #index-container > .container-two {
+        grid-column: 2/3;
+        grid-row: 1/2;
+        grid-template-columns: 1fr;
+        grid-template-rows: min-content, 30px, min-content;
+    }
+
+    #index-container > .container-three {
+        grid-column: 1/3;
+        grid-row: 2/3;
+        grid-template-columns: 1fr;
+        grid-template-rows: min-content, min-content;
+    }
+}
+
+/* Desktop: 992+ */
+@media screen and (min-width: 992px) {
+    #index-container {
+        grid-template-columns: repeat(3, 33%);
+        grid-template-rows: 1fr;
+    }
+    
+    #index-container > .container-one {
+        grid-column: 1/2;
+        grid-row: 1/2;
+        grid-template-columns: 1fr;
+        grid-template-rows: 20px, min-content, min-content;
+    }
+
+    #index-container > .container-two {
+        grid-column: 2/3;
+        grid-row: 1/2;
+        grid-template-columns: 1fr;
+        grid-template-rows: min-content, 30px, min-content;
+    }
+
+    #index-container > .container-three {
+        grid-column: 3/4;
+        grid-row: 1/2;
+        grid-template-columns: 1fr;
+        grid-template-rows: min-content, min-content;
+    }
+}
+
+/* container-one */
+#index-container > .container-one > div:nth-child(1) {
+    grid-column: 1/2; 
+    grid-row: 1/2;
+}
+
+#index-container > .container-one > div:nth-child(2) {
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+
+#index-container > .container-one > div:nth-child(3) {
+    grid-column: 1/2;
+    grid-row: 3/4;
+}
+
+/*  container-two */
+#index-container > .container-two > div:nth-child(1) {
+    grid-column: 1/2; 
+    grid-row: 1/2;
+}
+
+#index-container > .container-two > div:nth-child(2) {
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+
+#index-container > .container-two > div:nth-child(3) {
+    grid-column: 1/2;
+    grid-row: 3/4;
+}
+
+/* container-three */
+#index-container > .container-three > div:nth-child(1) {
+    grid-column: 1/2; 
+    grid-row: 1/2;
+}
+
+#index-container > .container-three > div:nth-child(2) {
+    grid-column: 1/2;
+    grid-row: 2/3;
+}
+
+/* Recent Image Gallery Layout */
+
+#recent-image-gallery-container {
+    width: 100%;
+    background-color: rgb(255, 162, 240);
+    padding: 5px;
+}
+
+.thumb-container {
+    width: 98%;
+    margin: auto;
+    background-color: rgb(0, 0, 0);
+    border-radius: 10px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    padding: 5px;
+}
+
+.image-thumbnail {
+    margin: 5px;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 80px;
+    width: 80px;
+}
+
+.carousel-inner {
+    height: 100vh;
+    background-color: black;
+}
+
+#recent-image-gallery-container figure {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+#recent-image-gallery-container img {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    max-height: 100vh;
+    object-fit: contain;
+}

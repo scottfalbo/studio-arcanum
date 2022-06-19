@@ -6,7 +6,10 @@ using Arcanum.ImageBlob.Interfaces;
 using Arcanum.ImageBlob.Interfaces.Services;
 using Arcanum.Models.Interfaces;
 using Arcanum.Models.Interfaces.Services;
+using Azure.Core;
 using Azure.Core.Extensions;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Azure.Storage.Blobs;
 using Azure.Storage.Queues;
 using Microsoft.AspNetCore.Builder;
@@ -37,6 +40,7 @@ namespace Arcanum
 
             services.AddDbContext<ArcanumDbContext>(options =>
             {
+                // LocalConnection for local DB, DefaultConnection affects live DB on Azure
                 string connectionString = _config.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);
             });
@@ -49,13 +53,13 @@ namespace Arcanum
 
             services.AddAuthentication();
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("create", policy => policy.RequireClaim("permissions", "create"));
-                options.AddPolicy("read", policy => policy.RequireClaim("permissions", "read"));
-                options.AddPolicy("update", policy => policy.RequireClaim("permissions", "update"));
-                options.AddPolicy("delete", policy => policy.RequireClaim("permissions", "delete"));
-            });
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("create", policy => policy.RequireClaim("permissions", "create"));
+            //    options.AddPolicy("read", policy => policy.RequireClaim("permissions", "read"));
+            //    options.AddPolicy("update", policy => policy.RequireClaim("permissions", "update"));
+            //    options.AddPolicy("delete", policy => policy.RequireClaim("permissions", "delete"));
+            //});
 
             services.AddTransient<IUserService, IdentityUserService>();
             services.AddTransient<IArtistAdmin, ArtistAdminService>();
@@ -69,8 +73,8 @@ namespace Arcanum
 
             services.AddAzureClients(builder =>
             {
-                builder.AddBlobServiceClient(_config["StorageBlob:ConnectionStringsblob"], preferMsi: true);
-                builder.AddQueueServiceClient(_config["StorageBlob:ConnectionString:queue"], preferMsi: true);
+                builder.AddBlobServiceClient(_config["StorageBlob:ConnectionString"], preferMsi: true);
+                //builder.AddQueueServiceClient(_config["StorageBlob:ConnectionString:queue"], preferMsi: true);
             });
         }
 
@@ -89,6 +93,22 @@ namespace Arcanum
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            SecretClientOptions options = new SecretClientOptions()
+            {
+                Retry =
+                {
+                    Delay= TimeSpan.FromSeconds(2),
+                    MaxDelay = TimeSpan.FromSeconds(16),
+                    MaxRetries = 5,
+                    Mode = RetryMode.Exponential
+                 }
+            };
+            var client = new SecretClient(new Uri(_config["KeyVaultUri"]), new DefaultAzureCredential(), options);
+
+            //KeyVaultSecret secret = client.GetSecret("<mySecret>");
+
+            //string secretValue = secret.Value;
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
