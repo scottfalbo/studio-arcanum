@@ -41,7 +41,7 @@ namespace Arcanum
             services.AddDbContext<ArcanumDbContext>(options =>
             {
                 // LocalConnection for local DB, DefaultConnection affects live DB on Azure
-                string connectionString = _config.GetConnectionString("LocalConnection");
+                string connectionString = _config.GetConnectionString("DefaultConnection");
                 options.UseSqlServer(connectionString);
             });
 

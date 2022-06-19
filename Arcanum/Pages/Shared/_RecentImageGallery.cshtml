@@ -1,7 +1,7 @@
 ﻿@model Arcanum.Pages.IndexModel
 
 <section id="recent-image-gallery-container">
-    <div id="recent-image-carousel" class="carousel slide fullscreen-fade" data-ride="carousel" data-interval="0">
+    <div id="recent-image-carousel" class="carousel slide fullscreen-fade hide-me" data-ride="carousel" data-interval="0">
         <div class="carousel-inner">
             @foreach (var image in @Model.MainPage.RecentImage)
             {
@@ -10,6 +10,9 @@
                 </figure>
             }
             <div class="close-gallery">✖</div>
+        </div>
+        <div>
+
         </div>
       <a class="carousel-control-prev" href="#recent-image-carousel" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
