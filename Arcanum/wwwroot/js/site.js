@@ -2,7 +2,7 @@
 
 // Shows popup windows.
 $(function() {
-    $('.show-popup').click(function() {
+    $('.show-admin-popup').click(function() {
         $('.admin-outer').removeClass('hide-me');
         $('.fullscreen-fade').removeClass('hide-me');
     });

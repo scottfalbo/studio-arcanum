@@ -44,7 +44,7 @@
 
 @if (User.IsInRole("WizardLord"))
 {
-    <i class="show-popup">admin</i>
+    <partial name="_AdminButton" />
 }
 
 @if (User.IsInRole("WizardLord"))

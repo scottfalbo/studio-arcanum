@@ -30,6 +30,10 @@
         grid-template-columns: 1fr;
         grid-template-rows: min-content, min-content;
     }
+
+    .container-three .mainpage-image {
+        width: 80%;
+    }
 }
 
 /* Tablet: 481-991 */
@@ -134,7 +138,7 @@
     grid-row: 2/3;
 }
 
-/* Recent Image Gallery Layout */
+/* Recent Image Gallery */
 
 #recent-image-gallery-container {
     width: 100%;
@@ -209,3 +213,10 @@
     text-align: center;
     line-height: 29px;
   }
+
+/* MainPage Images */
+.mainpage-image {
+    width: 100%;
+    max-width: 320px;
+    padding: 10px;
+}

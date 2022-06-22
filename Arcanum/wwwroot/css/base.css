@@ -2,72 +2,81 @@ a.navbar-brand {
     white-space: normal;
     text-align: center;
     word-break: break-all;
-  }
-  
-  * {
-      box-sizing: border-box;
-  }
-  
-  a, a:link, a:visited, a:hover, a:active {
-      text-decoration: none;
-  }
-  
-  /* Sticky footer styles */
+}
 
-  
-  html {
-    position: relative;
-    min-height: 100%;
-  }
-  
-  body {
-      margin-bottom: 60px;
-  }
+* {
+    box-sizing: border-box;
+}
 
-  footer {
+a, a:link, a:visited, a:hover, a:active {
+    text-decoration: none;
+}
 
-      width: 100%;
-      white-space: nowrap;
-      line-height: 60px;
-      color: #fff;
-  } 
- 
-  /* shared classes */
-  .hide-me {
-      visibility: hidden;
-      height: 0px;
-  }
-  
-  .fade-me {
-      opacity: .5;
-      pointer-events: none;
-  }
-  
-  .fullscreen-fade {
-      position: fixed;
-      z-index: 5;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.5)
-  }
+/* Sticky footer styles */
 
-  .format-paragraph
-  {
-      text-align: left;
-      line-height: 1.2em;
-      padding: 8px;
-  }
 
-  .site-button {
-      cursor: pointer;
-      background-color: rgb(24, 24, 24);
-      color: #fff;
-      padding: 10px;
-      text-align: center;
-      width: 200px;
-      height: 60px;
-      border: 1px solid #fff;
-      border-radius: 10px;
-  }
+html {
+position: relative;
+min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+footer {
+
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+    color: #fff;
+} 
+
+/* shared classes */
+.hide-me {
+    visibility: hidden;
+    height: 0px;
+}
+
+.fade-me {
+    opacity: .5;
+    pointer-events: none;
+}
+
+.fullscreen-fade {
+    position: fixed;
+    z-index: 5;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5)
+}
+
+.format-paragraph
+{
+    text-align: left;
+    line-height: 1.2em;
+    padding: 15px;
+}
+
+.site-button {
+    cursor: pointer;
+    background-color: rgb(24, 24, 24);
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    width: 200px;
+    height: 60px;
+    border: 1px solid #fff;
+    border-radius: 10px;
+}
+
+.show-admin-popup {
+    margin: 10px auto;
+    width:50px;
+}
+
+.show-admin-popup > img {
+    width: 50px;
+}
