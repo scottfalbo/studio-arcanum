@@ -1,26 +1,36 @@
 ﻿@model Arcanum.Pages.IndexModel
 
-<section id="recent-image-gallery-container">
-    <div id="recent-image-carousel" class="carousel slide fullscreen-fade hide-me" data-ride="carousel" data-interval="0">
-        <div class="carousel-inner">
+<section id="recent-image-gallery-container card-body">
+    <div id="recent-image-carousel-control" class="carousel slide" data-ride="carousel" data-interval="0">
+
+        <section class="image-gallery-container hide-me">
+            <div class="carousel-inner">
+                @foreach (var image in @Model.MainPage.RecentImage)
+                {
+                    <figure class="carousel-item @(image == @Model.MainPage.RecentImage.First() ? "active" : "")">
+                        <img src="@image.Image.SourceUrl" alt="@image.Image.AltText" class="d-block">
+                    </figure>
+                }
+                <div class="close-gallery">✖</div>
+            </div>
+
+            <a class="carousel-control-prev" href="#recent-image-carousel-control" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#recent-image-carousel-control" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+            </a>
+        </section>
+
+        <section class="image-thumbnail-container">
             @foreach (var image in @Model.MainPage.RecentImage)
             {
-                <figure class="carousel-item @(image == @Model.MainPage.RecentImage.First() ? "active" : "")">
-                    <img src="@image.Image.SourceUrl" alt="@image.Image.AltText" class="d-block">
-                </figure>
+                <a href="#recent-image-carousel-control" role="button" data-slide-to="@Model.MainPage.RecentImage.IndexOf(image)" class="gallery-toggle" data-gallery-id="image-gallery-container">
+                    <div class="image-thumbnail" style="background-image: url(@image.Image.SourceUrl)"></div>
+                </a>
             }
-            <div class="close-gallery">✖</div>
-        </div>
-        <div>
-
-        </div>
-      <a class="carousel-control-prev" href="#recent-image-carousel" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#recent-image-carousel" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
+        </section>
     </div>
 </section>

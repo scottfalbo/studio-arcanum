@@ -2,49 +2,60 @@
 @using Arcanum.Pages
 @model Arcanum.Pages.RegisterModel
 
-@if (Model.PageState == PageState.Inital || Model.PageState == PageState.NotValid)
-{
-    <h2>Please enter your access code</h2>
-    <form asp-page-handler="ValidateAccessCode" method="post">
-        <label>
-            <input type="text"name="code" placeholder="enter access code" />
-            <input type="submit" value="validate code" />
-        </label>
-    </form>
-}
+<section id="registration-page">
+    <figure>
+        <img src=~/images/secret.png alt="grumble grumble troll"/>
+    </figure>
 
-@if (Model.PageState == PageState.NotValid)
-{
-    <p>Invalid access code, please double check and try again.</p>
-}
-
-@if (Model.PageState == PageState.Confirmed)
-{
-    <h2>Registration Form</h2>
-
-    <form asp-page-handler="Register" method="post">
-        <div><input type="text" name="username" placeholder="username" required class="username-input"/></div>
-        <p class="username-validator">X</p>
-
-        <div><input type="text" name="email" placeholder="email" required class="email-input"/></div>
-        <p class="email-validator">X</p>
-
-        <div><input type="password" name="password" placeholder="password" required class="password-input" /></div>
-            <i class="peek-password-input password-peek-icon">ooo</i>
-
-        <div><input type="password" placeholder="password" required class="password-validator"/></div>
-            <i class="peek-password-validator password-peek-icon">ooo</i>
-        <p class="password-valid-status">X</p>
-
-        <input type="hidden" asp-for="@Model.ValidCode" value="@Model.ValidCode" />
-        <div><input type="submit" value="Create Account" class="conditional-submit fade-me loader site-button"/></div>
-    </form>
-    @if (Model.IsRegistrationSuccess == false)
+    @if (Model.PageState == PageState.Inital || Model.PageState == PageState.NotValid)
     {
-        <p>Registration failed, Reason:</p>
-        @foreach (var errors in @Model.RegistrationErrorMessage)
+        <div id="secret-code-input">
+            <form asp-page-handler="ValidateAccessCode" method="post">
+                <label>
+                    <input type="text"name="code" placeholder="enter access code" />
+                    <input type="submit" value="validate code" class="site-button"/>
+                </label>
+            </form>
+        </div>
+        @if (Model.PageState == PageState.NotValid)
         {
-            <p>@errors</p>
+            <p class="invalid-secret-code-message">&#60; Invalid Access Code &#62;</p>
         }
     }
-}
+
+    @if (Model.PageState == PageState.Confirmed)
+    {
+        <div id="registration-input">
+            <form asp-page-handler="Register" method="post">
+                <div>
+                    <input type="text" name="username" placeholder="username" required class="username-input registration-input-field"/>
+                </div>
+
+                <div>
+                    <input type="text" name="email" placeholder="email" required class="email-input registration-input-field"/>
+                </div>
+                <div>
+                    <input type="password" name="password" placeholder="password" required class="registration-input-field password-input password-valid-status" />
+                    @*<i class="peek-password-input password-peek-icon">ooo</i>*@
+                </div>
+                <div>
+                    <input type="password" placeholder="re-enter password" required class="registration-input-field password-validator password-valid-status"/>
+                    @*<i class="peek-password-validator password-peek-icon">ooo</i>*@
+                </div>
+
+                <input type="hidden" asp-for="@Model.ValidCode" value="@Model.ValidCode" />
+                <div>
+                    <input type="submit" value="Create Account" class="conditional-submit fade-me loader site-button password-valid-status"/>
+                </div>
+            </form>
+            @if (Model.IsRegistrationSuccess == false)
+            {
+                <p>Registration failed, Reason:</p>
+                @foreach (var errors in @Model.RegistrationErrorMessage)
+                {
+                    <p>@errors</p>
+                }
+            }
+        </div>
+    }
+</section>

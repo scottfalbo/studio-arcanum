@@ -16,12 +16,12 @@ $(function () {
 function validatePassword() {
     let password1 = $('.password-input').val();
     let password2 = $('.password-validator').val();
-    if (password1 === password2) {
-        $('.password-valid-status').text('O');
+    if (password1 === password2 && password1.length > 3) {
+        $('.password-valid-status').addClass('valid-form-input');
         passwordIsMatch = true;
     }
     else {
-        $('.password-valid-status').text('X');
+        $('.password-valid-status').removeClass('valid-form-input');
         passwordIsMatch = false;
     }
     validateAllInputs();
@@ -34,11 +34,11 @@ $(function () {
 function validateUserName() {
     let userNameInput = $('.username-input').val();
     if (userNameInput.length < 3) {
-        $('.username-validator').text('X');
+        $('.username-input').removeClass('valid-form-input');
         userNameIsValid = false;
     }
     else {
-        $('.username-validator').text('O');
+        $('.username-input').addClass('valid-form-input');
         userNameIsValid = true;
     }
 }
@@ -51,11 +51,11 @@ $(function () {
 function validateEmail() {
     let emailInput = $('.email-input').val();
     if (!checkFormat(emailInput)) {
-        $('.email-validator').text('X');
+        $('.email-input').removeClass('valid-form-input');
         emailIsValidFormat = false;
     }
     else {
-        $('.email-validator').text('O');
+        $('.email-input').addClass('valid-form-input');
         emailIsValidFormat = true;
     }
     validateAllInputs();
