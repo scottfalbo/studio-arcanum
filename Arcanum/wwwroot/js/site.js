@@ -64,6 +64,13 @@ $(function() {
 // Gallery Close Button
 $(function() {
     $('.close-gallery').click(function() {
-        $('.fullscreen-fade').addClass('hide-me');
+        $('.image-gallery-container').addClass('hide-me');
+    });
+});
+
+// Gallery Open
+$(function() {
+    $('.gallery-toggle').click(function() {
+        $('.image-gallery-container').removeClass('hide-me');
     });
 });

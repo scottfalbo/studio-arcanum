@@ -17,11 +17,10 @@
                 </label>
             </form>
         </div>
-    }
-
-    @if (Model.PageState == PageState.NotValid)
-    {
-        <p>Invalid access code, please double check and try again.</p>
+        @if (Model.PageState == PageState.NotValid)
+        {
+            <p class="invalid-secret-code-message">&#60; Invalid Access Code &#62;</p>
+        }
     }
 
     @if (Model.PageState == PageState.Confirmed)

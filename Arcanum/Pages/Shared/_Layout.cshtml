@@ -24,12 +24,12 @@
                     <ul class="navbar-nav flex-grow-1">
                         @await Component.InvokeAsync("ArtistNav")
                         <li>
-                            <a class="nav-link text-dark" asp-area="" asp-page="TheStudio">The Studio</a>
+                            <a class="nav-link" asp-area="" asp-page="TheStudio">The Studio</a>
                         </li>
                         @if (User.IsInRole("WizardLord"))
                         {
                             <li>
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Admin/SecretLair">Secret Lair</a>
+                                <a class="nav-link" asp-area="" asp-page="/Admin/SecretLair">Secret Lair</a>
                             </li>
                         }
                     </ul>
@@ -44,22 +44,22 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer">
         <div class="container">
             <ul>
                 @if (!User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Register">Register</a>
+                        <a class="nav-link" asp-area="" asp-page="/Register">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
+                        <a class="nav-link" asp-area="" asp-page="/Login">Login</a>
                     </li>
                 }
                 else
                 {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Logout</a>
+                        <a class="nav-link" asp-area="" asp-page="/Logout">Logout</a>
                     </li>
                 }
             </ul>
